@@ -10,7 +10,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { useNavigate } from 'react-router-dom';
-import Dashboard from './Signin';
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -87,7 +86,7 @@ export default function Signin() {
                   disabled={isSubmitting}
                   type="submit"
                 >
-                  SignIn
+                  Sign In
                 </Button>
               </form>
             )}
