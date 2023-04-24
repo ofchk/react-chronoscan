@@ -8,6 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -15,84 +16,94 @@ export default function Signin() {
   const navigate = useNavigate();
 
   return (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <h1>Welcome to, Muscat Overseas!</h1>
-          <Formik
-            initialValues={{ email: '', password: '' }}
-            validate={(values) => {
-              const errors = {};
-              if (!values.email) {
-                errors.email = 'Required';
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-              ) {
-                errors.email = 'Invalid email address';
-              }
-              return errors;
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              navigate('/dashboard');
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  id="email"
-                  name="email"
-                  label="Enter Email"
-                  variant="outlined"
-                  size="small"
-                  type="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  fullWidth
-                  required
-                  sx={{ mt: 2 }}
-                />
-                {errors.email && touched.email && errors.email}
-                <TextField
-                  id="password"
-                  name="password"
-                  label="Enter password"
-                  variant="outlined"
-                  size="small"
-                  type="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  required
-                  fullWidth
-                  sx={{ mt: 2 }}
-                />
-                {errors.password && touched.password && errors.password}
-                <Button
-                  sx={{ mt: 2 }}
-                  variant="contained"
-                  disabled={isSubmitting}
-                  type="submit"
-                >
-                  Sign In
-                </Button>
-              </form>
-            )}
-          </Formik>
-        </CardContent>
-      </Card>
+    <Box component="span">
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}
+      >
+        <Grid item xs={3}>
+          <Card>
+            <CardContent>
+              <h1>Welcome to, Muscat Overseas!</h1>
+              <Formik
+                initialValues={{ email: '', password: '' }}
+                validate={(values) => {
+                  const errors = {};
+                  if (!values.email) {
+                    errors.email = 'Required';
+                  } else if (
+                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
+                      values.email
+                    )
+                  ) {
+                    errors.email = 'Invalid email address';
+                  }
+                  return errors;
+                }}
+                onSubmit={(values, { setSubmitting }) => {
+                  navigate('/dashboard');
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                  /* and other goodies */
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <TextField
+                      id="email"
+                      name="email"
+                      label="Enter Email"
+                      variant="outlined"
+                      size="small"
+                      type="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                      fullWidth
+                      required
+                      sx={{ mt: 2 }}
+                    />
+                    {errors.email && touched.email && errors.email}
+                    <TextField
+                      id="password"
+                      name="password"
+                      label="Enter password"
+                      variant="outlined"
+                      size="small"
+                      type="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                      required
+                      fullWidth
+                      sx={{ mt: 2 }}
+                    />
+                    {errors.password && touched.password && errors.password}
+                    <Button
+                      sx={{ mt: 2 }}
+                      variant="contained"
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
+                      Sign In
+                    </Button>
+                  </form>
+                )}
+              </Formik>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -10,14 +10,14 @@ import TextField from '@mui/material/TextField';
 
 import { useNavigate } from 'react-router-dom';
 
-export default function Create() {
+export default function Vendor() {
   const navigate = useNavigate();
 
   return (
     <Box component="span">
-      <h3 align="center">Create Invoice</h3>
+      <h3 align="center">Create Vendor</h3>
       <Formik
-        initialValues={{ invoice_number: '', password: '' }}
+        initialValues={{ name: '', address: '' }}
         onSubmit={(values, { setSubmitting }) => {
           navigate('/dashboard');
         }}
@@ -34,33 +34,30 @@ export default function Create() {
         }) => (
           <form onSubmit={handleSubmit}>
             <TextField
-              name="invoice_number"
-              label="Enter Invoice Number"
+              name="name"
+              label="Enter Name"
               variant="outlined"
               size="small"
-              type="email"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.invoice_number}
+              value={values.name}
               fullWidth
               required
               sx={{ mt: 2 }}
             />
-            {errors.email && touched.email && errors.email}
+            {errors.name && touched.name && errors.name}
             <TextField
-              name="vendor"
-              label="Select Vendor"
+              name="address"
+              label="Enter Address"
               variant="outlined"
               size="small"
-              type="vendor"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.vendor}
-              required
+              value={values.address}
               fullWidth
               sx={{ mt: 2 }}
             />
-            {errors.vendor && touched.vendor && errors.vendor}
+            {errors.address && touched.address && errors.address}
             <Button
               sx={{ mt: 2 }}
               variant="contained"
