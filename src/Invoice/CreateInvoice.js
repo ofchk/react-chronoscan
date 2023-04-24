@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
@@ -38,14 +38,14 @@ const GET = gql`
 `;
 
 const INSERT = gql`
-    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $option: Int!) {
-          insert_profile_one(object: {
+    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!) {
+          insert_invoice_one(object: {
             created_by: $created_by, 
             invoice_number: $invoice_number, 
             vendor: $vendor, 
             entity: $entity, 
             status: $status, 
-            option: $option}) {
+            option: $options}) {
             id
             invoice_number
           }
@@ -55,21 +55,59 @@ const INSERT = gql`
 export default function Create() {
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
-  const [insert, { data: inserData, error: insertError }] = useMutation(INSERT);
+  const [insertInvoice, { data: insertData, error: insertError }] =
+    useMutation(INSERT);
+
+  const handleFileUpload = async (formData) => {
+    if (formData) {
+      uploadingMessage();
+      await fetch(
+        `https://expresssimplejcrxh9-imwt--3010--95b70c8d.local-credentialless.webcontainer.io/upload`,
+        {
+          method: 'post',
+          body: formData,
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          data.forEach((item) => {
+            const message = uploadRes.message;
+            alert(message);
+          });
+        });
+    }
+  };
+
+  // useEffect(() => {
+  //   if (insertData) {
+  //     handleFileUpload
+  //   }
+  // }, [insertData]);
 
   return (
     <Box component="span">
       <h3 align="center">Create Invoice</h3>
       <Formik
         initialValues={{
+          created_by: 1,
           invoice_number: '',
           vendor: '',
           entity: '',
           status: '',
           options: '',
+          invoice_file: '',
         }}
         onSubmit={(values, { setSubmitting }) => {
-          navigate('/dashboard');
+          if (values) {
+            insertInvoice({
+              variables: values,
+            });
+            handleFileUpload(values.invoice_file);
+          }
+          setTimeout(() => {
+            refetch();
+            navigate('/invoice');
+          }, 400);
         }}
       >
         {({
@@ -165,7 +203,7 @@ export default function Create() {
               fullWidth
               displayEmpty
               required
-              sx={{ mt: 2 }}
+              sx={{ mt: 2, mb: 2 }}
             >
               <MenuItem onChange={handleChange} value="">
                 - Select Status -
@@ -178,14 +216,38 @@ export default function Create() {
                   </MenuItem>
                 ))}
             </Select>
-            <Button
+            <InputLabel sx={{ mb: 1, color: '#222', fontSize: '16px' }}>
+              Upload Invoice File:{' '}
+            </InputLabel>
+            <input
+              type="file"
               sx={{ mt: 2 }}
-              variant="contained"
-              disabled={isSubmitting}
-              type="submit"
-            >
-              Create
-            </Button>
+              name="invoice_file"
+              accept="application/pdf"
+              required
+              onChange={handleChange}
+            />
+            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
+              Associated Documents:{' '}
+            </InputLabel>
+            <input
+              type="file"
+              sx={{ mt: 2 }}
+              name="other"
+              accept="application/pdf"
+              multiple
+            />
+            <Box align="right">
+              <Button
+                sx={{ mt: 2 }}
+                variant="contained"
+                disabled={isSubmitting}
+                type="submit"
+                size="small"
+              >
+                Create
+              </Button>
+            </Box>
           </form>
         )}
       </Formik>
