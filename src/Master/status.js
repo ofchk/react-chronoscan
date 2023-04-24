@@ -17,6 +17,17 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+
+const GET = gql`
+    query Get {
+          status {
+            id
+            title
+          }          
+        }
+`;
+
 function CustomToolbar() {
   return (
     <>
@@ -31,19 +42,27 @@ function CustomToolbar() {
 
 export default function Status() {
   const navigate = useNavigate();
+  const { loading, data, refetch } = useQuery(GET);
 
   const rowSet = [];
+  if (data) {
+    data.status.forEach((item) => {
+      rowSet.push({
+        id: item.id,
+        title: item.title,
+      });
+    });
+  }
   const columnSet = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'title', headerName: 'Title', width: 200 },
   ];
 
   return (
     <Box component="span" align="right">
       <h3 align="center">Create Status</h3>
       <Formik
-        initialValues={{ title: '' }}
+        initialValues={{ name: '', address: '' }}
         onSubmit={(values, { setSubmitting }) => {
           navigate('/dashboard');
         }}
@@ -72,6 +91,7 @@ export default function Status() {
               sx={{ mt: 2 }}
             />
             {errors.title && touched.title && errors.title}
+
             <Button
               sx={{ mt: 2 }}
               variant="contained"

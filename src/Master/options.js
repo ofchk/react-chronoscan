@@ -17,6 +17,17 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+
+const GET = gql`
+    query Get {
+          options {
+            id
+            title
+          }          
+        }
+`;
+
 function CustomToolbar() {
   return (
     <>
@@ -29,21 +40,29 @@ function CustomToolbar() {
   );
 }
 
-export default function Options() {
+export default function Entity() {
   const navigate = useNavigate();
+  const { loading, data, refetch } = useQuery(GET);
 
   const rowSet = [];
+  if (data) {
+    data.options.forEach((item) => {
+      rowSet.push({
+        id: item.id,
+        title: item.title,
+      });
+    });
+  }
   const columnSet = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'title', headerName: 'Title', width: 200 },
   ];
 
   return (
     <Box component="span" align="right">
       <h3 align="center">Create Option</h3>
       <Formik
-        initialValues={{ name: '' }}
+        initialValues={{ name: '', address: '' }}
         onSubmit={(values, { setSubmitting }) => {
           navigate('/dashboard');
         }}
@@ -72,6 +91,7 @@ export default function Options() {
               sx={{ mt: 2 }}
             />
             {errors.title && touched.title && errors.title}
+
             <Button
               sx={{ mt: 2 }}
               variant="contained"
@@ -94,7 +114,7 @@ export default function Options() {
         }}
         autoHeight="true"
         sx={{ mt: 2, backgroundColor: '#f1f1f1' }}
-      />x
+      />
     </Box>
   );
 }

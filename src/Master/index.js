@@ -55,8 +55,6 @@ export default function Master() {
         <Tabs value={value} onChange={handleChange} aria-label="Master  Tables">
           <Tab label="Vendor" {...a11yProps(0)} />
           <Tab label="Entity" {...a11yProps(1)} />
-          <Tab label="Options" {...a11yProps(2)} />
-          <Tab label="Status" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -64,12 +62,6 @@ export default function Master() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Entity />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <Options />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <Status />
       </TabPanel>
     </Box>
   );

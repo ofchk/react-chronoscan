@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -17,6 +17,34 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+
+const GET = gql`
+    query Get {
+      invoice {
+        id
+        invoice_number
+        vendor
+        entity
+        option
+        status
+        invoice_vendor{
+          name
+        }
+        invoice_entity{
+          title
+        }
+        
+        invoice_status{
+          title
+        }
+        invoice_option{
+          title
+        }
+      }         
+        }
+`;
+
 function CustomToolbar() {
   return (
     <>
@@ -31,16 +59,42 @@ function CustomToolbar() {
 
 export default function List() {
   const navigate = useNavigate();
+  const { loading, data, refetch } = useQuery(GET);
 
   const rowSet = [];
+  if (data) {
+    data.invoice.forEach((item) => {
+      rowSet.push({
+        id: item.id,
+        invoice_number: item.invoice_number,
+        vendor: item.invoice_vendor ? item.invoice_vendor.name : '-',
+        entity: item.invoice_entity ? item.invoice_entity.title : '-',
+        status: item.invoice_status ? item.invoice_status.title : '-',
+        option: item.invoice_option ? item.invoice_option.title : '-',
+      });
+    });
+  }
   const columnSet = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
+    { field: 'vendor', headerName: 'Vendor', width: 200 },
+    { field: 'entity', headerName: 'Entity', width: 200 },
+    { field: 'option', headerName: 'Processing Option', width: 300 },
+    { field: 'status', headerName: 'Status', width: 200 },
   ];
   return (
-    <Box component="span" align="right">
-      <h3 align="center">Create Vendor</h3>
+    <Box align="right">
+      <Button
+        component={Link}
+        to="/createinvoice"
+        variant="contained"
+        align="right"
+        sx={{ mb: 2 }}
+        size="small"
+      >
+        Create Invoice
+      </Button>
+      <h3 align="center">Invoices</h3>
 
       <DataGrid
         rows={rowSet}

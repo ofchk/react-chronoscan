@@ -17,6 +17,17 @@ import {
   GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+
+const GET = gql`
+    query Get {
+          entity {
+            id
+            title
+          }          
+        }
+`;
+
 function CustomToolbar() {
   return (
     <>
@@ -31,12 +42,20 @@ function CustomToolbar() {
 
 export default function Entity() {
   const navigate = useNavigate();
+  const { loading, data, refetch } = useQuery(GET);
 
   const rowSet = [];
+  if (data) {
+    data.entity.forEach((item) => {
+      rowSet.push({
+        id: item.id,
+        title: item.title,
+      });
+    });
+  }
   const columnSet = [
     { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'title', headerName: 'Title', width: 200 },
   ];
 
   return (
@@ -60,30 +79,19 @@ export default function Entity() {
         }) => (
           <form onSubmit={handleSubmit}>
             <TextField
-              name="name"
-              label="Enter Name"
+              name="title"
+              label="Enter Title"
               variant="outlined"
               size="small"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.name}
+              value={values.title}
               fullWidth
               required
               sx={{ mt: 2 }}
             />
-            {errors.name && touched.name && errors.name}
-            <TextField
-              name="address"
-              label="Enter Address"
-              variant="outlined"
-              size="small"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.address}
-              fullWidth
-              sx={{ mt: 2 }}
-            />
-            {errors.address && touched.address && errors.address}
+            {errors.title && touched.title && errors.title}
+
             <Button
               sx={{ mt: 2 }}
               variant="contained"
