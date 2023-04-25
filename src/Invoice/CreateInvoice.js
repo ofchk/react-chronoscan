@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import { useNavigate } from 'react-router-dom';
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
@@ -53,21 +54,19 @@ const INSERT = gql`
 `;
 
 export default function Create() {
+  const apiUrl = 'https://localhost:3031';
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
 
-  const handleFileUpload = async (formData) => {
+  const handleFileUpload = async (formData, invoice_number) => {
+    formData.append('invoice_number', invoice_number);
     if (formData) {
-      uploadingMessage();
-      await fetch(
-        `https://expresssimplejcrxh9-imwt--3010--95b70c8d.local-credentialless.webcontainer.io/upload`,
-        {
-          method: 'post',
-          body: formData,
-        }
-      )
+      await fetch(`${apiUrl}/upload`, {
+        method: 'post',
+        body: formData,
+      })
         .then((response) => response.json())
         .then((data) => {
           data.forEach((item) => {
@@ -102,7 +101,7 @@ export default function Create() {
             insertInvoice({
               variables: values,
             });
-            handleFileUpload(values.invoice_file);
+            handleFileUpload(values.invoice_file, values.invoice_number);
           }
           setTimeout(() => {
             refetch();
@@ -132,48 +131,44 @@ export default function Create() {
               fullWidth
               required
             />
-            <Select
+            <Autocomplete
+              disablePortal
+              options={data && data.vendor}
+              getOptionLabel={(option) => option.name}
+              onChange={(event, newValue) => {
+                values.vendor = newValue.id;
+                // console.log(newValue);
+              }}
               name="vendor"
               size="small"
-              onChange={handleChange}
-              value={values.vendor}
-              fullWidth
-              displayEmpty
-              required
-              sx={{ mt: 2 }}
-            >
-              <MenuItem onChange={handleChange} value="">
-                - Select Vendor -
-              </MenuItem>
-              {data &&
-                data.vendor &&
-                data.vendor.map((item, index) => (
-                  <MenuItem onChange={handleChange} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-            </Select>
-            <Select
+              renderInput={(params) => (
+                <TextField
+                  sx={{ mt: 2 }}
+                  {...params}
+                  fullWidth
+                  label="Select Vendor"
+                />
+              )}
+            />
+            <Autocomplete
+              disablePortal
+              options={data && data.entity}
+              getOptionLabel={(option) => option.title}
+              onChange={(event, newValue) => {
+                values.entity = newValue.id;
+                // console.log(newValue);
+              }}
               name="entity"
               size="small"
-              onChange={handleChange}
-              value={values.entity}
-              fullWidth
-              displayEmpty
-              required
-              sx={{ mt: 2 }}
-            >
-              <MenuItem onChange={handleChange} value="">
-                - Select Entity -
-              </MenuItem>
-              {data &&
-                data.entity &&
-                data.entity.map((item, index) => (
-                  <MenuItem onChange={handleChange} value={item.id}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-            </Select>
+              renderInput={(params) => (
+                <TextField
+                  sx={{ mt: 2 }}
+                  {...params}
+                  fullWidth
+                  label="Select ntity"
+                />
+              )}
+            />
             <Select
               name="options"
               size="small"
@@ -228,14 +223,32 @@ export default function Create() {
               onChange={handleChange}
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
-              Associated Documents:{' '}
+              Associated Document 1:{' '}
             </InputLabel>
             <input
               type="file"
               sx={{ mt: 2 }}
-              name="other"
+              name="other_1"
               accept="application/pdf"
-              multiple
+              onChange={handleChange}
+            />
+            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
+              Associated Document 2:{' '}
+            </InputLabel>
+            <input
+              type="file"
+              sx={{ mt: 2 }}
+              name="other_2"
+              accept="application/pdf"
+            />
+            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
+              Associated Document 3:{' '}
+            </InputLabel>
+            <input
+              type="file"
+              sx={{ mt: 2 }}
+              name="other_3"
+              accept="application/pdf"
             />
             <Box align="right">
               <Button

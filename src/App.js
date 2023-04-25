@@ -29,6 +29,11 @@ const createApolloClient = () => {
       },
     }),
     cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: 'cache-and-network',
+      },
+    },
   });
 };
 

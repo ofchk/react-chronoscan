@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
+import Moment from 'moment';
+
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -21,13 +23,14 @@ import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
     query Get {
-      invoice {
+      invoice (order_by: {created_at: desc}){
         id
         invoice_number
         vendor
         entity
         option
         status
+        created_at
         invoice_vendor{
           name
         }
@@ -71,6 +74,9 @@ export default function List() {
         entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
         option: item.invoice_option ? item.invoice_option.title : '-',
+        created_at: item.created_at
+          ? Moment(item.created_at).format('DD MMM YYYY hh:mm a')
+          : '-',
       });
     });
   }
@@ -81,6 +87,7 @@ export default function List() {
     { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'option', headerName: 'Processing Option', width: 300 },
     { field: 'status', headerName: 'Status', width: 200 },
+    { field: 'created_at', headerName: 'Created At', width: 200 },
   ];
   return (
     <Box align="right">
