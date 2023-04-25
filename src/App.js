@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Route } from 'react-router-dom';
 
 import {
   ApolloClient,
@@ -9,7 +8,6 @@ import {
   InMemoryCache,
   HttpLink,
 } from '@apollo/client';
-import { useAuth0 } from './Auth/react-auth0-spa';
 
 import { Switch } from 'react-router-dom';
 import Layout from './layout';
