@@ -54,7 +54,7 @@ const INSERT = gql`
 `;
 
 export default function Create() {
-  const apiUrl = 'https://localhost:3031';
+  const apiUrl = 'http://localhost:3031';
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =

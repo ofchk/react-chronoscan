@@ -20,7 +20,7 @@ import Master from './Master';
 const createApolloClient = () => {
   return new ApolloClient({
     link: new HttpLink({
-      uri: 'https://mov.discourselogic.com/v1/graphql',
+      uri: 'http://192.168.5.130:8080/v1/graphql',
       headers: {
         // Authorization: `Bearer ${authToken}`,
         'x-hasura-admin-secret': 'chronoaccesskey001',
