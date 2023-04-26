@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
@@ -56,6 +56,7 @@ const INSERT = gql`
 export default function Create() {
   const apiUrl = 'http://192.168.5.130:3010';
   const navigate = useNavigate();
+  const [item, setItem] = React.useState();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
@@ -73,11 +74,10 @@ export default function Create() {
       }        
     }
 
-    const uploadHandler = (invoice_file) => {
-        const formData = new FormData();
-
-        formData.append('file', invoice_file);  
-        handleFileUpload(formData)
+    const uploadHandler = () => {
+      const formData = new FormData();
+      formData.append('file', item);  
+      handleFileUpload(formData)
     }
 
   return (
@@ -98,7 +98,9 @@ export default function Create() {
             insertInvoice({
               variables: values,
             });
-            uploadHandler(values.invoice_file);
+            if(item){
+              uploadHandler();            
+            }  
           }          
         }}
       >
@@ -213,7 +215,8 @@ export default function Create() {
               name="invoice_file"
               accept="application/pdf"
               required
-              onChange={handleChange}
+              onChange={(files) => {setItem(files[0])
+
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
               Associated Document 1:{' '}
