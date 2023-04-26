@@ -215,7 +215,7 @@ export default function Create() {
               name="invoice_file"
               accept="application/pdf"
               required
-              onChange={(files) => {setItem(files[0])
+              onChange={(files) => {setItem(files[0])}}
 
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
