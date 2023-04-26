@@ -56,7 +56,7 @@ const INSERT = gql`
 export default function Create() {
   const apiUrl = 'http://192.168.5.130:3010';
   const navigate = useNavigate();
-  const [item, setItem] = React.useState();
+  const [item, setItem] = React.useState([]);
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
@@ -75,7 +75,7 @@ export default function Create() {
     }
 
     const uploadHandler = () => {
-      const formData = new FormData();
+      const formData = new FormData();``
       formData.append('file', item);  
       handleFileUpload(formData)
     }
@@ -213,7 +213,7 @@ export default function Create() {
               name="invoice_file"
               accept="application/pdf"
               required
-              onChange={(e) => {console.log(event.target.files[0]);setItem(event.target.files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
 
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
@@ -224,7 +224,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_1"
               accept="application/pdf"
-              onChange={handleChange}
+              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
               Associated Document 2:{' '}
@@ -234,6 +234,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_2"
               accept="application/pdf"
+              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
               Associated Document 3:{' '}
@@ -243,6 +244,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_3"
               accept="application/pdf"
+              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
             />
             <Box align="right">
               <Button
