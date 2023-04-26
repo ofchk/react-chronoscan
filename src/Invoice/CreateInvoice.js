@@ -77,9 +77,9 @@ export default function Create() {
       }        
     }
 
-    const uploadHandler = (invoice) => {
+    const uploadHandler = (param, invoice) => {
       const formData = new FormData();
-      formData.append('file', item);  
+      formData.append('file', param);  
       formData.append('invoice', invoice);  
       handleFileUpload(formData)
     }
@@ -104,13 +104,13 @@ export default function Create() {
             });
             console.log(item)
             if(item){
-              uploadHandler(values.invoice_number);            
+              uploadHandler(item,values.invoice_number);            
             }  if(item1){
-              uploadHandler(values.invoice_number);            
+              uploadHandler(item1,values.invoice_number);            
             }  if(item2){
-              uploadHandler(values.invoice_number);            
+              uploadHandler(item2,values.invoice_number);            
             }  if(item3){
-              uploadHandler(values.invoice_number);            
+              uploadHandler(item3,values.invoice_number);            
             }  
           }          
         }}
