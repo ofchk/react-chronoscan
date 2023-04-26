@@ -60,31 +60,26 @@ export default function Create() {
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
 
-  const handleFileUpload = async (file) => {    
-
-    const formData = new FormData();
-    // formData.append('invoice_number', invoice_number);
-    formData.append('file', file);
-
-    console.log(formData);
-  
-    if (formData) {
-      await fetch(`${apiUrl}/alfresco/upload`, {
-        method: 'post',
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data)
-        });
+  const handleFileUpload = async (formData) => {
+      if(formData){
+          uploadingMessage();
+          await fetch(`http://192.168.5.130:3010`, {
+              method: 'post',
+              body: formData,
+          })
+          .then(response =>  response.json())
+          .then(data => {                
+            return false;
+          })    
+      }        
     }
-  };
 
-  // useEffect(() => {
-  //   if (insertData) {
-  //     handleFileUpload
-  //   }
-  // }, [insertData]);
+    const uploadHandler = (invoice_file) => {
+        const formData = new FormData();
+
+        formData.append('file', invoice_file);  
+        handleFileUpload(formData)
+    }
 
   return (
     <Box component="span">
@@ -104,7 +99,7 @@ export default function Create() {
             insertInvoice({
               variables: values,
             });
-            handleFileUpload(values.invoice_file);
+            uploadHandler(values.invoice_file);
           }          
         }}
       >
