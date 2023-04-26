@@ -54,25 +54,28 @@ const INSERT = gql`
 `;
 
 export default function Create() {
-  const apiUrl = 'http://localhost:3031';
+  const apiUrl = 'http://192.168.5.130:3010';
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
 
-  const handleFileUpload = async (formData, invoice_number) => {
-    formData.append('invoice_number', invoice_number);
+  const handleFileUpload = async (file) => {    
+
+    const formData = new FormData();
+    // formData.append('invoice_number', invoice_number);
+    formData.append('file', file);
+
+    console.log(formData);
+  
     if (formData) {
-      await fetch(`${apiUrl}/upload`, {
+      await fetch(`${apiUrl}/alfresco/upload`, {
         method: 'post',
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          data.forEach((item) => {
-            const message = uploadRes.message;
-            alert(message);
-          });
+          console.log(data)
         });
     }
   };
@@ -101,12 +104,8 @@ export default function Create() {
             insertInvoice({
               variables: values,
             });
-            handleFileUpload(values.invoice_file, values.invoice_number);
-          }
-          setTimeout(() => {
-            refetch();
-            navigate('/invoice');
-          }, 400);
+            handleFileUpload(values.invoice_file);
+          }          
         }}
       >
         {({
@@ -165,7 +164,7 @@ export default function Create() {
                   sx={{ mt: 2 }}
                   {...params}
                   fullWidth
-                  label="Select ntity"
+                  label="Select Entity"
                 />
               )}
             />
