@@ -63,7 +63,7 @@ export default function Create() {
   const handleFileUpload = async (formData) => {
       if(formData){
           uploadingMessage();
-          await fetch(`http://192.168.5.130:3010`, {
+          await fetch(`http://192.168.5.130:3010/invoice/upload`, {
               method: 'post',
               body: formData,
           })
