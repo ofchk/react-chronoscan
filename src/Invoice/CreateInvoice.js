@@ -56,7 +56,10 @@ const INSERT = gql`
 export default function Create() {
   const apiUrl = 'http://192.168.5.130:3010';
   const navigate = useNavigate();
-  const [item, setItem] = React.useState([]);
+  const [item, setItem] = React.useState();
+  const [item1, setItem1] = React.useState();
+  const [item2, setItem2] = React.useState();
+  const [item3, setItem3] = React.useState();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] =
     useMutation(INSERT);
@@ -74,9 +77,10 @@ export default function Create() {
       }        
     }
 
-    const uploadHandler = () => {
-      const formData = new FormData();``
+    const uploadHandler = (invoice) => {
+      const formData = new FormData();
       formData.append('file', item);  
+      formData.append('invoice', invoice);  
       handleFileUpload(formData)
     }
 
@@ -100,7 +104,13 @@ export default function Create() {
             });
             console.log(item)
             if(item){
-              uploadHandler();            
+              uploadHandler(values.invoice_number);            
+            }  if(item1){
+              uploadHandler(values.invoice_number);            
+            }  if(item2){
+              uploadHandler(values.invoice_number);            
+            }  if(item3){
+              uploadHandler(values.invoice_number);            
             }  
           }          
         }}
@@ -213,7 +223,7 @@ export default function Create() {
               name="invoice_file"
               accept="application/pdf"
               required
-              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);setItem(event.target.files[0])}}
 
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
@@ -224,7 +234,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_1"
               accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);setItem1(event.target.files[0])}}
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
               Associated Document 2:{' '}
@@ -234,7 +244,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_2"
               accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);setItem2(event.target.files[0])}}
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
               Associated Document 3:{' '}
@@ -244,7 +254,7 @@ export default function Create() {
               sx={{ mt: 2 }}
               name="other_3"
               accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);item.push(event.target.files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);setItem3(event.target.files[0])}}
             />
             <Box align="right">
               <Button
