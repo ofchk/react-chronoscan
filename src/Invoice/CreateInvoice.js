@@ -98,6 +98,7 @@ export default function Create() {
             insertInvoice({
               variables: values,
             });
+            console.log(item)
             if(item){
               uploadHandler();            
             }  
@@ -124,7 +125,6 @@ export default function Create() {
               onBlur={handleBlur}
               value={values.invoice_number}
               fullWidth
-              required
             />
             <Autocomplete
               disablePortal
@@ -171,7 +171,6 @@ export default function Create() {
               value={values.options}
               fullWidth
               displayEmpty
-              required
               sx={{ mt: 2 }}
             >
               <MenuItem onChange={handleChange} value="">
@@ -192,7 +191,6 @@ export default function Create() {
               value={values.status}
               fullWidth
               displayEmpty
-              required
               sx={{ mt: 2, mb: 2 }}
             >
               <MenuItem onChange={handleChange} value="">
@@ -215,7 +213,7 @@ export default function Create() {
               name="invoice_file"
               accept="application/pdf"
               required
-              onChange={(files) => {setItem(files[0])}}
+              onChange={(e) => {console.log(event.target.files[0]);setItem(event.target.files[0])}}
 
             />
             <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
