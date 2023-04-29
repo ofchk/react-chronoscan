@@ -1,58 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import './style.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// routing
+import Routes from 'routes';
 
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  HttpLink,
-} from '@apollo/client';
+// project imports
+import Locales from 'ui-component/Locales';
+import NavigationScroll from 'layout/NavigationScroll';
+// import RTLLayout from 'ui-component/RTLLayout';
+import Snackbar from 'ui-component/extended/Snackbar';
 
-import { Switch } from 'react-router-dom';
-import Layout from './layout';
-import Signin from './Signin';
-import Dashboard from './Dashboard';
-import List from './Invoice/List';
-import Create from './Invoice/CreateInvoice';
-import Master from './Master';
+import ThemeCustomization from 'themes';
 
-const createApolloClient = () => {
-  return new ApolloClient({
-    link: new HttpLink({
-      uri: 'http://192.168.5.130:8080/v1/graphql',
-      headers: {
-        // Authorization: `Bearer ${authToken}`,
-        'x-hasura-admin-secret': 'chronoaccesskey001',
-      },
-    }),
-    cache: new InMemoryCache(),
-    defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-      },
-    },
-  });
-};
+// auth provider
+import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
+// import { FirebaseProvider as AuthProvider } from 'contexts/FirebaseContext';
+// import { AWSCognitoProvider as AuthProvider } from 'contexts/AWSCognitoContext';
+// import { Auth0Provider as AuthProvider } from 'contexts/Auth0Context';
 
-function App() {
-  const [client] = useState(createApolloClient());
-  return (
-    <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/login" element={<Signin />} />
-          <Route element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/invoice" element={<List />} />
-            <Route path="/createinvoice" element={<Create />} />
-            <Route path="/master" element={<Master />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </ApolloProvider>
-  );
-}
+// ==============================|| APP ||============================== //
+
+const App = () => (
+    <ThemeCustomization>
+        {/* <RTLLayout> */}
+        <Locales>
+            <NavigationScroll>
+                <AuthProvider>
+                    <>
+                        <Routes />
+                        <Snackbar />
+                    </>
+                </AuthProvider>
+            </NavigationScroll>
+        </Locales>
+        {/* </RTLLayout> */}
+    </ThemeCustomization>
+);
 
 export default App;
