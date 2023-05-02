@@ -89,8 +89,8 @@ export default function Create() {
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
   const [file, setFile] = useState(null);
 
-  const [Invid, setInvid] = React.useState(1);
-  const [Invnum, setInvnum] = React.useState(1);
+  const [invid, setInvid] = React.useState();
+  const [invnum, setInvnum] = React.useState(1);
 
   const handleChange = (file) => {
     setFile(file);
@@ -150,7 +150,7 @@ export default function Create() {
                       'invoice_number': invoice_number,
                       'nodeid': nodeid,
                       'created_by': 1,
-                      'invoice_id': Invid
+                      'invoice_id': invid
                     } 
                   })
               }    
@@ -174,11 +174,14 @@ export default function Create() {
 
   useEffect(() => {
     if(insertData){
+      console.log(insertData)
+      console.log(insertData.insert_invoice_one)
+      console.log(insertData.insert_invoice_one.id)
       setInvid(insertData.insert_invoice_one.id)
       
       if(file){
         console.log(file)
-        uploadHandler(file,Invnum);
+        uploadHandler(file,invnum);
       } 
     }
   }, [insertData]); 
@@ -222,7 +225,6 @@ export default function Create() {
               onChange={(event, newValue) => {
                 values.invoice_number = event.target.value;
                 setInvnum(event.target.value);
-                 console.log(event.target);
               }}
               onBlur={handleBlur}
               value={values.invoice_number}
