@@ -170,6 +170,7 @@ export default function Create() {
     formData.append('file', param);  
     formData.append('invoice', invoice);  
     handleFileUpload(formData, iid)
+    navigate('/invoice/list')
   }
 
   useEffect(() => {
