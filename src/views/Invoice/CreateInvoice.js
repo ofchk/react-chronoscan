@@ -65,7 +65,7 @@ const INSERT = gql`
 
 const INSERT_FILE = gql`
     mutation File($created_by: Int!, $invoice_number: String!, $filepath: String!, $filepath: String!, $nodeid: String!){
-      insert_files_one(object: {alfresco_url: $filepath, created_by: 10, invoice_number: $invoice_number, name: $filepath, nodeid: $nodeid}) {
+      insert_files_one(object: {alfresco_url: $filepath, created_by: $created_by, invoice_number: $invoice_number, name: $filepath, nodeid: $nodeid}) {
         id
         invoice_number
       }
