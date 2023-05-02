@@ -64,8 +64,8 @@ const INSERT = gql`
 `;
 
 const INSERT_FILE = gql`
-    mutation File($created_by: Int!, $invoice_number: String!, $filepath: String!, $filepath: String!, $nodeid: String!){
-      insert_files_one(object: {alfresco_url: $filepath, created_by: $created_by, invoice_number: $invoice_number, name: $filepath, nodeid: $nodeid}) {
+    mutation File($invoice_id: Int!, $created_by: Int!, $invoice_number: String!, $filepath: String!, $filename: String!, $nodeid: String!){
+      insert_files_one(object: {invoice_id: $invoice_id, alfresco_url: $filepath, created_by: $created_by, invoice_number: $invoice_number, name: $filename, nodeid: $nodeid}) {
         id
         invoice_number
       }
@@ -88,7 +88,18 @@ export default function Create() {
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
   const [file, setFile] = useState(null);
+
+const [Invid, setInvid] = React.useState(1);
+
   
+useEffect(() => {        
+
+
+    if(insertData){
+      setInvid(insertData.insert_invoice_one.id)
+    }
+  }, [insertData]); 
+
   const handleChange = (file) => {
     setFile(file);
   };
@@ -146,7 +157,8 @@ export default function Create() {
                       'filepath': filepath,
                       'invoice_number': invoice_number,
                       'nodeid': nodeid,
-                      'created_by': 1
+                      'created_by': 1,
+'invoice_id': Invid
                     } 
                   })
               }    
