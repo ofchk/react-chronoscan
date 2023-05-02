@@ -89,16 +89,8 @@ export default function Create() {
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
   const [file, setFile] = useState(null);
 
-const [Invid, setInvid] = React.useState(1);
-
-  
-useEffect(() => {        
-
-
-    if(insertData){
-      setInvid(insertData.insert_invoice_one.id)
-    }
-  }, [insertData]); 
+  const [Invid, setInvid] = React.useState(1);
+  const [Invnum, setInvnum] = React.useState(1);
 
   const handleChange = (file) => {
     setFile(file);
@@ -158,7 +150,7 @@ useEffect(() => {
                       'invoice_number': invoice_number,
                       'nodeid': nodeid,
                       'created_by': 1,
-'invoice_id': Invid
+                      'invoice_id': Invid
                     } 
                   })
               }    
@@ -180,6 +172,17 @@ useEffect(() => {
     handleFileUpload(formData)
   }
 
+  useEffect(() => {
+    if(insertData){
+      setInvid(insertData.insert_invoice_one.id)
+      
+      if(file){
+        console.log(file)
+        uploadHandler(file,Invnum);
+      } 
+    }
+  }, [insertData]); 
+
   return (
     <MainCard>
       <Formik
@@ -196,11 +199,6 @@ useEffect(() => {
             insertInvoice({
               variables: values,
             });
-            
-            if(file){
-              console.log(file)
-              uploadHandler(file,values.invoice_number);            
-            }  
           }          
         }}
       >
@@ -220,7 +218,12 @@ useEffect(() => {
               label="Enter Invoice Number"
               variant="outlined"
               size="small"
-              onChange={handleChange}
+              //onChange={handleChange}
+              onChange={(event, newValue) => {
+                values.invoice_number = newValue;
+                setInvnum(newValue);
+                // console.log(newValue);
+              }}
               onBlur={handleBlur}
               value={values.invoice_number}
               fullWidth
