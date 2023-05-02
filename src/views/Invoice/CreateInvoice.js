@@ -124,7 +124,7 @@ export default function Create() {
     )  
   }
 
-  const handleFileUpload = async (formData) => {
+  const handleFileUpload = async (formData, iid) => {
       if(formData){
         await fetch(`${API_URL}/invoice/upload`, {
             method: 'post',
@@ -150,7 +150,7 @@ export default function Create() {
                       'invoice_number': invoice_number,
                       'nodeid': nodeid,
                       'created_by': 1,
-                      'invoice_id': invid
+                      'invoice_id': iid
                     } 
                   })
               }    
@@ -165,11 +165,11 @@ export default function Create() {
       }        
   }
 
-  const uploadHandler = (param, invoice) => {
+  const uploadHandler = (param, invoice, iid) => {
     const formData = new FormData();
     formData.append('file', param);  
     formData.append('invoice', invoice);  
-    handleFileUpload(formData)
+    handleFileUpload(formData, iid)
   }
 
   useEffect(() => {
@@ -181,7 +181,7 @@ export default function Create() {
       
       if(file){
         console.log(file)
-        uploadHandler(file,invnum);
+        uploadHandler(file,invnum,insertData.insert_invoice_one.id);
       } 
     }
   }, [insertData]); 
