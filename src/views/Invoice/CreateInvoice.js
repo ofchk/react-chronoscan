@@ -220,9 +220,9 @@ export default function Create() {
               size="small"
               //onChange={handleChange}
               onChange={(event, newValue) => {
-                values.invoice_number = newValue;
-                setInvnum(newValue);
-                // console.log(newValue);
+                values.invoice_number = event.target.value;
+                setInvnum(event.target.value);
+                 console.log(event.target);
               }}
               onBlur={handleBlur}
               value={values.invoice_number}
