@@ -40,8 +40,11 @@ const Header = ({ handleDrawerToggle }) => {
             >
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
                     <LogoSection />
-                </Box>
-
+                </Box>               
+            </Box>
+            <Box  />
+             
+            <Box sx={{ marginLeft: '15px' }}>
                 {layout === LAYOUT_CONST.VERTICAL_LAYOUT || (layout === LAYOUT_CONST.HORIZONTAL_LAYOUT && matchDownMd) ? (
                     <Avatar
                         variant="rounded"
@@ -66,22 +69,9 @@ const Header = ({ handleDrawerToggle }) => {
             </Box>
 
             {/* header search */}
-            <SearchSection />
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexGrow: 1 }} />            
 
-            {/* mega-menu */}
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                <MegaMenuSection />
-            </Box>
-
-            {/* live customization & localization */}
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                <LocalizationSection />
-            </Box>
-
-            {/* notification & profile */}
-            <NotificationSection />
             <ProfileSection />
 
             {/* mobile header */}

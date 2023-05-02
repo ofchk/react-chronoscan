@@ -3,8 +3,10 @@ import LAYOUT_CONST from 'constant';
 // basename: only at build time to set, and Don't add '/' at end off BASENAME for breadcrumbs, also Don't put only '/' use blank('') instead,
 // like '/berry-material-react/react/default'
 export const BASE_PATH = '';
+//export const API_URL = 'http://localhost:3010'; 
+export const API_URL = 'http://192.168.5.130:3010'; 
 
-export const DASHBOARD_PATH = '/sample-page';
+export const DASHBOARD_PATH = '/dashboard';
 export const HORIZONTAL_MAX_ITEM = 6;
 
 const config = {

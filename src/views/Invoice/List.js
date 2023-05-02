@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Moment from 'moment';
-
+import { IconButton } from '@mui/material';
+import Chip from 'ui-component/extended/Chip';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -10,6 +11,10 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
+import { IconFileText } from '@tabler/icons';
+
+import MainCard from 'ui-component/cards/MainCard';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import {
   DataGrid,
@@ -30,6 +35,7 @@ const GET = gql`
         entity
         option
         status
+        uploading_status
         created_at
         invoice_vendor{
           name
@@ -43,9 +49,12 @@ const GET = gql`
         }
         invoice_option{
           title
+        }        
+        invoice_uploading_status {
+          title
         }
       }         
-        }
+    }
 `;
 
 function CustomToolbar() {
@@ -61,6 +70,7 @@ function CustomToolbar() {
 }
 
 export default function List() {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
 
@@ -73,7 +83,7 @@ export default function List() {
         vendor: item.invoice_vendor ? item.invoice_vendor.name : '-',
         entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
-        option: item.invoice_option ? item.invoice_option.title : '-',
+        uploading_status: item.invoice_uploading_status ? item.invoice_uploading_status.title : '-',
         created_at: item.created_at
           ? Moment(item.created_at).format('DD MMM YYYY hh:mm a')
           : '-',
@@ -81,39 +91,48 @@ export default function List() {
     });
   }
   const columnSet = [
-    { field: 'id', headerName: 'ID' },
+    { field: 'id', 
+      headerName: 'View', 
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        return (
+          <><IconButton color="primary" aria-label="View Invoice" component={Link} to={"/invoice/view/"+params.row.id}>            
+            <IconFileText />
+          </IconButton></>
+          
+        );
+      } 
+    },
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
     { field: 'vendor', headerName: 'Vendor', width: 200 },
     { field: 'entity', headerName: 'Entity', width: 200 },
-    { field: 'option', headerName: 'Processing Option', width: 300 },
-    { field: 'status', headerName: 'Status', width: 200 },
-    { field: 'created_at', headerName: 'Created At', width: 200 },
+    { field: 'status', headerName: 'Processing Status', width: 200,
+      renderCell: (params) => {
+        return (
+          <Chip label={params.row.status} chipcolor={(params.row.status === "New") ? "primary"  : ((params.row.status === "Processing") ? "warning"  : ((params.row.status === "Completed") ? "success"  : ("error"))) } />
+        );
+      } 
+    },
+    { field: 'uploading_status', headerName: 'Uploading Status', width: 200,
+      renderCell: (params) => {
+        return (
+          <Chip label={params.row.uploading_status} chipcolor={(params.row.uploading_status == "Completed") ? "success"  : "error" }/>
+        );
+      }  },
+    { field: 'created_at', headerName: 'Created On', width: 200 },
   ];
   return (
-    <Box align="right">
-      <Button
-        component={Link}
-        to="/createinvoice"
-        variant="contained"
-        align="right"
-        sx={{ mb: 2 }}
-        size="small"
-      >
-        Create Invoice
-      </Button>
-      <h3 align="center">Invoices</h3>
-
-      <DataGrid
-        rows={rowSet}
-        columns={columnSet}
-        m={2}
-        pageSize={15}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        autoHeight="true"
-        sx={{ mt: 2, backgroundColor: '#f1f1f1' }}
-      />
-    </Box>
+      <MainCard>
+        <DataGrid
+          rows={rowSet}
+          columns={columnSet}
+          m={2}
+          pageSize={15}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          autoHeight="true"
+        />
+      </MainCard>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { API_URL } from 'config';
+
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -13,8 +15,16 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Autocomplete from '@mui/material/Autocomplete';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
+import { FileUploader } from "react-drag-drop-files";
+
+import { useDispatch } from 'store';
+import { openSnackbar } from 'store/slices/snackbar';
 
 import { useNavigate } from 'react-router-dom';
+import MainCard from 'ui-component/cards/MainCard';
+import { useTheme } from '@mui/material/styles';
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
@@ -40,77 +50,144 @@ const GET = gql`
 
 const INSERT = gql`
     mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!) {
-          insert_invoice_one(object: {
-            created_by: $created_by, 
-            invoice_number: $invoice_number, 
-            vendor: $vendor, 
-            entity: $entity, 
-            status: $status, 
-            option: $options}) {
-            id
-            invoice_number
-          }
-        }
+      insert_invoice_one(object: {
+        created_by: $created_by, 
+        invoice_number: $invoice_number, 
+        vendor: $vendor, 
+        entity: $entity, 
+        status: $status, 
+        option: $options}) {
+        id
+        invoice_number
+      }
+    } 
 `;
 
+const INSERT_FILE = gql`
+    mutation File($created_by: Int!, $invoice_number: String!, $filepath: String!, $filepath: String!, $nodeid: String!){
+      insert_files_one(object: {alfresco_url: $filepath, created_by: 10, invoice_number: $invoice_number, name: $filepath, nodeid: $nodeid}) {
+        id
+        invoice_number
+      }
+    }
+
+`;
+
+
+const fileTypes = ["PDF"];
+
 export default function Create() {
-  const apiUrl = 'http://192.168.5.130:3010';
+  const theme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [item, setItem] = React.useState();
   const [item1, setItem1] = React.useState();
   const [item2, setItem2] = React.useState();
   const [item3, setItem3] = React.useState();
   const { loading, data, refetch } = useQuery(GET);
-  const [insertInvoice, { data: insertData, error: insertError }] =
-    useMutation(INSERT);
+  const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
+  const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
+  const [file, setFile] = useState(null);
+  
+  const handleChange = (file) => {
+    setFile(file);
+  };
+
+  const uploadSuccessMessage = (invoice_number) => {
+    dispatch(
+        openSnackbar({
+            open: true,
+            message: invoice_number + ' - File Uploaded Successfully ',
+            variant: 'alert',
+            alert: {
+                color: 'primary'
+            },
+            close: true
+        })
+    )  
+  }
+
+  const existMessage = (msg) => {
+    dispatch(
+        openSnackbar({
+            open: true,anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            message: msg,
+            variant: 'alert',
+            alert: {
+                color: 'error'
+            },
+            close: true
+        })
+    )  
+  }
 
   const handleFileUpload = async (formData) => {
       if(formData){
-          await fetch(`http://192.168.5.130:3010/invoice/upload`, {
-              method: 'post',
-              body: formData,
-          })
-          .then(response =>  response.json())
-          .then(data => {                
-            return false;
-          })    
+        await fetch(`${API_URL}/invoice/upload`, {
+            method: 'post',
+            body: formData,
+        })
+        .then(response =>  response.json())
+        .then(data => {
+          data.forEach((item) => {
+              const uploadRes = item;
+              const message = uploadRes.message;
+              const status = uploadRes.status;
+              if(status === 200){
+                  console.log(uploadRes)             
+                  const filename = uploadRes.filename;
+                  const filepath = uploadRes.contentUrl;
+                  const invoice_number = uploadRes.invoice_number;
+                  const nodeid = uploadRes.nodeid;
+                  uploadSuccessMessage(invoice_number);                       
+                  
+                  insertFile({ variables: {
+                      'filename': filename,
+                      'filepath': filepath,
+                      'invoice_number': invoice_number,
+                      'nodeid': nodeid,
+                      'created_by': 1
+                    } 
+                  })
+              }    
+              if(status === 409){
+                  const uploadRes = item;
+                  const message = uploadRes.message;
+                  existMessage(message);
+              }
+          })                
+          return false;
+        })    
       }        
-    }
+  }
 
-    const uploadHandler = (param, invoice) => {
-      const formData = new FormData();
-      formData.append('file', param);  
-      formData.append('invoice', invoice);  
-      handleFileUpload(formData)
-    }
+  const uploadHandler = (param, invoice) => {
+    const formData = new FormData();
+    formData.append('file', param);  
+    formData.append('invoice', invoice);  
+    handleFileUpload(formData)
+  }
 
   return (
-    <Box component="span">
-      <h3 align="center">Create Invoice</h3>
+    <MainCard>
       <Formik
         initialValues={{
           created_by: 1,
           invoice_number: '',
           vendor: '',
           entity: '',
-          status: '',
+          status: 1,
           options: '',
-          invoice_file: '',
         }}
         onSubmit={(values, { setSubmitting }) => {
           if (values) {
             insertInvoice({
               variables: values,
             });
-            console.log(item)
-            if(item){
-              uploadHandler(item,values.invoice_number);            
-            }  if(item1){
-              uploadHandler(item1,values.invoice_number);            
-            }  if(item2){
-              uploadHandler(item2,values.invoice_number);            
-            }  if(item3){
-              uploadHandler(item3,values.invoice_number);            
+            
+            if(file){
+              console.log(file)
+              uploadHandler(file,values.invoice_number);            
             }  
           }          
         }}
@@ -198,9 +275,10 @@ export default function Create() {
               name="status"
               size="small"
               onChange={handleChange}
-              value={values.status}
+              value={1}
               fullWidth
               displayEmpty
+              disabled
               sx={{ mt: 2, mb: 2 }}
             >
               <MenuItem onChange={handleChange} value="">
@@ -213,49 +291,7 @@ export default function Create() {
                     {item.title}
                   </MenuItem>
                 ))}
-            </Select>
-            <InputLabel sx={{ mb: 1, color: '#222', fontSize: '16px' }}>
-              Upload Invoice File:{' '}
-            </InputLabel>
-            <input
-              type="file"
-              sx={{ mt: 2 }}
-              name="invoice_file"
-              accept="application/pdf"
-              required
-              onChange={(e) => {console.log(event.target.files[0]);setItem(event.target.files[0])}}
-
-            />
-            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
-              Associated Document 1:{' '}
-            </InputLabel>
-            <input
-              type="file"
-              sx={{ mt: 2 }}
-              name="other_1"
-              accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);setItem1(event.target.files[0])}}
-            />
-            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
-              Associated Document 2:{' '}
-            </InputLabel>
-            <input
-              type="file"
-              sx={{ mt: 2 }}
-              name="other_2"
-              accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);setItem2(event.target.files[0])}}
-            />
-            <InputLabel sx={{ mt: 2, mb: 1, color: '#222', fontSize: '16px' }}>
-              Associated Document 3:{' '}
-            </InputLabel>
-            <input
-              type="file"
-              sx={{ mt: 2 }}
-              name="other_3"
-              accept="application/pdf"
-              onChange={(e) => {console.log(event.target.files[0]);setItem3(event.target.files[0])}}
-            />
+            </Select>                       
             <Box align="right">
               <Button
                 sx={{ mt: 2 }}
@@ -269,7 +305,24 @@ export default function Create() {
             </Box>
           </form>
         )}
-      </Formik>
-    </Box>
+      </Formik>    
+
+      <InputLabel sx={{ mb: 1, color: '#222', fontSize: '16px' }}>
+        Upload Invoice File:{' '}
+      </InputLabel>
+
+      <Box>
+        <FileUploader
+          multiple={false}
+          handleChange={handleChange}
+          name="file"
+          types={fileTypes}
+          maxSize={20}
+        />
+        <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
+      </Box>
+
+
+    </MainCard>
   );
 }

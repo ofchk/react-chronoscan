@@ -1,7 +1,16 @@
 {
     "dashboard": "Dashboard",
+    "invoice": "Invoice",
+    "create-invoice": "Create Invoice",
+    "list-invoices": "List Invoices",
+    "master": "Master",
+    "entity": "Entity",
+    "vendor": "Vendor",
+    "menu": "Menu",
     "default": "Default",
     "analytics": "Analytics",
+
+    "manage-invoice": "Manage Invoice",
 
     "widget": "Widget",
     "statistics": "Statistics",

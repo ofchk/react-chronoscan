@@ -1,4 +1,6 @@
 // routing
+import React, { useState } from 'react';
+
 import Routes from 'routes';
 
 // project imports
@@ -17,21 +19,46 @@ import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 
 // ==============================|| APP ||============================== //
 
-const App = () => (
-    <ThemeCustomization>
+import { ApolloClient,ApolloProvider,InMemoryCache,HttpLink } from '@apollo/client';
+
+const createApolloClient = () => {
+    return new ApolloClient({
+        link: new HttpLink({
+          uri: 'http://192.168.5.130:8080/v1/graphql',
+          headers: {
+            // Authorization: `Bearer ${authToken}`,
+            'x-hasura-admin-secret': 'chronoaccesskey001',
+          },
+        }),
+        cache: new InMemoryCache(),
+        defaultOptions: {
+          watchQuery: {
+            fetchPolicy: 'cache-and-network',
+          },
+        },
+    });
+};
+
+
+const App = () => {
+    const [client] = useState(createApolloClient());
+
+    return <ThemeCustomization>
         {/* <RTLLayout> */}
         <Locales>
             <NavigationScroll>
-                <AuthProvider>
-                    <>
-                        <Routes />
-                        <Snackbar />
-                    </>
-                </AuthProvider>
+                <ApolloProvider client={client}>
+                    <AuthProvider>
+                        <>
+                            <Routes />
+                            <Snackbar />
+                        </>
+                    </AuthProvider>
+                </ApolloProvider>                
             </NavigationScroll>
         </Locales>
         {/* </RTLLayout> */}
     </ThemeCustomization>
-);
+};
 
 export default App;

@@ -28,6 +28,8 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 
+import { useNavigate } from 'react-router-dom';
+
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -39,6 +41,7 @@ const JWTLogin = ({ loginProp, ...others }) => {
 
     const { login } = useAuth();
     const scriptedRef = useScriptRef();
+    const navigate = useNavigate();
 
     const [checked, setChecked] = React.useState(true);
 
@@ -54,8 +57,10 @@ const JWTLogin = ({ loginProp, ...others }) => {
     return (
         <Formik
             initialValues={{
-                email: 'info@codedthemes.com',
-                password: '123456',
+                // email: 'info@codedthemes.com',
+                // password: '123456',
+                email: 'admin@mov.com',
+                password: 'admin@mov.com',
                 submit: null
             }}
             validationSchema={Yup.object().shape({
@@ -63,21 +68,22 @@ const JWTLogin = ({ loginProp, ...others }) => {
                 password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                try {
-                    await login(values.email, values.password);
+                navigate('/dashboard');
+                // try {
+                //     await login(values.email, values.password);
 
-                    if (scriptedRef.current) {
-                        setStatus({ success: true });
-                        setSubmitting(false);
-                    }
-                } catch (err) {
-                    console.error(err);
-                    if (scriptedRef.current) {
-                        setStatus({ success: false });
-                        setErrors({ submit: err.message });
-                        setSubmitting(false);
-                    }
-                }
+                //     if (scriptedRef.current) {
+                //         setStatus({ success: true });
+                //         setSubmitting(false);
+                //     }
+                // } catch (err) {
+                //     console.error(err);
+                //     if (scriptedRef.current) {
+                //         setStatus({ success: false });
+                //         setErrors({ submit: err.message });
+                //         setSubmitting(false);
+                //     }
+                // }
             }}
         >
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (

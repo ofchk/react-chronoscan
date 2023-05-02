@@ -79,19 +79,7 @@ const AppBar = ({ ...others }) => {
                             </Button>
                             <Button color="inherit" component={RouterLink} to="/login" target="_blank">
                                 Dashboard
-                            </Button>
-                            <Button color="inherit" component={Link} href="https://codedthemes.gitbook.io/berry" target="_blank">
-                                Documentation
-                            </Button>
-                            <Button
-                                component={Link}
-                                href="https://links.codedthemes.com/hsqll"
-                                disableElevation
-                                variant="contained"
-                                color="secondary"
-                            >
-                                Purchase Now
-                            </Button>
+                            </Button>                            
                         </Stack>
                         <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                             <IconButton color="inherit" onClick={drawerToggler(true)} size="large">

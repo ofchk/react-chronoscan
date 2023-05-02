@@ -9,6 +9,9 @@ import Vendor from './vendor';
 import Options from './options';
 import Status from './status';
 
+import MainCard from 'ui-component/cards/MainCard';
+import { useTheme } from '@mui/material/styles';
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -50,7 +53,7 @@ export default function Master() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <MainCard>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="Master  Tables">
           <Tab label="Vendor" {...a11yProps(0)} />
@@ -63,6 +66,6 @@ export default function Master() {
       <TabPanel value={value} index={1}>
         <Entity />
       </TabPanel>
-    </Box>
+    </MainCard>
   );
 }

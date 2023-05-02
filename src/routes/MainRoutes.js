@@ -6,25 +6,42 @@ import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('views/sample-page')));
+const Dashboard = Loadable(lazy(() => import('views/Dashboard')));
+const List = Loadable(lazy(() => import('views/Invoice/List')));
+const CreateInvoice = Loadable(lazy(() => import('views/Invoice/CreateInvoice')));
+const ViewInvoice = Loadable(lazy(() => import('views/Invoice/ViewInvoice')));
+const Master = Loadable(lazy(() => import('views/Master')));
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
     path: '/',
     element: (
-        <AuthGuard>
+        // <AuthGuard>
             <MainLayout />
-        </AuthGuard>
+        // </AuthGuard>
     ),
-    children: [
+    children: [        
         {
-            path: '/',
-            element: <SamplePage />
+            path: '/dashboard',
+            element: <Dashboard />
         },
         {
-            path: '/sample-page',
-            element: <SamplePage />
+            path: '/invoice/create',
+            element: <CreateInvoice />
+        },
+        {
+            path: '/invoice/list',
+            element: <List />
+        },
+        {
+            path: '/invoice/view/:id',
+            element: <ViewInvoice />
+        },
+        {
+            path: '/master',
+            element: <Master />
         }
     ]
 };

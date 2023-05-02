@@ -15,32 +15,32 @@ const icons = {
 
 const other = {
     id: 'sample-docs-roadmap',
-    title: <FormattedMessage id="others" />,
+    title: <FormattedMessage id="menu" />,
     icon: icons.IconHelp,
     type: 'group',
     children: [
         {
-            id: 'sample-page',
-            title: <FormattedMessage id="sample-page" />,
+            id: 'dashboard',
+            title: <FormattedMessage id="dashboard" />,
             type: 'item',
-            url: '/sample-page',
+            url: '/dashboard',
             icon: icons.IconBrandChrome,
             breadcrumbs: false
         },
         {
-            id: 'documentation',
-            title: <FormattedMessage id="documentation" />,
+            id: 'invoice',
+            title: <FormattedMessage id="invoice" />,
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/berry/',
+            url: '/invoices',
             icon: icons.IconHelp,
             external: true,
             target: true
         },
         {
-            id: 'roadmap',
-            title: <FormattedMessage id="roadmap" />,
+            id: 'master',
+            title: <FormattedMessage id="master" />,
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/berry/roadmap',
+            url: '/master',
             icon: icons.IconSitemap,
             external: true,
             target: true
