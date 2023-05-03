@@ -102,6 +102,8 @@ export default function Create() {
   const [item2, setItem2] = React.useState();
   const [item3, setItem3] = React.useState();
   const [progress, setProgress] = React.useState();
+  const [speed, setSpeed] = React.useState();
+
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
@@ -152,7 +154,12 @@ export default function Create() {
           },
           onUploadProgress: data => {
             //Set the progress value to show the progress bar
+            console.log(data)
+            var filesize = data.total;
+            var Mbps = (filesize * 8 / ((1 / Math.pow(10, 3)) * 27)) / Math.pow(10, 6);
+            console.log(Mbps);
             setProgress(Math.round((100 * data.loaded) / data.total))
+            setSpeed(Mbps);
           },
         })
         .then(response =>  response.json())
@@ -402,6 +409,7 @@ export default function Create() {
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
       {progress && <LinearProgressWithLabel value={progress} />}
+      <p>Upload Speed: {speed}</p>
 
 
     </MainCard>
