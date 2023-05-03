@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 
 import Routes from 'routes';
+import { HASURA_URL } from 'config';
 
 // project imports
 import Locales from 'ui-component/Locales';
@@ -24,7 +25,7 @@ import { ApolloClient,ApolloProvider,InMemoryCache,HttpLink } from '@apollo/clie
 const createApolloClient = () => {
     return new ApolloClient({
         link: new HttpLink({
-          uri: 'http://192.168.5.130:8080/v1/graphql',
+          uri: `${HASURA_URL}`,
           headers: {
             // Authorization: `Bearer ${authToken}`,
             'x-hasura-admin-secret': 'chronoaccesskey001',

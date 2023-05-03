@@ -14,7 +14,7 @@ import Paper from '@mui/material/Paper';
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const Dashboard = () => (
-    <MainCard sx={{ backgroundColor: "#EEF2F6"}}>         
+    <MainCard  title="Dashboard" sx={{ backgroundColor: "#fff"}}>         
         <Box sx={{ mb: 10 }}>
             <RecentInvoices/>
         </Box>

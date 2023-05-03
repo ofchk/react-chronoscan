@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 
 import { FileUploader } from "react-drag-drop-files";
 
@@ -25,6 +26,7 @@ import { openSnackbar } from 'store/slices/snackbar';
 import { useNavigate } from 'react-router-dom';
 import MainCard from 'ui-component/cards/MainCard';
 import { useTheme } from '@mui/material/styles';
+import axiosServices from "utils/axios"
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
@@ -74,6 +76,21 @@ const INSERT_FILE = gql`
 `;
 
 
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const fileTypes = ["PDF"];
 
 export default function Create() {
@@ -84,6 +101,7 @@ export default function Create() {
   const [item1, setItem1] = React.useState();
   const [item2, setItem2] = React.useState();
   const [item3, setItem3] = React.useState();
+  const [progress, setProgress] = React.useState();
   const { loading, data, refetch } = useQuery(GET);
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
@@ -126,9 +144,16 @@ export default function Create() {
 
   const handleFileUpload = async (formData, iid) => {
       if(formData){
-        await fetch(`${API_URL}/invoice/upload`, {
-            method: 'post',
-            body: formData,
+
+
+        await axiosServices.post(`${API_URL}/invoice/upload`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: data => {
+            //Set the progress value to show the progress bar
+            setProgress(Math.round((100 * data.loaded) / data.total))
+          },
         })
         .then(response =>  response.json())
         .then(data => {
@@ -161,7 +186,44 @@ export default function Create() {
               }
           })                
           return false;
-        })    
+        })
+
+        // await fetch(`${API_URL}/invoice/upload`, {
+        //     method: 'post',
+        //     body: formData,
+        // })
+        // .then(response =>  response.json())
+        // .then(data => {
+        //   data.forEach((item) => {
+        //       const uploadRes = item;
+        //       const message = uploadRes.message;
+        //       const status = uploadRes.status;
+        //       if(status === 200){
+        //           console.log(uploadRes)             
+        //           const filename = uploadRes.filename;
+        //           const filepath = uploadRes.contentUrl;
+        //           const invoice_number = uploadRes.invoice_number;
+        //           const nodeid = uploadRes.nodeid;
+        //           uploadSuccessMessage(invoice_number);                       
+                  
+        //           insertFile({ variables: {
+        //               'filename': filename,
+        //               'filepath': filepath,
+        //               'invoice_number': invoice_number,
+        //               'nodeid': nodeid,
+        //               'created_by': 1,
+        //               'invoice_id': iid
+        //             } 
+        //           })
+        //       }    
+        //       if(status === 409){
+        //           const uploadRes = item;
+        //           const message = uploadRes.message;
+        //           existMessage(message);
+        //       }
+        //   })                
+        //   return false;
+        // })    
       }        
   }
 
@@ -339,6 +401,7 @@ export default function Create() {
         />
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
+      {progress && <LinearProgressWithLabel value={progress} />}
 
 
     </MainCard>
