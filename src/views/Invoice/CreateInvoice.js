@@ -409,7 +409,7 @@ export default function Create() {
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
       {progress && <LinearProgressWithLabel value={progress} />}
-      <p>Upload Speed: {speed}</p>
+      <p>Upload Speed: {speed} mbps</p>
 
 
     </MainCard>
