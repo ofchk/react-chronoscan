@@ -114,7 +114,7 @@ export default function ViewInvoice() {
             status: data.invoice_by_pk.invoice_status ? data.invoice_by_pk.invoice_status.title : "",
             options: data.invoice_by_pk.invoice_option ? data.invoice_by_pk.invoice_option.title : "",
             uploading_status: data.invoice_by_pk.invoice_uploading_status ? data.invoice_by_pk.invoice_uploading_status.title : "",
-            alfresco_url: data.invoice_by_pk.invoice_files ? data.invoice_by_pk.invoice_files[0].alfresco_url : "",
+            alfresco_url: data.invoice_by_pk.invoice_files[0] ? data.invoice_by_pk.invoice_files[0].alfresco_url : "",
             oracle_document_identifier: data.invoice_by_pk.invoice_files ? data.invoice_by_pk.invoice_files.oracle_document_identifier : "",
         })
     }
