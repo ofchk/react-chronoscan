@@ -168,13 +168,13 @@ export default function Create() {
               const uploadRes = item;
               const message = uploadRes.message;
               const status = uploadRes.status;
-              if(status === 200){
+              // if(status === 200){
                   // console.log(uploadRes)             
                   // const filename = uploadRes.filename;
                   // const filepath = uploadRes.contentUrl;
                   // const invoice_number = uploadRes.invoice_number;
                   // const nodeid = uploadRes.nodeid;
-                  uploadSuccessMessage(invoice_number);                       
+                  // uploadSuccessMessage(invoice_number);                       
                   
                   // insertFile({ variables: {
                   //     'filename': filename,
@@ -185,7 +185,7 @@ export default function Create() {
                   //     'invoice_id': iid
                   //   } 
                   // })
-              }    
+              // }    
               if(status === 409){
                   const uploadRes = item;
                   const message = uploadRes.message;
