@@ -144,8 +144,10 @@ export default function Create() {
     )  
   }
 
-  const handleFileUpload = async(formData, iid) => {
+  const handleFileUpload = async (formData, iid) => {
       if(formData){
+
+
         await axiosServices.post(`${API_URL}/invoice/upload`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -167,22 +169,22 @@ export default function Create() {
               const message = uploadRes.message;
               const status = uploadRes.status;
               if(status === 200){
-                  console.log(uploadRes)             
-                  const filename = uploadRes.filename;
-                  const filepath = uploadRes.contentUrl;
-                  const invoice_number = uploadRes.invoice_number;
-                  const nodeid = uploadRes.nodeid;
+                  // console.log(uploadRes)             
+                  // const filename = uploadRes.filename;
+                  // const filepath = uploadRes.contentUrl;
+                  // const invoice_number = uploadRes.invoice_number;
+                  // const nodeid = uploadRes.nodeid;
                   uploadSuccessMessage(invoice_number);                       
                   
-                  insertFile({ variables: {
-                      'filename': filename,
-                      'filepath': filepath,
-                      'invoice_number': invoice_number,
-                      'nodeid': nodeid,
-                      'created_by': 1,
-                      'invoice_id': iid
-                    } 
-                  })
+                  // insertFile({ variables: {
+                  //     'filename': filename,
+                  //     'filepath': filepath,
+                  //     'invoice_number': invoice_number,
+                  //     'nodeid': nodeid,
+                  //     'created_by': 1,
+                  //     'invoice_id': iid
+                  //   } 
+                  // })
               }    
               if(status === 409){
                   const uploadRes = item;
@@ -191,10 +193,12 @@ export default function Create() {
               }
           })                
           return false;
-        })
-	.catch(error =>{
-		console.log('Upload axios catch: ', error)
-	})
+        }).catch(error => {
+            console.log('Error posting data.', error);
+            // this.setState({
+            //    error: true
+            // });   
+            })
 
         // await fetch(`${API_URL}/invoice/upload`, {
         //     method: 'post',
@@ -239,6 +243,7 @@ export default function Create() {
     const formData = new FormData();
     formData.append('file', param);  
     formData.append('invoice', invoice);  
+    formData.append('invoice_id', iid);  
     handleFileUpload(formData, iid)
     // navigate('/invoice/list')
   }
@@ -410,7 +415,7 @@ export default function Create() {
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
       {progress && <LinearProgressWithLabel value={progress} />}
-      <p>Upload Speed: {speed} mbps</p>
+      <p>Upload Speed: {speed} Mbps</p>
 
 
     </MainCard>
