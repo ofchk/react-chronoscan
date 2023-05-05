@@ -144,10 +144,8 @@ export default function Create() {
     )  
   }
 
-  const handleFileUpload = async (formData, iid) => {
+  const handleFileUpload = async(formData, iid) => {
       if(formData){
-
-
         await axiosServices.post(`${API_URL}/invoice/upload`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -194,6 +192,9 @@ export default function Create() {
           })                
           return false;
         })
+	.catch(error =>{
+		console.log('Upload axios catch: ', error)
+	})
 
         // await fetch(`${API_URL}/invoice/upload`, {
         //     method: 'post',
