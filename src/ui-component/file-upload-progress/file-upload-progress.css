@@ -1,0 +1,38 @@
+.upload-status-div {
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    max-height: 20vh;
+    overflow-y: scroll;
+    padding: 10px;
+    border-radius: 20px 20px 0 0;
+    background-color: white;
+    color: #494848;
+    box-shadow: 3px -2px 10px #ccc;
+}
+
+.file-details  {
+    display: flex;
+    padding: 10px;
+    flex-basis: 1;
+    border-bottom: 1px solid #ccc;
+}
+.flex-items {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+}
+
+.icon-details {
+    margin: 0 10px;
+}
+
+.files-link {
+    text-decoration: none;
+}
+
+.files-link:visited {
+    text-decoration: none;
+    color: #494848;
+}
