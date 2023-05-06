@@ -15,9 +15,15 @@ function FileUploadProgress(props) {
     const filesList = useSelector((state) => state.menu.fileUploadList);
 
     const clearFileWhenDone  = (filename) => {
-        // dispatch(removeDoneFileUpload({
-        //     file_name: filename
-        // }));
+        dispatch(removeDoneFileUpload({
+            file_name: filename
+        }));
+    }
+
+    window.onbeforeunload = () => {
+        if (filesList.length) {
+            return true;
+        }
     }
 
     return (
@@ -25,8 +31,8 @@ function FileUploadProgress(props) {
             {
                 filesList && filesList.reverse().map((file) => {
                     return (
-                        <Link to={"/invoice/list"} className='files-link' onClick={clearFileWhenDone(file.file_name)}>
-                            <div key={file.file_name} className='file-details'>
+                        <Link to={"/invoice/list"} className='files-link' onClick={() => clearFileWhenDone(file.file_name)} key={file.file_name}>
+                            <div  className='file-details'>
                                 <span className='close-icon'>
 
                                 </span>
