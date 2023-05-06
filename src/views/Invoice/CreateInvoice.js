@@ -181,7 +181,7 @@ export default function Create() {
       })
        .then(response =>  response.json())
         .then(data => {
-          uploadSuccessMessage(data.message);
+          uploadSuccessMessage("File upload progressing...");
           return false;
         })
         .catch(error => {
