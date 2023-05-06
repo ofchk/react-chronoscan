@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
-
+import { useEffect, useState } from 'react';
 // material-ui
 import { styled } from '@mui/material/styles';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Typography, CircularProgress } from '@mui/material';
+import Loader from 'ui-component/Loader';
 
 // styles
 const IconWrapper = styled('div')({
@@ -23,6 +24,17 @@ const IconWrapper = styled('div')({
 const UserCountCard = ({ primary, secondary, iconPrimary, color }) => {
     const IconPrimary = iconPrimary;
     const primaryIcon = iconPrimary ? <IconPrimary fontSize="large" /> : null;
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if(secondary){
+            setLoading(false);
+        }
+        if(secondary === 0){
+            setLoading(false);
+        }
+    }, [secondary]);
+  
 
     return (
         <Card sx={{ background: color, position: 'relative', color: '#fff' }}>
@@ -30,8 +42,9 @@ const UserCountCard = ({ primary, secondary, iconPrimary, color }) => {
                 <IconWrapper>{primaryIcon}</IconWrapper>
                 <Grid container direction="column" justifyContent="center" alignItems="center" spacing={1}>
                     <Grid item sm={12}>
-                        <Typography variant="h3" align="center" color="inherit">
-                            {secondary}
+                        <Typography variant="h1" align="center" color="inherit">
+                            { loading && <CircularProgress aria-label="progress" />}
+                            { !loading && secondary}
                         </Typography>
                     </Grid>
                     <Grid item sm={12}>

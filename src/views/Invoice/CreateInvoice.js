@@ -3,22 +3,25 @@ import React, { useEffect, useState } from 'react';
 import { API_URL } from 'config';
 
 import { Formik } from 'formik';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import Autocomplete from '@mui/material/Autocomplete';
+import  { Box, 
+          Card, 
+          CardActions, 
+          CardContent, 
+          Button,
+          TextField,
+          Typography,
+          Grid,
+          Select,
+          MenuItem,
+          InputLabel,
+          Autocomplete,
+          IconButton
+} from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 
 import { FileUploader } from "react-drag-drop-files";
+import { IconChevronLeft } from '@tabler/icons';
 
 import { useDispatch } from 'store';
 import { openSnackbar } from 'store/slices/snackbar';
@@ -263,7 +266,9 @@ export default function Create() {
   }, [insertData]); 
 
   return (
-    <MainCard>
+    <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
+            <IconChevronLeft />
+          </IconButton>Create Invoice</> }>
       <Formik
         initialValues={{
           created_by: 1,
@@ -305,6 +310,7 @@ export default function Create() {
               onBlur={handleBlur}
               value={values.invoice_number}
               fullWidth
+              required
             />
             <Autocomplete
               disablePortal
@@ -315,6 +321,7 @@ export default function Create() {
                 // console.log(newValue);
               }}
               name="vendor"
+              required
               size="small"
               renderInput={(params) => (
                 <TextField
@@ -334,6 +341,7 @@ export default function Create() {
                 // console.log(newValue);
               }}
               name="entity"
+              required
               size="small"
               renderInput={(params) => (
                 <TextField
@@ -415,9 +423,6 @@ export default function Create() {
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
       {progress && <LinearProgressWithLabel value={progress} />}
-      <p>Upload Speed: {speed} Mbps</p>
-
-
     </MainCard>
   );
 }

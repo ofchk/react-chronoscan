@@ -25,25 +25,10 @@ const pages = {
         },{
             id: 'invoice',
             title: <FormattedMessage id="invoice" />,
-            caption: <FormattedMessage id="manage-invoice" />,
-            type: 'collapse',
+            type: 'item',
+            url: '/invoice/list',
             icon: IconFileInvoice,
-            children: [
-                {
-                    id: 'list-invoices',
-                    title: <FormattedMessage id="list-invoices" />,
-                    type: 'item',
-                    url: '/invoice/list',
-                    icon: IconList
-                },
-                {
-                    id: 'create-invoice',
-                    title: <FormattedMessage id="create-invoice" />,
-                    type: 'item',
-                    url: '/invoice/create',
-                    icon: IconFilePlus
-                }
-            ]
+            breadcrumbs: false
         },{
             id: 'master',
             title: <FormattedMessage id="master" />,

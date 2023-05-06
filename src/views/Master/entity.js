@@ -7,6 +7,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import MainCard from 'ui-component/cards/MainCard';
+import { IconChevronLeft } from '@tabler/icons';
 
 import { useNavigate } from 'react-router-dom';
 import {
@@ -59,8 +62,10 @@ export default function Entity() {
   ];
 
   return (
-    <Box component="span" align="right">
-      <h3 align="center">Create Entity</h3>
+    <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
+            <IconChevronLeft />
+          </IconButton>Create Vendor</> }>
+    <Box align="right">
       <Formik
         initialValues={{ name: '', address: '' }}
         onSubmit={(values, { setSubmitting }) => {
@@ -103,18 +108,8 @@ export default function Entity() {
             </Button>
           </form>
         )}
-      </Formik>
-      <DataGrid
-        rows={rowSet}
-        columns={columnSet}
-        m={2}
-        pageSize={15}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        autoHeight="true"
-        sx={{ mt: 2, backgroundColor: '#f1f1f1' }}
-      />
+      </Formik>      
     </Box>
+    </MainCard>
   );
 }

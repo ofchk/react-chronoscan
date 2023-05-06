@@ -11,6 +11,8 @@ const List = Loadable(lazy(() => import('views/Invoice/List')));
 const CreateInvoice = Loadable(lazy(() => import('views/Invoice/CreateInvoice')));
 const ViewInvoice = Loadable(lazy(() => import('views/Invoice/ViewInvoice')));
 const Master = Loadable(lazy(() => import('views/Master')));
+const Vendor = Loadable(lazy(() => import('views/Master/vendor')));
+const Entity = Loadable(lazy(() => import('views/Master/entity')));
 
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -42,6 +44,14 @@ const MainRoutes = {
         {
             path: '/master',
             element: <Master />
+        },
+        {
+            path: '/master/create/vendor',
+            element: <Vendor />
+        },
+        {
+            path: '/master/create/entity',
+            element: <Entity />
         }
     ]
 };
