@@ -125,11 +125,11 @@ export default function Create() {
     console.log('xxxx', insertData, file)
   };
 
-  const uploadSuccessMessage = (invoice_number) => {
+  const uploadSuccessMessage = (message) => {
     dispatch(
       openSnackbar({
         open: true,
-        message: invoice_number + ' - File Uploaded Successfully ',
+        message: message,
         variant: 'alert',
         alert: {
           color: 'primary'
@@ -181,35 +181,7 @@ export default function Create() {
       })
        .then(response =>  response.json())
         .then(data => {
-          data.forEach((item) => {
-            const uploadRes = item;
-            const message = uploadRes.message;
-            const status = uploadRes.status;
-            if (status === 200) {
-              console.log(uploadRes)
-              const filename = uploadRes.filename;
-              const filepath = uploadRes.contentUrl;
-              const invoice_number = uploadRes.invoice_number;
-              const nodeid = uploadRes.nodeid;
-              uploadSuccessMessage(invoice_number);
-
-              insertFile({
-                variables: {
-                  'filename': filename,
-                  'filepath': filepath,
-                  'invoice_number': invoice_number,
-                  'nodeid': nodeid,
-                  'created_by': 1,
-                  'invoice_id': iid
-                }
-              })
-            }
-            if (status === 409) {
-              const uploadRes = item;
-              const message = uploadRes.message;
-              existMessage(message);
-            }
-          })
+          uploadSuccessMessage(data.message);
           return false;
         })
         .catch(error => {
@@ -221,43 +193,6 @@ export default function Create() {
           existMessage(error);
           console.log('Upload axios catch: ', error)
         })
-
-      // await fetch(`${API_URL}/invoice/upload`, {
-      //     method: 'post',
-      //     body: formData,
-      // })
-      // .then(response =>  response.json())
-      // .then(data => {
-      //   data.forEach((item) => {
-      //       const uploadRes = item;
-      //       const message = uploadRes.message;
-      //       const status = uploadRes.status;
-      //       if(status === 200){
-      //           console.log(uploadRes)             
-      //           const filename = uploadRes.filename;
-      //           const filepath = uploadRes.contentUrl;
-      //           const invoice_number = uploadRes.invoice_number;
-      //           const nodeid = uploadRes.nodeid;
-      //           uploadSuccessMessage(invoice_number);                       
-
-      //           insertFile({ variables: {
-      //               'filename': filename,
-      //               'filepath': filepath,
-      //               'invoice_number': invoice_number,
-      //               'nodeid': nodeid,
-      //               'created_by': 1,
-      //               'invoice_id': iid
-      //             } 
-      //           })
-      //       }    
-      //       if(status === 409){
-      //           const uploadRes = item;
-      //           const message = uploadRes.message;
-      //           existMessage(message);
-      //       }
-      //   })                
-      //   return false;
-      // })    
     }
   }
 
