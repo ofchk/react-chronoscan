@@ -9,6 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 
 import { IconFileText } from '@tabler/icons';
 
@@ -107,21 +108,21 @@ export default function RecentInvoices() {
     { field: 'created_at', headerName: 'Created On', width: 200 },
   ];
   return (
-      <MainCard title="Recent Invoices">
+      <MainCard sx={{ boxShadow: theme.shadows[8] }}>
+        <Typography component="h1" variant="h3" mb={2}> Recent Invoices </Typography>
         <DataGrid
           rows={rowSet}
           columns={columnSet}
-          m={2}
           pageSize={10}
           components={{
             Toolbar: CustomToolbar,
           }}
           autoHeight="true"
-          hideFooterPagination="true"
+          hideFooterPagination="true"          
         />
-        <Button color="primary" aria-label="View Invoice" component={Link} to={"/invoice/list"}>            
+        <Box align="right" mt={2}><Button color="primary" aria-label="View Invoice" component={Link} to={"/invoice/list"}>            
             View More
-        </Button>
+        </Button></Box>
       </MainCard>
   );
 }

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, useMediaQuery } from '@mui/material';
+import { Avatar, Box, useMediaQuery, IconButton } from '@mui/material';
 
 // project imports
 import LAYOUT_CONST from 'constant';
@@ -14,14 +14,16 @@ import ProfileSection from './ProfileSection';
 import LocalizationSection from './LocalizationSection';
 import MegaMenuSection from './MegaMenuSection';
 import NotificationSection from './NotificationSection';
+import { useNavigate } from 'react-router-dom';
 
 // assets
-import { IconMenu2 } from '@tabler/icons';
+import { IconMenu2, IconLogout } from '@tabler/icons';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
 const Header = ({ handleDrawerToggle }) => {
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
     const { layout } = useConfig();
@@ -72,7 +74,10 @@ const Header = ({ handleDrawerToggle }) => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />            
 
-            <ProfileSection />
+            {/* <ProfileSection /> */}
+        <IconButton color="error" onClick={() => navigate('/')} sx={{ p:0, fontSize: "14px"}}>
+            <IconLogout />
+        </IconButton>
 
             {/* mobile header */}
             <Box sx={{ display: { xs: 'block', sm: 'none' } }}>

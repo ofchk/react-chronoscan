@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -9,7 +8,6 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import MainCard from 'ui-component/cards/MainCard';
-import Typography from '@mui/material/Typography';
 
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -38,12 +36,15 @@ function CustomToolbar() {
   return (
     <>
       <GridToolbarContainer>
+        <GridToolbarColumnsButton />
+        <GridToolbarFilterButton />
+        <GridToolbarExport />
       </GridToolbarContainer>
     </>
   );
 }
 
-export default function RecentVendors() {
+export default function Vendor() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
@@ -59,25 +60,23 @@ export default function RecentVendors() {
     });
   }
   const columnSet = [
+    { field: 'id', headerName: 'ID' },
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'address', headerName: 'Address', width: 500 },
   ];
   return (
-    <MainCard sx={{ boxShadow: theme.shadows[8] }}>
-      <Typography component="h1" variant="h3" mb={2}> Recent Vendors </Typography>
+    <Box component="span" align="right">
       <DataGrid
         rows={rowSet}
-        columns={columnSet}        
+        columns={columnSet}
+        m={2}
         pageSize={15}
         components={{
           Toolbar: CustomToolbar,
         }}
         autoHeight="true"
-        hideFooterPagination="true"
+        sx={{ mt: 2, boxShadow: theme.shadows[8] }}
       />
-      <Box align="right" mt={2}><Button color="primary" aria-label="View Invoice" component={Link} to={"/master"}>            
-        View More
-      </Button></Box>
-    </MainCard>
+    </Box>
   );
 }

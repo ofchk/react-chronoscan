@@ -9,9 +9,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import { TextField, CircularProgress, LinearProgress, Typography} from '@mui/material';
+import { linearProgressClasses } from '@mui/material/LinearProgress';
 
-import { IconFileText } from '@tabler/icons';
+import { IconFileText, IconUpload, IconChecks, IconExclamationCircle } from '@tabler/icons';
 
 import MainCard from 'ui-component/cards/MainCard';
 import { useTheme } from '@mui/material/styles';
@@ -81,7 +82,7 @@ export default function List() {
         id: item.id,
         invoice_number: item.invoice_number,
         vendor: item.invoice_vendor ? item.invoice_vendor.name : '-',
-        entity: item.invoice_entity ? item.invoice_entity.title : '-',
+        // entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
         uploading_status: item.invoice_uploading_status ? item.invoice_uploading_status.title : '-',
         created_at: item.created_at
@@ -105,7 +106,7 @@ export default function List() {
     },
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
     { field: 'vendor', headerName: 'Vendor', width: 200 },
-    { field: 'entity', headerName: 'Entity', width: 200 },
+    // { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'status', headerName: 'Processing Status', width: 200,
       renderCell: (params) => {
         return (
@@ -116,13 +117,38 @@ export default function List() {
     { field: 'uploading_status', headerName: 'Uploading Status', width: 200,
       renderCell: (params) => {
         return (
-          <Chip label={params.row.uploading_status} chipcolor={(params.row.uploading_status == "Completed") ? "success"  : "error" }/>
+          <>
+          {
+            (params.row.uploading_status == "Not Completed") &&            
+              <Chip chipcolor="warning" label="In Progress" avatar={<IconUpload fontSize="small" color="orange" />} />            
+          }
+          {
+            (params.row.uploading_status == "Completed") &&            
+            <Chip chipcolor="success" label="Completed" avatar={<IconChecks fontSize="small" color="green" />} />            
+          }
+          {
+            (params.row.uploading_status == "Failed") &&            
+            <Chip chipcolor="error" label="Failed" avatar={<IconExclamationCircle fontSize="small" color="red" />} />            
+          }
+          </>
         );
       }  },
     { field: 'created_at', headerName: 'Created On', width: 200 },
   ];
   return (
-      <MainCard>
+      <MainCard title="List Invoices">
+        <Box align="right">
+          <Button
+            component={Link}
+            to="/invoice/create"
+            variant="contained"
+            align="right"
+            sx={{ mb: 2 }}
+            size="small"
+          >
+            Create Invoice
+          </Button>
+        </Box>  
         <DataGrid
           rows={rowSet}
           columns={columnSet}

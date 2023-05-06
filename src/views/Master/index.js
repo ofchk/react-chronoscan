@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Entity from './entity';
-import Vendor from './vendor';
+import { Box, Button } from '@mui/material';
+import EntityList from './entitylist';
+import VendorList from './vendorlist';
 import Options from './options';
 import Status from './status';
+import { Link } from 'react-router-dom';
 
 import MainCard from 'ui-component/cards/MainCard';
 import { useTheme } from '@mui/material/styles';
@@ -53,7 +54,7 @@ export default function Master() {
   };
 
   return (
-    <MainCard>
+    <MainCard title="Master Data">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="Master  Tables">
           <Tab label="Vendor" {...a11yProps(0)} />
@@ -61,10 +62,34 @@ export default function Master() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <Vendor />
+        <Box align="right">
+          <Button
+            component={Link}
+            to="/master/create/vendor"
+            variant="contained"
+            align="right"
+            sx={{ mb: 2 }}
+            size="small"
+          >
+            Create Vendor
+          </Button>
+        </Box>  
+        <VendorList />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Entity />
+        <Box align="right">
+          <Button
+            component={Link}
+            to="/master/create/entity"
+            variant="contained"
+            align="right"
+            sx={{ mb: 2 }}
+            size="small"
+          >
+            Create Entity
+          </Button>
+        </Box>  
+        <EntityList />
       </TabPanel>
     </MainCard>
   );

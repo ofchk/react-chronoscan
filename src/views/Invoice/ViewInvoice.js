@@ -121,15 +121,9 @@ export default function ViewInvoice() {
   }, [data]); 
 
   return (
-    <MainCard>
-       <Typography variant="h4" m={2}>
-          <IconButton color="primary" onClick={() => navigate(-1)}>            
+    <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
             <IconChevronLeft />
-          </IconButton>         
-
-         View Invoice
-       </Typography>
-        <Divider sx={{ borderColor: theme.palette.grey[300] }} />
+          </IconButton>View Invoice</> }>
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
             <Typography variant="h5">Invoice Number:</Typography>
             <Typography variant="p">
