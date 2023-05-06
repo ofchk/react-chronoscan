@@ -9,7 +9,9 @@ const axiosServices = axios.create({ baseURL: process.env.REACT_APP_API_URL || '
 // interceptor for http
 axiosServices.interceptors.response.use(
     (response) => response,
-    (error) => Promise.reject((error.response && error.response.data) || 'Wrong Services')
-);
+    (error) => {
+        console.log(error);
+        return Promise.reject((error.response && error.response.data) || error.message || 'Wrong Services')
+    });
 
 export default axiosServices;

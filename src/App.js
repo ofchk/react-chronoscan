@@ -21,6 +21,7 @@ import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 // ==============================|| APP ||============================== //
 
 import { ApolloClient,ApolloProvider,InMemoryCache,HttpLink } from '@apollo/client';
+import FileUploadProgress from 'ui-component/file-upload-progress/file-upload-progress';
 
 const createApolloClient = () => {
     return new ApolloClient({
@@ -59,6 +60,7 @@ const App = () => {
             </NavigationScroll>
         </Locales>
         {/* </RTLLayout> */}
+        <FileUploadProgress></FileUploadProgress>
     </ThemeCustomization>
 };
 

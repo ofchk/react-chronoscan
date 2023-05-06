@@ -10,7 +10,8 @@ const initialState = {
     selectedID: null,
     drawerOpen: false,
     error: null,
-    menu: {}
+    menu: {},
+    fileUploadList: []
 };
 
 // ==============================|| SLICE - MENU ||============================== //
@@ -39,13 +40,28 @@ const menu = createSlice({
         // get dashboard menu
         getMenuSuccess(state, action) {
             state.menu = action.payload;
+        },
+
+        updateFileUploadList(state, action) {
+            console.log(state, action)
+            var index  = state.fileUploadList.findIndex((a) => a.file_name ===  action.payload.file_name);
+            if (index > -1) {
+                state.fileUploadList[index] = action.payload;
+                console.log(state.fileUploadList)   
+            } else {
+                state.fileUploadList.push(action.payload);
+            }
+        },
+
+        removeDoneFileUpload(state, action) {
+            state.fileUploadList  = state.fileUploadList.filter((a) => a.file_name !==  action.payload.file_name);
         }
     }
 });
 
 export default menu.reducer;
 
-export const { activeItem, openDrawer, activeID } = menu.actions;
+export const { activeItem, openDrawer, activeID, updateFileUploadList, removeDoneFileUpload } = menu.actions;
 
 export function getMenu() {
     return async () => {
