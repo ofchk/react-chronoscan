@@ -12,6 +12,8 @@ import MainCard from 'ui-component/cards/MainCard';
 import { IconChevronLeft } from '@tabler/icons';
 
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'store';
+import { openSnackbar } from 'store/slices/snackbar';
 
 import {
   DataGrid,
@@ -33,37 +35,52 @@ const GET = gql`
         }
 `;
 
-function CustomToolbar() {
-  return (
-    <>
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </>
-  );
-}
+const INSERT = gql`
+    mutation Vendor($created_by: Int!, $name: String!, $address: String!) {
+      insert_vendor_one(object: {
+        created_by: $created_by, 
+        name: $name, 
+        address: $address}) {
+          id
+          name
+      }
+    } 
+`;
 
 export default function Vendor() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { loading, data, refetch } = useQuery(GET);
+  const [ insert, { data: insertData, error: insertError }] = useMutation(INSERT);
 
-  const rowSet = [];
-  if (data) {
-    data.vendor.forEach((item) => {
-      rowSet.push({
-        id: item.id,
-        name: item.name,
-        address: item.address ? item.address : '-',
-      });
-    });
+  const successMessage = (param) => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: param + ' - Created Successfully ',
+        variant: 'alert',
+        alert: {
+          color: 'primary'
+        },
+        close: true
+      })
+    )
   }
-  const columnSet = [
-    { field: 'id', headerName: 'ID' },
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 500 },
-  ];
+
+  const errorMessage = () => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: ' Process Failed !. Please check your network or Contact Administrator.',
+        variant: 'alert',
+        alert: {
+          color: 'primary'
+        },
+        close: true
+      })
+    )
+  }
+
   return (
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
             <IconChevronLeft />
@@ -72,7 +89,20 @@ export default function Vendor() {
         <Formik
           initialValues={{ name: '', address: '' }}
           onSubmit={(values, { setSubmitting }) => {
-            navigate('/dashboard');
+            if(values){
+              insert({
+                variables: {
+                  name: values.name,
+                  address: values.address,
+                  created_by: 1
+                }
+              })
+              successMessage(values.name);              
+              navigate('/master');
+            }else{
+              errorMessage()
+            }
+            
           }}
         >
           {({
