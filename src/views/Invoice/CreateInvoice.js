@@ -177,11 +177,8 @@ export default function Create() {
           }));
         },
       })
-        .then(response => {
-          var data;
-          if (response) {
-            data = response.json()
-          } 
+       .then(response =>  response.json())
+        .then(data => {
           data.forEach((item) => {
             const uploadRes = item;
             const message = uploadRes.message;
@@ -264,8 +261,9 @@ export default function Create() {
 
   const uploadHandler = (param, invoice, iid) => {
     const formData = new FormData();
-    formData.append('file', param);
-    formData.append('invoice', invoice);
+    formData.append('file', param);  
+    formData.append('invoice', invoice);  
+    formData.append('invoice_id', iid);  
     handleFileUpload(formData, iid)
     // navigate('/invoice/list')
   }
@@ -468,8 +466,10 @@ export default function Create() {
         />
         <p>{file ? `File name: ${file.name}` : "No invoice file added yet. (Max Size: 20 MB)"}</p>
       </Box>
+
       {/* {progress && <LinearProgressWithLabel value={progress} />}
       <p>Upload Speed: {speed} mbps</p> */}
+
 
 
     </MainCard>
