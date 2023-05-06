@@ -12,6 +12,11 @@ import MainCard from 'ui-component/cards/MainCard';
 import { IconChevronLeft } from '@tabler/icons';
 
 import { useNavigate } from 'react-router-dom';
+
+import { useDispatch } from 'store';
+import { openSnackbar } from 'store/slices/snackbar';
+
+
 import {
   DataGrid,
   GridToolbarColumnsButton,
@@ -31,36 +36,50 @@ const GET = gql`
         }
 `;
 
-function CustomToolbar() {
-  return (
-    <>
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </>
-  );
-}
+const INSERT = gql`
+    mutation Entity($created_by: Int!, $title: String!) {
+      insert_entity_one(object: {
+        created_by: $created_by, 
+        title: $title}) {
+          id
+          title
+      }
+    } 
+`;
 
 export default function Entity() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { loading, data, refetch } = useQuery(GET);
-
-  const rowSet = [];
-  if (data) {
-    data.entity.forEach((item) => {
-      rowSet.push({
-        id: item.id,
-        title: item.title,
-      });
-    });
+  const [ insert, { data: insertData, error: insertError }] = useMutation(INSERT);
+  
+  const successMessage = (param) => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: param + ' - Created Successfully ',
+        variant: 'alert',
+        alert: {
+          color: 'primary'
+        },
+        close: true
+      })
+    )
   }
-  const columnSet = [
-    { field: 'id', headerName: 'ID' },
-    { field: 'title', headerName: 'Title', width: 200 },
-  ];
 
+  const errorMessage = () => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: ' Process Failed !. Please check your network or Contact Administrator.',
+        variant: 'alert',
+        alert: {
+          color: 'primary'
+        },
+        close: true
+      })
+    )
+  }
   return (
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
             <IconChevronLeft />
@@ -69,7 +88,18 @@ export default function Entity() {
       <Formik
         initialValues={{ name: '', address: '' }}
         onSubmit={(values, { setSubmitting }) => {
-          navigate('/dashboard');
+          if(values){
+              insert({
+                variables: {
+                  title: values.title,
+                  created_by: 1
+                }
+              })
+              successMessage(values.title);              
+              navigate('/master');
+            }else{
+              errorMessage()
+            }
         }}
       >
         {({
