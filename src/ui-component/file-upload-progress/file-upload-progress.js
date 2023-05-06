@@ -26,7 +26,7 @@ function FileUploadProgress(props) {
                 filesList && filesList.reverse().map((file) => {
                     return (
                         <Link to={"/invoice/list"} className='files-link' onClick={clearFileWhenDone(file.file_name)}>
-                            <div key={file.file_name} className='file-details' onf>
+                            <div key={file.file_name} className='file-details'>
                                 <span className='close-icon'>
 
                                 </span>

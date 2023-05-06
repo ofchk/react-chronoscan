@@ -54,7 +54,7 @@ const menu = createSlice({
         },
 
         removeDoneFileUpload(state, action) {
-            state.fileUploadList  = state.fileUploadList.filter((a) => a.file_name !==  action.payload.file_name);
+            //state.fileUploadList  = state.fileUploadList.filter((a) => a.file_name !==  action.payload.file_name);
         }
     }
 });

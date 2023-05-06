@@ -120,7 +120,6 @@ export default function Create() {
   const handleChange = (file) => {
     setFile(file);
     console.log('xxxx', insertData, file)
-    uploadHandler(file, invnum, insertData.insert_invoice_one.id);
   };
 
   const uploadSuccessMessage = (invoice_number) => {
@@ -151,10 +150,10 @@ export default function Create() {
     )
   }
 
-  const handleFileUpload = async (formData, iid) => {
-   
+  const handleFileUpload = async (formData, iid, filename) => {
+   console.log(formData.entries()["file"]);
     dispatch(updateFileUploadList({
-      "file_name": formData.name,
+      "file_name": filename,
       "progress": 0
     }));
     if (formData) {
@@ -172,7 +171,7 @@ export default function Create() {
           setProgress(progress)
           setSpeed(Mbps);
           dispatch(updateFileUploadList({
-            "file_name": file.name,
+            "file_name": filename,
             "progress": progress
           }));
         },
@@ -260,11 +259,12 @@ export default function Create() {
   }
 
   const uploadHandler = (param, invoice, iid) => {
-    const formData = new FormData();
+    var formData = new FormData();
     formData.append('file', param);  
     formData.append('invoice', invoice);  
     formData.append('invoice_id', iid);  
-    handleFileUpload(formData, iid)
+    console.log(formData.entries(), param, invoice, iid);
+    handleFileUpload(formData, iid, param.name)
     // navigate('/invoice/list')
   }
 
