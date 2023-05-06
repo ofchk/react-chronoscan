@@ -179,16 +179,19 @@ export default function Create() {
           }));
         },
       })
-      .then(response =>  response.json())        
-      .catch(error => {
-        dispatch(updateFileUploadList({
-          "file_name": file.name,
-          "progress": 0,
-          "error": error
-        }));
-        existMessage(error);
-        console.log('Upload axios catch: ', error)
-      })
+        .then(data => {
+          uploadSuccessMessage("File upload progressing...");
+          return false;
+        })
+        .catch(error => {
+          dispatch(updateFileUploadList({
+            "file_name": file.name,
+            "progress": 0,
+            "error": error
+          }));
+          existMessage(error);
+          console.log('Upload axios catch: ', error)
+        })
     }
   }
 
