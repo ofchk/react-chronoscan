@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
@@ -7,7 +7,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
+import { IconButton,
+          Select,
+          MenuItem,
+          InputLabel
+} from '@mui/material';
 import MainCard from 'ui-component/cards/MainCard';
 import { IconChevronLeft } from '@tabler/icons';
 
@@ -31,16 +35,22 @@ const GET = gql`
             id
             name
             address
+          }   
+          vendor_process {
+            id
+            title
           }          
         }
 `;
 
 const INSERT = gql`
-    mutation Vendor($created_by: Int!, $name: String!, $address: String!) {
+    mutation Vendor($created_by: Int!, $name: String!, $address: String!, $vendor_process: Int!) {
       insert_vendor_one(object: {
         created_by: $created_by, 
         name: $name, 
-        address: $address}) {
+        address: $address,
+        vendor_process: $vendor_process
+      }) {
           id
           name
       }
@@ -67,11 +77,11 @@ export default function Vendor() {
     )
   }
 
-  const errorMessage = () => {
+  const errorMessage = (msg) => {
     dispatch(
       openSnackbar({
         open: true,
-        message: ' Process Failed !. Please check your network or Contact Administrator.',
+        message: msg,
         variant: 'alert',
         alert: {
           color: 'primary'
@@ -81,19 +91,29 @@ export default function Vendor() {
     )
   }
 
+  useEffect(() => {        
+    if(insertData){
+        successMessage(insertData.insert_vendor_one.name)
+    }
+    if(insertError){
+        errorMessage("Some error occured. Check your internet connection or Contact Administrator.") 
+    }
+  }, [insertData, insertError]); 
+
   return (
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
             <IconChevronLeft />
           </IconButton>Create Vendor</> }>
-      <Box align="right">
+      <Box>
         <Formik
-          initialValues={{ name: '', address: '' }}
+          initialValues={{ name: '', address: '', vendor_process: '' }}
           onSubmit={(values, { setSubmitting }) => {
             if(values){
               insert({
                 variables: {
                   name: values.name,
                   address: values.address,
+                  vendor_process: values.vendor_process,
                   created_by: 1
                 }
               })
@@ -116,6 +136,9 @@ export default function Vendor() {
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
+              <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
+                Name:
+              </InputLabel>
               <TextField
                 name="name"
                 label="Enter Name"
@@ -126,9 +149,12 @@ export default function Vendor() {
                 value={values.name}
                 fullWidth
                 required
-                sx={{ mt: 2 }}
+                sx={{ mb: 2 }}
               />
               {errors.name && touched.name && errors.name}
+              <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
+                Address
+              </InputLabel>
               <TextField
                 name="address"
                 label="Enter Address"
@@ -138,9 +164,33 @@ export default function Vendor() {
                 onBlur={handleBlur}
                 value={values.address}
                 fullWidth
-                sx={{ mt: 2 }}
+                sx={{ mb: 2 }}
               />
               {errors.address && touched.address && errors.address}
+              <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
+                Process Available
+              </InputLabel>
+              <Select
+                name="vendor_process"
+                size="small"
+                onChange={handleChange}
+                value={values.vendor_process}
+                fullWidth
+                displayEmpty
+                sx={{ mb: 2 }}
+              >
+                <MenuItem onChange={handleChange} value="">
+                  - Select Process Available -
+                </MenuItem>
+                {data &&
+                  data.vendor_process &&
+                  data.vendor_process.map((item, index) => (
+                    <MenuItem onChange={handleChange} value={item.id} key={item.id}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+              </Select>
+            
               <Button
                 sx={{ mt: 2 }}
                 variant="contained"

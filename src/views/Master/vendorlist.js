@@ -33,6 +33,7 @@ const GET = gql`
             id
             name
             address
+            vendor_process
           }          
         }
 `;
@@ -41,6 +42,7 @@ const DELETE = gql`
     mutation DELETE($id: Int!) {
       delete_vendor_by_pk(id: $id) {
         id
+        name
       }
     }
 `;
@@ -95,7 +97,7 @@ export default function Vendor() {
   useEffect(() => {        
     if(deleteData){
         refetch()
-        successMessage(deleteData.delete_vendor_by_pk.id)
+        successMessage(deleteData.delete_vendor_by_pk.name)
     }
     if(deleteError){
       // if(deleteError.graphQLErrors[0].message.includes("Uniqueness violation")){
