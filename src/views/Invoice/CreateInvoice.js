@@ -17,7 +17,6 @@ import  { Box,
           Autocomplete,
           IconButton
 } from '@mui/material';
-
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 
@@ -287,8 +286,6 @@ export default function Create() {
               value={values.invoice_number}
               fullWidth
               required
-              error = {!!errors.invoice_number}
-              helperText = {errors.invoice_number}
             />
             <Autocomplete
               disablePortal
