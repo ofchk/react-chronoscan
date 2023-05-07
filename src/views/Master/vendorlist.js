@@ -34,6 +34,10 @@ const GET = gql`
             name
             address
             vendor_process
+            vendor_process_relation{
+              id
+              title
+            }
           }          
         }
 `;
@@ -117,12 +121,14 @@ export default function Vendor() {
         id: item.id,
         name: item.name,
         address: item.address ? item.address : '-',
+        vendor_process: item.vendor_process_relation ? item.vendor_process_relation.title : '-',
       });
     });
   }
   const columnSet = [    
     { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 500 },
+    { field: 'address', headerName: 'Address', width: 400 },
+    { field: 'vendor_process', headerName: 'Process Available', width: 200 },
     { field: 'id', headerName: 'Actions', disableClickEventBubbling: true, renderCell: (params) => {
         return (
           <IconButton color="error" aria-label="Delete Vendor" 
