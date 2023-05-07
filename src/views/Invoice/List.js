@@ -82,11 +82,11 @@ export default function List() {
     return (
       <>
         <GridToolbarContainer>
-   
+{/*    
           <GridToolbarColumnsButton />
           <GridToolbarFilterButton
              
-          />
+          /> */}
           <GridToolbarExport />
         </GridToolbarContainer>
       </>
