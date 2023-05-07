@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { API_URL } from 'config';
+import { Link } from 'react-router-dom';
 
 import { Formik } from 'formik';
 import Box from '@mui/material/Box';
@@ -16,9 +17,9 @@ import InputLabel from '@mui/material/InputLabel';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from 'ui-component/extended/Chip';
 
-import { IconChevronLeft } from '@tabler/icons';
+import { IconChevronLeft, IconCopy } from '@tabler/icons';
 
-import { IconButton, Typography, Divider, Stack } from '@mui/material';
+import { IconButton, Typography, Divider, Stack, Tooltip } from '@mui/material';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import MainCard from 'ui-component/cards/MainCard';
@@ -176,7 +177,17 @@ export default function ViewInvoice() {
             <Typography variant="h5">Alfresco URL:</Typography>
             <Typography variant="p">
                 {
-                    defaultValues.alfresco_url
+                  defaultValues.alfresco_url &&
+                  <>
+                    <Tooltip title="Copy"><IconButton 
+                      onClick={() => {navigator.clipboard.writeText(defaultValues.alfresco_url)}}
+                      sx={{ p:0, fontSize: "14px"}}>
+                       <IconCopy color = "#C59627" />
+                    </IconButton></Tooltip>
+                    <Link color="primary" to={defaultValues.alfresco_url} target="_blank">
+                      {defaultValues.alfresco_url}
+                    </Link>
+                  </>
                 }
                 </Typography>
         </Stack>
