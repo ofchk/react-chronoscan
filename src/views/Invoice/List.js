@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Moment from 'moment';
-import { IconButton } from '@mui/material';
+import { Checkbox, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup } from '@mui/material';
 import Chip from 'ui-component/extended/Chip';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -23,6 +23,7 @@ import {
   GridToolbarExport,
   GridToolbarContainer,
   GridToolbarFilterButton,
+  GridToolbar,
 } from '@mui/x-data-grid';
 
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
@@ -58,22 +59,40 @@ const GET = gql`
     }
 `;
 
-function CustomToolbar() {
-  return (
-    <>
-      <GridToolbarContainer>
-        <GridToolbarColumnsButton />
-        <GridToolbarFilterButton />
-        <GridToolbarExport />
-      </GridToolbarContainer>
-    </>
-  );
-}
 
 export default function List() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { loading, data, refetch } = useQuery(GET);
+  const [filter, setFilter] = useState({
+        items: [
+        ]
+  });
+
+  const [showProcessedOnly, setShowProcessedOnly] = useState(false);
+  const [showUploadedOnly, setShowUploadedOnly] = useState(false);
+
+  const handleClearFilters = () => {
+    setFilter({
+      items: []
+    });
+  };
+  
+  function CustomToolbar() {
+    return (
+      <>
+        <GridToolbarContainer>
+{/*    
+          <GridToolbarColumnsButton />
+          <GridToolbarFilterButton
+             
+          /> */}
+          <GridToolbarExport />
+        </GridToolbarContainer>
+      </>
+    );
+  }
+  
 
   const rowSet = [];
   if (data) {
@@ -135,9 +154,68 @@ export default function List() {
       }  },
     { field: 'created_at', headerName: 'Created On', width: 200 },
   ];
+
+  const handleQuickFilter = (processingDone, uploadDone) =>  {
+    var newItems = filter.items;
+    if (!uploadDone) {
+      newItems = newItems.filter((a) => a.columnField !== 'uploading_status');
+    }
+    if (!processingDone) {
+      newItems = newItems.filter((a) => a.columnField !== 'status');
+    }
+
+    if (uploadDone) {
+      setFilter({
+        items:  [
+          {id: 1, columnField: 'uploading_status', operatorValue: 'equals', value: 'Completed'}
+        ]
+      })
+      setShowProcessedOnly(false);
+    } else if (processingDone) {
+      setFilter({
+        items:  [
+          {id: 2, columnField: 'status', operatorValue: 'equals', value: 'Completed'}
+        ]
+      })
+      setShowUploadedOnly(false);
+    } else{
+        setFilter({
+          items: newItems
+        })
+      }
+    }
+
+
+ 
   return (
       <MainCard title="List Invoices">
         <Box align="right">
+        <FormControlLabel
+          label="Show upload completed"
+            control={<Checkbox
+            checked={showUploadedOnly}
+            onChange={(event, checked) => {
+              if (checked) {
+                handleQuickFilter(false, true)
+              } else {
+                handleQuickFilter(false, false)
+              }
+              setShowUploadedOnly(checked)
+            }} 
+        />}></FormControlLabel>
+        <FormControlLabel
+          label="Show process completed"
+            control={<Checkbox
+            checked={showProcessedOnly}
+            onChange={(event, checked) => {
+              if (checked) {
+                handleQuickFilter(true, false)
+              } else {
+                handleQuickFilter(false, false)
+              }
+              setShowProcessedOnly(checked)
+            }} 
+        />}></FormControlLabel>
           <Button
             component={Link}
             to="/invoice/create"
@@ -149,16 +227,20 @@ export default function List() {
             Create Invoice
           </Button>
         </Box>  
+
+       
+
         <DataGrid
           rows={rowSet}
+          filterModel={filter}
           columns={columnSet}
           m={2}
           pageSize={15}
           components={{
             Toolbar: CustomToolbar,
           }}
-          autoHeight="true"
-        />
+          autoHeight={true}
+        > <Checkbox></Checkbox></DataGrid>
       </MainCard>
   );
 }
