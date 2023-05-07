@@ -46,7 +46,8 @@ const menu = createSlice({
             console.log(state, action)
             var index  = state.fileUploadList.findIndex((a) => a.file_name ===  action.payload.file_name);
             if (index > -1) {
-                state.fileUploadList[index] = action.payload;
+                state.fileUploadList  = state.fileUploadList.filter((a) => a.file_name !==  action.payload.file_name);
+                state.fileUploadList.push(action.payload);
                 console.log(state.fileUploadList)   
             } else {
                 state.fileUploadList.push(action.payload);
