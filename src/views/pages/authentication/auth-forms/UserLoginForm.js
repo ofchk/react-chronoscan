@@ -30,6 +30,10 @@ import useScriptRef from 'hooks/useScriptRef';
 
 import { useNavigate } from 'react-router-dom';
 import axiosServices from "utils/axios"
+import { API_URL } from 'config';
+import { useDispatch } from 'store';
+import { openSnackbar } from 'store/slices/snackbar';
+import { useNavigate } from 'react-router-dom';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
@@ -41,11 +45,12 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     const theme = useTheme();
 
     const { login } = useAuth();
+
     const scriptedRef = useScriptRef();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [checked, setChecked] = React.useState(true);
-
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -54,6 +59,34 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    const uploadSuccessMessage = (message) => {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: message,
+            variant: 'alert',
+            alert: {
+              color: 'primary'
+            },
+            close: true
+          })
+        )
+    }
+
+    const existMessage = (msg) => {
+        dispatch(
+          openSnackbar({
+            open: true, anchorOrigin: { vertical: 'top', horizontal: 'right' },
+            message: msg,
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: true
+          })
+        )
+      }
 
     return (
         <Formik
@@ -83,12 +116,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                           uploadSuccessMessage("File upload completed.");
                           return false;
                         })
-                        .catch(error => {
-                          dispatch(updateFileUploadList({
-                            "file_name": file.name,
-                            "progress": 0,
-                            "error": error
-                          }));
+                        .catch(error => {                          
                           existMessage(error);
                           console.log('Upload axios catch: ', error)
                         })
