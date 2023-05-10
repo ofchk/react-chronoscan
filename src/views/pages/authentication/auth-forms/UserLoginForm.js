@@ -112,12 +112,16 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                         }
                       })    
                         .then(data => {
-                          uploadSuccessMessage("File upload completed.");
-                          return false;
+                          uploadSuccessMessage("LDAP Successfully Authenticated.");
+                          if(data.status === 200){
+                            window.localStorage.setItem('user_name', data.name);
+                            window.localStorage.setItem('user_email', data.email);
+                            navigate('/dashboard')
+                          }
                         })
                         .catch(error => {                          
                           existMessage(error);
-                          console.log('Upload axios catch: ', error)
+                          console.log('LDAP axios catch: ', error)
                         })
 
                     if (scriptedRef.current) {
