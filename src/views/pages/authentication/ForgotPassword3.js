@@ -60,7 +60,7 @@ const ForgotPassword = () => {
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={Link}
-                                                to={isLoggedIn ? '/pages/login/login3' : '/login'}
+                                                to={isLoggedIn ? '/pages/login/login3' : '/'}
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { LOGIN, LOGOUT } from 'store/actions';
+import accountReducer from 'store/accountReducer';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -40,6 +42,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // ===============================|| JWT LOGIN ||=============================== //
 
+// constant
+const initialState = {
+    isLoggedIn: false,
+    isInitialized: false,
+    user: null
+};
+
 const UserLoginForm = ({ loginProp, ...others }) => {
     const theme = useTheme();
 
@@ -47,8 +56,9 @@ const UserLoginForm = ({ loginProp, ...others }) => {
 
     const scriptedRef = useScriptRef();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-
+    // const dispatch = useDispatch();
+    
+    const [state, dispatch] = useReducer(accountReducer, initialState);
     const [checked, setChecked] = React.useState(true);
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => {
@@ -116,7 +126,23 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                           if(data.status === 200){
                             window.localStorage.setItem('user_name', data.name);
                             window.localStorage.setItem('user_email', data.email);
-                            navigate('/dashboard')
+                            dispatch({
+                                type: LOGIN,
+                                payload: {
+                                    isLoggedIn: true,
+                                    user : {
+                                        email_id: data.email,
+                                        username: data.email,
+                                        first_name: data.name,
+                                        last_name: data.name
+                                    }
+                                }
+                            });
+                            // navigate('/dashboard')
+                          }else{
+                            dispatch({
+                                type: LOGOUT
+                            });
                           }
                         })
                         .catch(error => {                          
