@@ -59,40 +59,39 @@ const JWTLogin = ({ loginProp, ...others }) => {
             initialValues={{
                 // email: 'info@codedthemes.com',
                 // password: '123456',
-                email: 'admin@mov.com',
-                password: 'admin@mov.com',
+                email: '',
+                password: '',
                 submit: null
             }}
             validationSchema={Yup.object().shape({
-                email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                 password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                navigate('/dashboard');
-                // try {
-                //     await login(values.email, values.password);
+                // navigate('/dashboard');
+                try {
+                    await login(values.email, values.password);
 
-                //     if (scriptedRef.current) {
-                //         setStatus({ success: true });
-                //         setSubmitting(false);
-                //     }
-                // } catch (err) {
-                //     console.error(err);
-                //     if (scriptedRef.current) {
-                //         setStatus({ success: false });
-                //         setErrors({ submit: err.message });
-                //         setSubmitting(false);
-                //     }
-                // }
+                    if (scriptedRef.current) {
+                        setStatus({ success: true });
+                        setSubmitting(false);
+                    }
+                } catch (err) {
+                    console.error(err);
+                    if (scriptedRef.current) {
+                        setStatus({ success: false });
+                        setErrors({ submit: err.message });
+                        setSubmitting(false);
+                    }
+                }
             }}
         >
             {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                 <form noValidate onSubmit={handleSubmit} {...others}>
                     <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-                        <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+                        <InputLabel htmlFor="outlined-adornment-email-login">Username</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-email-login"
-                            type="email"
+                            type="text"
                             value={values.email}
                             name="email"
                             onBlur={handleBlur}
@@ -151,21 +150,6 @@ const JWTLogin = ({ loginProp, ...others }) => {
                                 }
                                 label="Keep me logged in"
                             />
-                        </Grid>
-                        <Grid item>
-                            <Typography
-                                variant="subtitle1"
-                                component={Link}
-                                to={
-                                    loginProp
-                                        ? `/pages/forgot-password/forgot-password${loginProp}`
-                                        : '/pages/forgot-password/forgot-password3'
-                                }
-                                color="secondary"
-                                sx={{ textDecoration: 'none' }}
-                            >
-                                Forgot Password?
-                            </Typography>
                         </Grid>
                     </Grid>
 

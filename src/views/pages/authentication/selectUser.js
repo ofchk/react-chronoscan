@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Divider, Grid, Stack, Typography, useMediaQuery, Button } from '@mui/material';
 
 // project imports
 import AuthWrapper1 from '../AuthWrapper1';
@@ -16,7 +16,7 @@ import useAuth from 'hooks/useAuth';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
-const Login = () => {
+const SelectUser = () => {
     const theme = useTheme();
     const { isLoggedIn } = useAuth();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,29 +41,14 @@ const Login = () => {
                                             alignItems="center"
                                             justifyContent="center"
                                         >
-                                            <Grid item>
-                                                <Stack alignItems="center" justifyContent="center" spacing={1}>
-                                                    <Typography
-                                                        color={theme.palette.secondary.main}
-                                                        gutterBottom
-                                                        variant={matchDownSM ? 'h3' : 'h2'}
-                                                    >
-                                                        ADMIN LOGIN
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="caption"
-                                                        fontSize="16px"
-                                                        textAlign={matchDownSM ? 'center' : 'inherit'}
-                                                    >
-                                                        Enter your credentials to continue
-                                                    </Typography>
+                                            <Grid item>                                                
+                                                <Stack alignItems="center" direction="row" justifyContent="center" spacing={1}>                                                    
+                                                    <Button variant="outlined" href="/admin/login">ADMIN LOGIN</Button>
+                                                    <Button variant="outlined" href="/user/login">USER LOGIN</Button>
                                                 </Stack>
                                             </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AuthLogin />
-                                    </Grid>                                    
+                                    </Grid>                                 
                                 </Grid>
                             </AuthCardWrapper>
                         </Grid>
@@ -77,4 +62,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default SelectUser;

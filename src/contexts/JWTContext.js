@@ -13,6 +13,21 @@ import accountReducer from 'store/accountReducer';
 import Loader from 'ui-component/Loader';
 import axios from 'utils/axios';
 
+import { gql, useQuery, useLazyQuery } from '@apollo/client';
+
+const GET_PROFILE = gql`
+    query GetProfile($id: Int!) {
+        profile(where: { auth_id: { _eq: $id } }) {
+            id
+            first_name
+            email_id
+            auth_id
+            last_name
+            username
+        }
+    }
+`;
+
 const chance = new Chance();
 
 // constant
@@ -48,15 +63,21 @@ const JWTContext = createContext(null);
 
 export const JWTProvider = ({ children }) => {
     const [state, dispatch] = useReducer(accountReducer, initialState);
+    const [getProfile, { loading, error, data }] = useLazyQuery(GET_PROFILE);
 
     useEffect(() => {
         const init = async () => {
             try {
                 const serviceToken = window.localStorage.getItem('serviceToken');
+                const serviceId = window.localStorage.getItem('id');
                 if (serviceToken && verifyToken(serviceToken)) {
                     setSession(serviceToken);
-                    const response = await axios.get('/api/account/me');
-                    const { user } = response.data;
+                    // const response = await axios.get('/api/account/me');
+                    const response = await getProfile({ variables: { id: serviceId } });
+                    const user = response.data.profile[0];
+                    window.localStorage.setItem('fname', user.first_name);
+                    window.localStorage.setItem('lname', user.last_name);
+                    
                     dispatch({
                         type: LOGIN,
                         payload: {
@@ -76,14 +97,20 @@ export const JWTProvider = ({ children }) => {
                 });
             }
         };
-
         init();
-    }, []);
+    }, [localStorage.getItem('serviceToken')]);
 
-    const login = async (email, password) => {
-        const response = await axios.post('/api/account/login', { email, password });
-        const { serviceToken, user } = response.data;
-        setSession(serviceToken);
+    const login = async (username, password) => {
+        const response = await axios.post('http://localhost:3010/api/auth/signin', { username, password });
+        const { token, user } = response.data;
+        setSession(token);
+        localStorage.setItem('serviceToken', token);
+        localStorage.setItem('username', user.username);
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('roles', user.roles);
+        localStorage.setItem('id', user.id);
+        localStorage.setItem('role', user.user_role);
+        localStorage.setItem('uid', user.id);
         dispatch({
             type: LOGIN,
             payload: {
@@ -91,51 +118,23 @@ export const JWTProvider = ({ children }) => {
                 user
             }
         });
-    };
-
-    const register = async (email, password, firstName, lastName) => {
-        // todo: this flow need to be recode as it not verified
-        const id = chance.bb_pin();
-        const response = await axios.post('/api/account/register', {
-            id,
-            email,
-            password,
-            firstName,
-            lastName
-        });
-        let users = response.data;
-
-        if (window.localStorage.getItem('users') !== undefined && window.localStorage.getItem('users') !== null) {
-            const localUsers = window.localStorage.getItem('users');
-            users = [
-                ...JSON.parse(localUsers),
-                {
-                    id,
-                    email,
-                    password,
-                    name: `${firstName} ${lastName}`
-                }
-            ];
-        }
-
-        window.localStorage.setItem('users', JSON.stringify(users));
-    };
+    };    
 
     const logout = () => {
         setSession(null);
         dispatch({ type: LOGOUT });
+        localStorage.clear();
+        console.log(localStorage)
+        window.location.reload(false);
     };
 
-    const resetPassword = (email) => console.log(email);
-
-    const updateProfile = () => {};
 
     if (state.isInitialized !== undefined && !state.isInitialized) {
         return <Loader />;
     }
 
     return (
-        <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>
+        <JWTContext.Provider value={{ ...state, login, logout }}>{children}</JWTContext.Provider>
     );
 };
 

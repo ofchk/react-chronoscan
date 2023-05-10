@@ -16,7 +16,7 @@ import useAuth from 'hooks/useAuth';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
-const Login = () => {
+const UserLogin = () => {
     const theme = useTheme();
     const { isLoggedIn } = useAuth();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -48,7 +48,7 @@ const Login = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        ADMIN LOGIN
+                                                        USER
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
@@ -77,4 +77,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default UserLogin;

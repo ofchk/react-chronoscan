@@ -180,7 +180,7 @@ export default function Create() {
         },
       })
         .then(data => {
-          uploadSuccessMessage("File upload progressing...");
+          uploadSuccessMessage("File upload completed.");
           return false;
         })
         .catch(error => {
