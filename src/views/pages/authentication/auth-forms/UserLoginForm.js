@@ -124,18 +124,18 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                         .then(data => {
                           uploadSuccessMessage("LDAP Successfully Authenticated.");
                           console.log(data.data.status)
-                          if(data.status === 200){
-                            window.localStorage.setItem('user_name', data.name);
-                            window.localStorage.setItem('user_email', data.email);
+                          if(data.data.status === 200){
+                            window.localStorage.setItem('user_name', data.data.name);
+                            window.localStorage.setItem('user_email', data.data.email);
                             dispatch({
                                 type: LOGIN,
                                 payload: {
                                     isLoggedIn: true,
                                     user : {
-                                        email_id: data.email,
-                                        username: data.email,
-                                        first_name: data.name,
-                                        last_name: data.name
+                                        email_id: data.data.email,
+                                        username: data.data.email,
+                                        first_name: data.data.name,
+                                        last_name: data.data.name
                                     }
                                 }
                             });
