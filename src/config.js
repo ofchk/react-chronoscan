@@ -4,11 +4,11 @@ import LAYOUT_CONST from 'constant';
 // like '/berry-material-react/react/default'
 export const BASE_PATH = '';
 
-export const API_URL = 'http://localhost:3010'; 
-export const HASURA_URL = 'https://mov.discourselogic.com/v1/graphql'; 
+// export const API_URL = 'http://localhost:3010'; 
+// export const HASURA_URL = 'https://mov.discourselogic.com/v1/graphql'; 
 
-// export const API_URL = 'http://192.168.5.130:3010'; 
-// export const HASURA_URL = 'http://192.168.5.130:8080/v1/graphql'; 
+export const API_URL = 'http://192.168.5.130:3010'; 
+export const HASURA_URL = 'http://192.168.5.130:8080/v1/graphql'; 
 
 export const DASHBOARD_PATH = '/dashboard';
 export const HORIZONTAL_MAX_ITEM = 6;

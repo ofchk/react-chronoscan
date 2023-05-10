@@ -74,10 +74,7 @@ const Header = ({ handleDrawerToggle }) => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />            
 
-            {/* <ProfileSection /> */}
-        <IconButton color="error" onClick={() => navigate('/')} sx={{ p:0, fontSize: "14px"}}>
-            <IconLogout />
-        </IconButton>
+            <ProfileSection /> 
 
             {/* mobile header */}
             <Box sx={{ display: { xs: 'block', sm: 'none' } }}>

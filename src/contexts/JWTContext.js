@@ -101,7 +101,7 @@ export const JWTProvider = ({ children }) => {
     }, [localStorage.getItem('serviceToken')]);
 
     const login = async (username, password) => {
-        const response = await axios.post('http://localhost:3010/api/auth/signin', { username, password });
+        const response = await axios.post('http://192.168.5.130:3010/api/auth/signin', { username, password });
         const { token, user } = response.data;
         setSession(token);
         localStorage.setItem('serviceToken', token);
