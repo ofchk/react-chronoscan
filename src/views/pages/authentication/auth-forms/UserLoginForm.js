@@ -123,7 +123,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                       })    
                         .then(data => {
                           uploadSuccessMessage("LDAP Successfully Authenticated.");
-                          console.log(data)
+                          console.log(data.data.status)
                           if(data.status === 200){
                             window.localStorage.setItem('user_name', data.name);
                             window.localStorage.setItem('user_email', data.email);
