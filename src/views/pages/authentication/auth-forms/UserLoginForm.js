@@ -70,11 +70,11 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 // navigate('/dashboard');
                 try {
-                    await axiosServices.post(`${API_URL}/user/login`, 
-                        body: {
-                             email: values.email,
-                             password: values.password
-                            }, {
+                    await axiosServices.post(`${API_URL}/user/login`, {
+                            email: values.email,
+                            password: values.password
+                        }, 
+                        {
                         headers: {
                           "Content-Type": "application/json",
                         }
