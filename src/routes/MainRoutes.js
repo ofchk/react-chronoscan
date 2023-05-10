@@ -20,9 +20,9 @@ const Entity = Loadable(lazy(() => import('views/Master/entity')));
 const MainRoutes = {
     path: '/',
     element: (
-        // <AuthGuard>
+        <AuthGuard>
             <MainLayout />
-        // </AuthGuard>
+        </AuthGuard>
     ),
     children: [        
         {

@@ -48,7 +48,7 @@ const Sidebar = () => {
             {layout === LAYOUT_CONST.VERTICAL_LAYOUT && drawerOpen}
             {layout === LAYOUT_CONST.VERTICAL_LAYOUT && drawerOpen && (
                 <Stack direction="row" justifyContent="center" sx={{ mb: 2 }}>
-                    <Chip label={process.env.REACT_APP_VERSION} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+                    <Chip label={window.localStorage.getItem('user_name')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
                 </Stack>
             )}
         </>
