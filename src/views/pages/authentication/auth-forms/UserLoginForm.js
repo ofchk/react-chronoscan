@@ -33,7 +33,6 @@ import axiosServices from "utils/axios"
 import { API_URL } from 'config';
 import { useDispatch } from 'store';
 import { openSnackbar } from 'store/slices/snackbar';
-import { useNavigate } from 'react-router-dom';
 
 // assets
 import Visibility from '@mui/icons-material/Visibility';
