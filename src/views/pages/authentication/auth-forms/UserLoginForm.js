@@ -139,7 +139,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                                     }
                                 }
                             });
-                            // navigate('/dashboard')
+                             navigate('/dashboard')
                           }else{
                             dispatch({
                                 type: LOGOUT
