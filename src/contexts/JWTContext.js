@@ -106,6 +106,8 @@ export const JWTProvider = ({ children }) => {
             console.log(2)
             try {
                 const response = getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
+                console.log('response',response)
+                
                 const user = response.data.profile[0];
                 window.localStorage.setItem('fname', user.first_name);
                 window.localStorage.setItem('lname', user.last_name);
