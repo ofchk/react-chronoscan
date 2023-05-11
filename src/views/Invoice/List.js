@@ -68,7 +68,7 @@ export default function List() {
 
   const { loading, data, refetch } = useQuery(GET, {
     variables: {
-      email: user.email
+      email: user.email_id
     }
   });
 
