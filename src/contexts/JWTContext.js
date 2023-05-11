@@ -126,17 +126,20 @@ export const JWTProvider = ({ children }) => {
                             password: password
                         });
         console.log(response.data)
-        const { user } = response.data;
+        const { user } = {
+            email: response.data.email,
+            first_name: response.data.name,
+            last_name: '',
+            username: response.data.email
+        };
 
-        localStorage.setItem('username', user.email);
-        localStorage.setItem('email', user.email);
+        localStorage.setItem('username', response.data.email);
+        localStorage.setItem('email', response.data.email);
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
 
-        // localStorage.setItem('id', user.id);
-        // setSession(token);
-        // localStorage.setItem('serviceToken', token);
-        // localStorage.setItem('uid', user.id);
+                console.log('user', user)
+
         dispatch({
             type: LOGIN,
             payload: {
