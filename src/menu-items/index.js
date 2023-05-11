@@ -5,7 +5,7 @@ import other from './other';
 const username = localStorage.getItem('username');
 
 
-const array = [other]
+const array = []
 
 if(username === "admin"){
     array.push(adminpages)
