@@ -104,28 +104,31 @@ export const JWTProvider = ({ children }) => {
         }
         if(localStorage.getItem('ldap') === "true"){
             console.log(2)
-            try {
-                const response = getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
-                console.log('response',response)
-                
-                const user = response.data.profile[0];
-                window.localStorage.setItem('fname', user.first_name);
-                window.localStorage.setItem('lname', user.last_name);
-                console.log('ldapuser',user)
-                console.log('ldap',localStorage.getItem('ldap'))
-                dispatch({
-                    type: LOGIN,
-                    payload: {
-                        isLoggedIn: true,
-                        user
-                    }
-                });
-            } catch (err) {
-                console.error(err);
-                dispatch({
-                    type: LOGOUT
-                });
-            }
+            const initLDAP = async () => {
+                try {
+                    const response = await getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
+                    console.log('response',response)
+
+                    const user = response.data.profile[0];
+                    window.localStorage.setItem('fname', user.first_name);
+                    window.localStorage.setItem('lname', user.last_name);
+                    console.log('ldapuser',user)
+                    console.log('ldap',localStorage.getItem('ldap'))
+                    dispatch({
+                        type: LOGIN,
+                        payload: {
+                            isLoggedIn: true,
+                            user
+                        }
+                    });
+                } catch (err) {
+                    console.error(err);
+                    dispatch({
+                        type: LOGOUT
+                    });
+                }
+            };
+            initLDAP();
         }
         if(localStorage.getItem('serviceToken')){
             console.log(3)
