@@ -128,11 +128,19 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                             console.log(data.data.name)
                             window.localStorage.setItem('user_name', data.data.name);
                             window.localStorage.setItem('user_email', data.data.email);
+                            const user = {
+                                auth_id: 1
+                                email_id: "admin@moc.com"
+                                first_name: "Super"
+                                id: 1
+                                last_name: "Admin"
+                                username: "admin"
+                            }
                             dispatch({
                                 type: LOGIN,
                                 payload: {
                                     isLoggedIn: true,
-                                    
+                                    user
                                 }
                             });
                             navigate('/dashboard')
