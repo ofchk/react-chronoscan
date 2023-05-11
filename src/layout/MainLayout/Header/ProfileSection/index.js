@@ -95,6 +95,7 @@ const ProfileSection = () => {
 
     return (
         <Box>
+            <span>Hello </span>{user.email}
             <List
                 component="nav"
                 sx={{

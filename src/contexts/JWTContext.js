@@ -125,7 +125,6 @@ export const JWTProvider = ({ children }) => {
                             email: username,
                             password: password
                         });
-        console.log(response.data)
         const { user } = {
             email: response.data.email,
             first_name: response.data.name,
@@ -138,7 +137,7 @@ export const JWTProvider = ({ children }) => {
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
 
-                console.log('user', user)
+        console.log('user in JWT', user)
 
         dispatch({
             type: LOGIN,
