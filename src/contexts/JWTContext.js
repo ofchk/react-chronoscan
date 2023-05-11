@@ -125,8 +125,8 @@ export const JWTProvider = ({ children }) => {
                             email: username,
                             password: password
                         });
-        console.log(response)
-        const { user } = response;
+        console.log(response.data)
+        const { user } = response.data;
 
         localStorage.setItem('username', user.email);
         localStorage.setItem('email', user.email);
