@@ -149,50 +149,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 // navigate('/dashboard');
-                try {
-                    await axiosServices.post(`${API_URL}/user/login`, {
-                            email: values.email,
-                            password: values.password
-                        }, 
-                        {
-                        headers: {
-                          "Content-Type": "application/json",
-                        }
-                      })    
-                        .then(data => {
-                          uploadSuccessMessage("LDAP Successfully Authenticated.");
-                          
-                          if(data.data.status === 200){
-                            console.log(data.data.name)        
-                            window.localStorage.setItem('serviceToken', data.data.email);
-                            window.localStorage.setItem('user_name', data.data.name);
-                            window.localStorage.setItem('user_email', data.data.email);
-                            const user = {
-                                        email_id: data.data.email,
-                                        username: data.data.email,
-                                        first_name: data.data.name,
-                                        last_name: data.data.name
-                                    }                            
-                            dispatch({
-                                type: LOGIN,
-                                payload: {
-                                    isLoggedIn: true,
-                                    user
-                                }
-                            });
-                            navigate('/dashboard')
-                          }else{
-                            dispatch({
-                                type: LOGOUT
-                            });
-                          }
-                        })
-                        .catch(error => {                          
-                          existMessage(error);
-                          console.log('LDAP axios catch: ', error)
-                        })
-
-                    
+                try {                    
                     await ldaplogin(values.email, values.password);    
 
                     if (scriptedRef.current) {
