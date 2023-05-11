@@ -13,7 +13,7 @@ import accountReducer from 'store/accountReducer';
 import Loader from 'ui-component/Loader';
 import axios from 'utils/axios';
 
-import { gql, useQuery, useLazyQuery } from '@apollo/client';
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET_PROFILE = gql`
     query GetProfile($id: Int!) {
@@ -26,6 +26,28 @@ const GET_PROFILE = gql`
             username
         }
     }
+`;
+
+const GET_LDAP_PROFILE = gql`
+    query GetProfile($email: String!) {
+        profile(where: { email_id: { _eq: $email } }) {
+            id
+            first_name
+            email_id
+            auth_id
+            last_name
+            username
+        }
+    }
+`;
+
+const INSERT = gql`
+    mutation Profile($email_id: String!, $created_by: Int!, $first_name: String!, $username: String!){
+      insert_profile_one(object: {email_id: $email_id, created_by: $created_by, first_name: $first_name, username: $username}) {
+        id        
+      }
+    }
+
 `;
 
 
@@ -65,8 +87,20 @@ const JWTContext = createContext(null);
 export const JWTProvider = ({ children }) => {
     const [state, dispatch] = useReducer(accountReducer, initialState);
     const [getProfile, { loading, error, data }] = useLazyQuery(GET_PROFILE);
+    const [getLDAPProfile, { loading: loadingLDAP, error: errorLDAP, data:dataLDAP }] = useLazyQuery(GET_LDAP_PROFILE);
+    const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
 
     useEffect(() => {
+        if(dataLDAP.profile.length === 0){
+            insertProfile({
+                variables: {
+                    email: localStorage.getItem('email'),
+                    username: localStorage.getItem('email'),
+                    first_name: localStorage.getItem('fname'),
+                    created_by: 1,
+                }
+            })
+        }
         const init = async () => {
             try {
                 const serviceToken = window.localStorage.getItem('serviceToken');
@@ -99,7 +133,7 @@ export const JWTProvider = ({ children }) => {
             }
         };
         init();
-    }, [localStorage.getItem('serviceToken')]);
+    }, [localStorage.getItem('serviceToken'), dataLDAP]);
 
     const login = async (username, password) => {
         const response = await axios.post('http://192.168.5.130:3010/api/auth/signin', { username, password });
@@ -132,6 +166,10 @@ export const JWTProvider = ({ children }) => {
             last_name: '',
             username: response.data.email
         };
+
+        if(response && response.data.email){
+            getLDAPProfile({ variables: { email: response.data.email } });
+        }
 
         localStorage.setItem('username', response.data.email);
         localStorage.setItem('email', response.data.email);

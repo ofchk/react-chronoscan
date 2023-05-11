@@ -39,31 +39,8 @@ import { openSnackbar } from 'store/slices/snackbar';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 // ===============================|| JWT LOGIN ||=============================== //
-
-const GET_LDAP_PROFILE = gql`
-    query GetProfile($email: String!) {
-        profile(where: { email_id: { _eq: $email } }) {
-            id
-            first_name
-            email_id
-            auth_id
-            last_name
-            username
-        }
-    }
-`;
-
-const INSERT = gql`
-    mutation Profile($email_id: String!, $created_by: Int!, $first_name: String!, $username: String!){
-      insert_profile_one(object: {email_id: $email_id, created_by: $created_by, first_name: $first_name, username: $username}) {
-        id        
-      }
-    }
-
-`;
 
 
 // constant
@@ -80,9 +57,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
 
     const scriptedRef = useScriptRef();
     const navigate = useNavigate();
-    // const dispatch = useDispatch();
-    const [getLDAPProfile, { loading: loadingLDAP, error: errorLDAP, data:dataLDAP }] = useLazyQuery(GET_LDAP_PROFILE);
-    const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
+    // const dispatch = useDispatch();    
     
     const [state, dispatch] = useReducer(accountReducer, initialState);
     const [checked, setChecked] = React.useState(true);
@@ -121,21 +96,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             close: true
           })
         )
-      }
-
-    useEffect(() => {
-        console.log('dataLDAP',dataLDAP)
-        if(!dataLDAP){
-            insertProfile({
-                variables: {
-                    email: localStorage.getItem('email'),
-                    username: localStorage.getItem('email'),
-                    first_name: localStorage.getItem('fname'),
-                    created_by: 1,
-                }
-            })
-        }
-    }, [dataLDAP]);
+      }    
 
     return (
         <Formik
@@ -155,7 +116,6 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                     await ldaplogin(values.email, values.password);    
 
                     if (scriptedRef.current) {
-                        getLDAPProfile({ variables: { email: localStorage.getItem('email') } });                        
                         setStatus({ success: true });
                         setSubmitting(false);
                     }
