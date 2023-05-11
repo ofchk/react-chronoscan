@@ -133,7 +133,11 @@ export const JWTProvider = ({ children }) => {
                 }
             };
         init();
-    }
+    }else {
+                        dispatch({
+                            type: LOGOUT
+                        });
+                    }
     }, [localStorage.getItem('serviceToken'), dataLDAP]);
 
     const login = async (username, password) => {
