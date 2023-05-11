@@ -100,13 +100,13 @@ export const JWTProvider = ({ children }) => {
                 }
             })
         }
-        if(localStorage.getItem('ldap') == "true"){
+        if(localStorage.getItem('ldap') === "true"){
             try {
                 const response = getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
                 const user = response.data.profile[0];
                 window.localStorage.setItem('fname', user.first_name);
                 window.localStorage.setItem('lname', user.last_name);
-                console.log(user)
+                console.log('user',user)
                 dispatch({
                     type: LOGIN,
                     payload: {
@@ -155,7 +155,7 @@ export const JWTProvider = ({ children }) => {
             };
         init();
     }
-        if(!localStorage.getItem('serviceToken') && localStorage.getItem('ldap') == "false")
+        if(!localStorage.getItem('serviceToken') && localStorage.getItem('ldap') === "false")
         {
             dispatch({
                 type: LOGOUT
