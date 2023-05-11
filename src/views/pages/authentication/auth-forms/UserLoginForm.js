@@ -140,7 +140,6 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                                     }
                                 }
                             });
-                            console.log(isLoggedIn)
                             navigate('/dashboard')
                           }else{
                             dispatch({
