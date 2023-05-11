@@ -1,26 +1,9 @@
-import adminpages from './admin';
-import other from './other';
+import pages from './pages';
 
 // ==============================|| MENU ITEMS ||============================== //
-const username = localStorage.getItem('username');
-
-
-const array = []
-
-if(username === "admin"){
-    array.push(adminpages)
-    const menuItems = {        
-        items: array
-    };
-}else{   
-    array.push(other)
-    const menuItems = {        
-        items: array
-    };
-}
 
 const menuItems = {
-    items: array
+    items: [pages]
 };
 
 export default menuItems;

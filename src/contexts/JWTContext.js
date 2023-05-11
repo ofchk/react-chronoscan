@@ -91,6 +91,7 @@ export const JWTProvider = ({ children }) => {
     const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
 
     useEffect(() => {
+        
         if(dataLDAP && dataLDAP.profile.length === 0){
             insertProfile({
                 variables: {
@@ -123,6 +124,7 @@ export const JWTProvider = ({ children }) => {
             }
         }
         if(localStorage.getItem('serviceToken')){
+            console.log(3)
             const init = async () => {
                 try {
                     const serviceToken = window.localStorage.getItem('serviceToken');
@@ -158,6 +160,11 @@ export const JWTProvider = ({ children }) => {
     }
         if(!localStorage.getItem('serviceToken') && localStorage.getItem('ldap') === "false")
         {
+            dispatch({
+                type: LOGOUT
+            });
+        }
+        if (localStorage.getItem('serviceToken') === null && localStorage.getItem("email") === null) {
             dispatch({
                 type: LOGOUT
             });
