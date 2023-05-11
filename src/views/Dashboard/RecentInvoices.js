@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { IconFileText } from '@tabler/icons';
 
 import MainCard from 'ui-component/cards/MainCard';
+import useAuth from 'hooks/useAuth';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,7 +29,7 @@ import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
     query Get {
-      invoice (order_by: {created_at: desc}, limit: 10){
+      invoice (where: {created_email: {_eq: $email}}, order_by: {created_at: desc}, limit: 10){
         id
         invoice_number
         vendor
@@ -69,7 +70,12 @@ function CustomToolbar() {
 export default function RecentInvoices() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { loading, data, refetch } = useQuery(GET);
+  const { user } = useAuth();
+  const { loading, data, refetch } = useQuery(GET, {
+    variables: {
+      email: user.email
+    }
+  });
 
   const rowSet = [];
   if (data) {
