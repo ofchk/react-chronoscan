@@ -125,7 +125,7 @@ export const JWTProvider = ({ children }) => {
                             email: username,
                             password: password
                         });
-        const { user } = {
+        const user = {
             email: response.data.email,
             first_name: response.data.name,
             last_name: '',
