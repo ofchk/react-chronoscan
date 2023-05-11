@@ -77,7 +77,7 @@ export const JWTProvider = ({ children }) => {
                     const user = response.data.profile[0];
                     window.localStorage.setItem('fname', user.first_name);
                     window.localStorage.setItem('lname', user.last_name);
-                    
+                    console.log(user)
                     dispatch({
                         type: LOGIN,
                         payload: {
