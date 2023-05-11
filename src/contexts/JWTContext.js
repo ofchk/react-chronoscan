@@ -100,38 +100,40 @@ export const JWTProvider = ({ children }) => {
                 }
             })
         }
-        const init = async () => {
-            try {
-                const serviceToken = window.localStorage.getItem('serviceToken');
-                const serviceId = window.localStorage.getItem('id');
-                if (serviceToken && verifyToken(serviceToken)) {
-                    setSession(serviceToken);
-                    // const response = await axios.get('/api/account/me');
-                    const response = await getProfile({ variables: { id: serviceId } });
-                    const user = response.data.profile[0];
-                    window.localStorage.setItem('fname', user.first_name);
-                    window.localStorage.setItem('lname', user.last_name);
-                    console.log(user)
-                    dispatch({
-                        type: LOGIN,
-                        payload: {
-                            isLoggedIn: true,
-                            user
-                        }
-                    });
-                } else {
+        if(localStorage.getItem('serviceToken')){
+            const init = async () => {
+                try {
+                    const serviceToken = window.localStorage.getItem('serviceToken');
+                    const serviceId = window.localStorage.getItem('id');
+                    if (serviceToken && verifyToken(serviceToken)) {
+                        setSession(serviceToken);
+                        // const response = await axios.get('/api/account/me');
+                        const response = await getProfile({ variables: { id: serviceId } });
+                        const user = response.data.profile[0];
+                        window.localStorage.setItem('fname', user.first_name);
+                        window.localStorage.setItem('lname', user.last_name);
+                        console.log(user)
+                        dispatch({
+                            type: LOGIN,
+                            payload: {
+                                isLoggedIn: true,
+                                user
+                            }
+                        });
+                    } else {
+                        dispatch({
+                            type: LOGOUT
+                        });
+                    }
+                } catch (err) {
+                    console.error(err);
                     dispatch({
                         type: LOGOUT
                     });
                 }
-            } catch (err) {
-                console.error(err);
-                dispatch({
-                    type: LOGOUT
-                });
-            }
-        };
+            };
         init();
+    }
     }, [localStorage.getItem('serviceToken'), dataLDAP]);
 
     const login = async (username, password) => {
