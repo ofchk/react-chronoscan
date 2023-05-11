@@ -52,7 +52,7 @@ const initialState = {
 const UserLoginForm = ({ loginProp, ...others }) => {
     const theme = useTheme();
 
-    const { login } = useAuth();
+    const { login, ldaplogin } = useAuth();
 
     const scriptedRef = useScriptRef();
     const navigate = useNavigate();
@@ -97,43 +97,43 @@ const UserLoginForm = ({ loginProp, ...others }) => {
         )
       }
 
-    useEffect(() => {
-        const init = async () => {
-            try {                
-                const serviceToken = window.localStorage.getItem('serviceToken');
-                const userEmail = window.localStorage.getItem('user_email');
-                const userName = window.localStorage.getItem('user_name');
-                if (serviceToken && userEmail) {                    
-                    const user = {
-                                email_id: userEmail,
-                                username: userEmail,
-                                first_name: userName,
-                                last_name: userName
-                            }   
-                    window.localStorage.setItem('fname', userName);
-                    window.localStorage.setItem('lname', '');
-                    console.log(user)
-                    dispatch({
-                        type: LOGIN,
-                        payload: {
-                            isLoggedIn: true,
-                            user
-                        }
-                    });
-                } else {
-                    dispatch({
-                        type: LOGOUT
-                    });
-                }
-            } catch (err) {
-                console.error(err);
-                dispatch({
-                    type: LOGOUT
-                });
-            }
-        };
-        init();
-    }, [localStorage.getItem('serviceToken')]);  
+    // useEffect(() => {
+    //     const init = async () => {
+    //         try {                
+    //             const serviceToken = window.localStorage.getItem('serviceToken');
+    //             const userEmail = window.localStorage.getItem('user_email');
+    //             const userName = window.localStorage.getItem('user_name');
+    //             if (serviceToken && userEmail) {                    
+    //                 const user = {
+    //                             email_id: userEmail,
+    //                             username: userEmail,
+    //                             first_name: userName,
+    //                             last_name: userName
+    //                         }   
+    //                 window.localStorage.setItem('fname', userName);
+    //                 window.localStorage.setItem('lname', '');
+    //                 console.log(user)
+    //                 dispatch({
+    //                     type: LOGIN,
+    //                     payload: {
+    //                         isLoggedIn: true,
+    //                         user
+    //                     }
+    //                 });
+    //             } else {
+    //                 dispatch({
+    //                     type: LOGOUT
+    //                 });
+    //             }
+    //         } catch (err) {
+    //             console.error(err);
+    //             dispatch({
+    //                 type: LOGOUT
+    //             });
+    //         }
+    //     };
+    //     init();
+    // }, [localStorage.getItem('serviceToken')]);  
 
     return (
         <Formik
@@ -191,6 +191,9 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                           existMessage(error);
                           console.log('LDAP axios catch: ', error)
                         })
+
+                    
+                    await ldaplogin(values.email, values.password);    
 
                     if (scriptedRef.current) {
                         setStatus({ success: true });

@@ -118,7 +118,31 @@ export const JWTProvider = ({ children }) => {
                 user
             }
         });
-    };    
+    };  
+
+    const ldaplogin = async (username, password) => {
+        const response = await axios.post('http://192.168.5.130:3010/user/login', { username, password });
+        const { user } = response.data;
+
+        console.log(data.data.name)                                    
+                                                            
+        localStorage.setItem('username', user.email);
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('roles', 'user');
+        localStorage.setItem('role', 'user');
+
+        // localStorage.setItem('id', user.id);
+        // setSession(token);
+        // localStorage.setItem('serviceToken', token);
+        // localStorage.setItem('uid', user.id);
+        dispatch({
+            type: LOGIN,
+            payload: {
+                isLoggedIn: true,
+                user
+            }
+        });
+    };      
 
     const logout = () => {
         setSession(null);
