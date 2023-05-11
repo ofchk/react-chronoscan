@@ -28,6 +28,7 @@ const GET_PROFILE = gql`
     }
 `;
 
+
 const chance = new Chance();
 
 // constant
