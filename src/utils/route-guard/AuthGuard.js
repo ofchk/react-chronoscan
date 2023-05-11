@@ -12,10 +12,11 @@ import useAuth from 'hooks/useAuth';
  * @param {PropTypes.node} children children element/node
  */
 const AuthGuard = ({ children }) => {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
     const navigate = useNavigate();
 
     console.log(isLoggedIn)
+    console.log(user)
     useEffect(() => {
         if (!isLoggedIn) {
             navigate('login', { replace: true });
