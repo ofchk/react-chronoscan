@@ -100,9 +100,10 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     useEffect(() => {
         const init = async () => {
             try {                
+                const serviceToken = window.localStorage.getItem('serviceToken');
                 const userEmail = window.localStorage.getItem('user_email');
                 const userName = window.localStorage.getItem('user_name');
-                if (userEmail) {                    
+                if (serviceToken && userEmail) {                    
                     const user = {
                                 email_id: userEmail,
                                 username: userEmail,
@@ -132,7 +133,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             }
         };
         init();
-    }, [localStorage.getItem('user_email')]);  
+    }, [localStorage.getItem('serviceToken')]);  
 
     return (
         <Formik
@@ -162,7 +163,8 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                           uploadSuccessMessage("LDAP Successfully Authenticated.");
                           
                           if(data.data.status === 200){
-                            console.log(data.data.name)
+                            console.log(data.data.name)        
+                            window.localStorage.setItem('serviceToken', data.data.email);
                             window.localStorage.setItem('user_name', data.data.name);
                             window.localStorage.setItem('user_email', data.data.email);
                             const user = {
