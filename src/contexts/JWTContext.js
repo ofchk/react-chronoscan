@@ -100,6 +100,27 @@ export const JWTProvider = ({ children }) => {
                 }
             })
         }
+        if(localStorage.getItem('ldap')){
+            try {
+                const response = getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
+                const user = response.data.profile[0];
+                window.localStorage.setItem('fname', user.first_name);
+                window.localStorage.setItem('lname', user.last_name);
+                console.log(user)
+                dispatch({
+                    type: LOGIN,
+                    payload: {
+                        isLoggedIn: true,
+                        user
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+                dispatch({
+                    type: LOGOUT
+                });
+            }
+        }
         if(localStorage.getItem('serviceToken')){
             const init = async () => {
                 try {
@@ -134,13 +155,13 @@ export const JWTProvider = ({ children }) => {
             };
         init();
     }
-    if(!localStorage.getItem('email'))
+        if(!localStorage.getItem('serviceToken') && !localStorage.getItem('ldap'))
         {
             dispatch({
                 type: LOGOUT
             });
         }
-    }, [localStorage.getItem('serviceToken'), dataLDAP]);
+    }, [localStorage.getItem('serviceToken'), dataLDAP, localStorage.getItem('ldap')]);
 
     const login = async (username, password) => {
         const response = await axios.post('http://192.168.5.130:3010/api/auth/signin', { username, password });
@@ -177,6 +198,7 @@ export const JWTProvider = ({ children }) => {
         localStorage.setItem('username', response.data.email);
         localStorage.setItem('email', response.data.email);
         localStorage.setItem('fname', response.data.name);
+        localStorage.setItem('ldap', true);
         localStorage.setItem('lname', '');
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
