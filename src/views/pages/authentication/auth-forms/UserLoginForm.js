@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { LOGIN, LOGOUT } from 'store/actions';
 import accountReducer from 'store/accountReducer';
@@ -97,6 +97,43 @@ const UserLoginForm = ({ loginProp, ...others }) => {
         )
       }
 
+    useEffect(() => {
+        const init = async () => {
+            try {                
+                const userEmail = window.localStorage.getItem('user_email');
+                const userName = window.localStorage.getItem('user_name');
+                if (userEmail) {                    
+                    const user = {
+                                email_id: userEmail,
+                                username: userEmail,
+                                first_name: userName,
+                                last_name: userName
+                            }   
+                    window.localStorage.setItem('fname', userName);
+                    window.localStorage.setItem('lname', '');
+                    console.log(user)
+                    dispatch({
+                        type: LOGIN,
+                        payload: {
+                            isLoggedIn: true,
+                            user
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: LOGOUT
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+                dispatch({
+                    type: LOGOUT
+                });
+            }
+        };
+        init();
+    }, [localStorage.getItem('user_email')]);  
+
     return (
         <Formik
             initialValues={{
@@ -129,13 +166,11 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                             window.localStorage.setItem('user_name', data.data.name);
                             window.localStorage.setItem('user_email', data.data.email);
                             const user = {
-                                auth_id: 1,
-                                email_id: "admin@moc.com",
-                                first_name: "Super",
-                                id: 1,
-                                last_name: "Admin",
-                                username: "admin"
-                            }
+                                        email_id: data.data.email,
+                                        username: data.data.email,
+                                        first_name: data.data.name,
+                                        last_name: data.data.name
+                                    }                            
                             dispatch({
                                 type: LOGIN,
                                 payload: {
