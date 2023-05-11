@@ -2,21 +2,17 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconBrandChrome, IconHelp, IconSitemap } from '@tabler/icons';
+import { IconLayoutDashboard, IconFileInvoice, IconDatabase, IconKey, IconBug, IconList, IconFilePlus } from '@tabler/icons';
 
 // constant
-const icons = {
-    IconBrandChrome,
-    IconHelp,
-    IconSitemap
-};
+const icons = { IconBug, IconKey };
 
-// ==============================|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||============================== //
+// ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
 const other = {
-    id: 'sample-docs-roadmap',
-    title: <FormattedMessage id="menu" />,
-    icon: icons.IconHelp,
+    id: 'menu',
+    title: <FormattedMessage id="menu" />,    
+    icon: icons.IconKey,
     type: 'group',
     children: [
         {
@@ -24,26 +20,15 @@ const other = {
             title: <FormattedMessage id="dashboard" />,
             type: 'item',
             url: '/dashboard',
-            icon: icons.IconBrandChrome,
+            icon: IconLayoutDashboard,
             breadcrumbs: false
-        },
-        {
+        },{
             id: 'invoice',
             title: <FormattedMessage id="invoice" />,
             type: 'item',
-            url: '/invoices',
-            icon: icons.IconHelp,
-            external: true,
-            target: true
-        },
-        {
-            id: 'master',
-            title: <FormattedMessage id="master" />,
-            type: 'item',
-            url: '/master',
-            icon: icons.IconSitemap,
-            external: true,
-            target: true
+            url: '/invoice/list',
+            icon: IconFileInvoice,
+            breadcrumbs: false
         }
     ]
 };

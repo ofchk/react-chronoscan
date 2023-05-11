@@ -9,7 +9,7 @@ const icons = { IconBug, IconKey };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
 
-const pages = {
+const adminpages = {
     id: 'menu',
     title: <FormattedMessage id="menu" />,    
     icon: icons.IconKey,
@@ -40,4 +40,4 @@ const pages = {
     ]
 };
 
-export default pages;
+export default adminpages;
