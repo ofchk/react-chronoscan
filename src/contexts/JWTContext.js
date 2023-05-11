@@ -137,8 +137,6 @@ export const JWTProvider = ({ children }) => {
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
 
-        console.log('user in JWT', user)
-
         dispatch({
             type: LOGIN,
             payload: {
