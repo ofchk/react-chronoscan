@@ -39,10 +39,22 @@ import { openSnackbar } from 'store/slices/snackbar';
 // assets
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { gql, useQuery, useLazyQuery } from '@apollo/client';
+import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 // ===============================|| JWT LOGIN ||=============================== //
 
+const GET_PROFILE = gql`
+    query GetProfile($id: Int!) {
+        profile(where: { auth_id: { _eq: $id } }) {
+            id
+            first_name
+            email_id
+            auth_id
+            last_name
+            username
+        }
+    }
+`;
 
 const GET_LDAP_PROFILE = gql`
     query GetProfile($email: String!) {
@@ -84,6 +96,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     // const dispatch = useDispatch();
     const [getLDAPProfile, { loading: loadingLDAP, error: errorLDAP, data:dataLDAP }] = useLazyQuery(GET_LDAP_PROFILE);
     const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
+    const [getProfile, { loading, error, data }] = useLazyQuery(GET_PROFILE);
     
     const [state, dispatch] = useReducer(accountReducer, initialState);
     const [checked, setChecked] = React.useState(true);
