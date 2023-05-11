@@ -71,7 +71,7 @@ export default function RecentInvoices() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { user } = useAuth();
-  cons
+  console.log(user)
   const { loading, data, refetch } = useQuery(GET, {
     variables: {
       email: user.email_id

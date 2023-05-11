@@ -66,6 +66,8 @@ export default function List() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  console.log(user)
+
   const { loading, data, refetch } = useQuery(GET, {
     variables: {
       email: user.email_id
