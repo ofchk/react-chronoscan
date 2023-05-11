@@ -158,7 +158,7 @@ export const JWTProvider = ({ children }) => {
     }
 
     return (
-        <JWTContext.Provider value={{ ...state, login, logout }}>{children}</JWTContext.Provider>
+        <JWTContext.Provider value={{ ...state, login, ldaplogin, logout }}>{children}</JWTContext.Provider>
     );
 };
 
