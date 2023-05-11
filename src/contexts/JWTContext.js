@@ -42,8 +42,8 @@ const GET_LDAP_PROFILE = gql`
 `;
 
 const INSERT = gql`
-    mutation Profile($email_id: String!, $created_by: Int!, $first_name: String!, $username: String!){
-      insert_profile_one(object: {email_id: $email_id, created_by: $created_by, first_name: $first_name, username: $username}) {
+    mutation Profile($email_id: String! $first_name: String!, $username: String!){
+      insert_profile_one(object: {email_id: $email_id, first_name: $first_name, username: $username}) {
         id        
       }
     }
@@ -96,8 +96,7 @@ export const JWTProvider = ({ children }) => {
                 variables: {
                     email_id: localStorage.getItem('email'),
                     username: localStorage.getItem('email'),
-                    first_name: localStorage.getItem('fname'),
-                    created_by: 1,
+                    first_name: localStorage.getItem('fname')
                 }
             })
         }
@@ -165,11 +164,7 @@ export const JWTProvider = ({ children }) => {
             first_name: response.data.name,
             last_name: '',
             username: response.data.email
-        };
-
-        if(response && response.data.email){
-            getLDAPProfile({ variables: { email: response.data.email } });
-        }
+        };        
 
         localStorage.setItem('username', response.data.email);
         localStorage.setItem('email', response.data.email);
@@ -185,6 +180,10 @@ export const JWTProvider = ({ children }) => {
                 user
             }
         });
+
+        if(response && response.data.email){
+            getLDAPProfile({ variables: { email: response.data.email } });
+        }
     };      
 
     const logout = () => {
