@@ -31,6 +31,14 @@ const LoginRoutes = {
             element: <SelectUser />
         },
         {
+            path: '/login',
+            element: <SelectUser />
+        },
+        {
+            path: '/select/user',
+            element: <SelectUser />
+        },
+        {
             path: '/admin/login',
             element: <AuthLogin />
         },
