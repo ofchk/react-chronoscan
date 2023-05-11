@@ -132,12 +132,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                                 type: LOGIN,
                                 payload: {
                                     isLoggedIn: true,
-                                    user : {
-                                        email_id: data.data.email,
-                                        username: data.data.email,
-                                        first_name: data.data.name,
-                                        last_name: data.data.name
-                                    }
+                                    
                                 }
                             });
                             navigate('/dashboard')
