@@ -122,8 +122,8 @@ export const JWTProvider = ({ children }) => {
 
     const ldaplogin = async (username, password) => {
         const response = await axios.post('http://192.168.5.130:3010/user/login', {
-                            email: values.username,
-                            password: values.password
+                            email: username,
+                            password: password
                         });
         const { user } = response.data;
 
