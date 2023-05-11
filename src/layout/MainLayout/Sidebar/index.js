@@ -48,7 +48,7 @@ const Sidebar = () => {
             {layout === LAYOUT_CONST.VERTICAL_LAYOUT && drawerOpen}
             {layout === LAYOUT_CONST.VERTICAL_LAYOUT && drawerOpen && (
                 <Stack direction="row" justifyContent="center" sx={{ mb: 2, textTransform: 'capitalize' }}>
-                    <Chip label={'Hello '+window.localStorage.getItem('user_name')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+                    <Chip label={'Hello '+window.localStorage.getItem('username')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
                 </Stack>
             )}
         </>

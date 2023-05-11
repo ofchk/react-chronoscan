@@ -124,7 +124,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
       }
 
     useEffect(() => {
-        if(dataLDAP && dataLDAP.profile[0].length === 0){
+        if(dataLDAP && dataLDAP.profile.length === 0){
             insertProfile({
                 variables: {
                     email: localStorage.getItem('email'),
