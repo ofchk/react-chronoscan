@@ -91,7 +91,7 @@ export const JWTProvider = ({ children }) => {
     const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
 
     useEffect(() => {
-        if(dataLDAP.profile.length === 0){
+        if(dataLDAP && dataLDAP.profile.length === 0){
             insertProfile({
                 variables: {
                     email: localStorage.getItem('email'),
