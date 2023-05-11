@@ -94,7 +94,7 @@ export const JWTProvider = ({ children }) => {
         if(dataLDAP && dataLDAP.profile.length === 0){
             insertProfile({
                 variables: {
-                    email: localStorage.getItem('email'),
+                    email_id: localStorage.getItem('email'),
                     username: localStorage.getItem('email'),
                     first_name: localStorage.getItem('fname'),
                     created_by: 1,
