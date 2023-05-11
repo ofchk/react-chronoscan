@@ -83,7 +83,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     const navigate = useNavigate();
     // const dispatch = useDispatch();
     const [getLDAPProfile, { loading: loadingLDAP, error: errorLDAP, data:dataLDAP }] = useLazyQuery(GET_LDAP_PROFILE);
-    const [insertProfile, { data: insertProfile, error: insertProfile }] = useMutation(INSERT);
+    const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
     
     const [state, dispatch] = useReducer(accountReducer, initialState);
     const [checked, setChecked] = React.useState(true);

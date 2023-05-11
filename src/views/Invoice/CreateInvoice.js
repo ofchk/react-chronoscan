@@ -57,9 +57,10 @@ const GET = gql`
 `;
 
 const INSERT = gql`
-    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!) {
+    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!, $created_email: String!) {
       insert_invoice_one(object: {
         created_by: $created_by, 
+        created_email: $created_email, 
         invoice_number: $invoice_number, 
         vendor: $vendor, 
         entity: $entity, 
@@ -226,6 +227,7 @@ export default function Create() {
       <Formik
         initialValues={{
           created_by: 1,
+          created_email: localStorage.getItem('email'),
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
