@@ -173,6 +173,8 @@ export const JWTProvider = ({ children }) => {
 
         localStorage.setItem('username', response.data.email);
         localStorage.setItem('email', response.data.email);
+        localStorage.setItem('fname', response.data.name);
+        localStorage.setItem('lname', '');
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
 
