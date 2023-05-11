@@ -15,6 +15,7 @@ import { linearProgressClasses } from '@mui/material/LinearProgress';
 import { IconFileText, IconUpload, IconChecks, IconExclamationCircle } from '@tabler/icons';
 
 import MainCard from 'ui-component/cards/MainCard';
+import useAuth from 'hooks/useAuth';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -29,8 +30,8 @@ import {
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
-    query Get {
-      invoice (order_by: {created_at: desc}){
+    query Get($email: String!) {
+      invoice (order_by: {created_at: desc, created_email: $email}){
         id
         invoice_number
         vendor
@@ -63,7 +64,14 @@ const GET = gql`
 export default function List() {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { loading, data, refetch } = useQuery(GET);
+  const { user } = useAuth();
+
+  const { loading, data, refetch } = useQuery(GET, {
+    variables: {
+      email: user.email
+    }
+  });
+
   const [filter, setFilter] = useState({
         items: [
         ]
