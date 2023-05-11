@@ -124,6 +124,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
       }
 
     useEffect(() => {
+        console.log('dataLDAP',dataLDAP)
         if(dataLDAP && dataLDAP.profile.length === 0){
             insertProfile({
                 variables: {
