@@ -44,8 +44,8 @@ import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 // ===============================|| JWT LOGIN ||=============================== //
 
 const GET_PROFILE = gql`
-    query GetProfile($id: Int!) {
-        profile(where: { auth_id: { _eq: $id } }) {
+    query GetProfile($email: String!) {
+        profile(where: { email: { _eq: $email } }) {
             id
             first_name
             email_id
@@ -143,7 +143,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                 variables: {
                     email: localStorage.getItem('email'),
                     username: localStorage.getItem('email'),
-                    first_name: localStorage.getItem('name'),
+                    first_name: localStorage.getItem('fname'),
                     created_by: 1,
                 }
             })
