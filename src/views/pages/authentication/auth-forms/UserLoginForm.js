@@ -43,19 +43,6 @@ import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 // ===============================|| JWT LOGIN ||=============================== //
 
-const GET_PROFILE = gql`
-    query GetProfile($email: String!) {
-        profile(where: { email: { _eq: $email } }) {
-            id
-            first_name
-            email_id
-            auth_id
-            last_name
-            username
-        }
-    }
-`;
-
 const GET_LDAP_PROFILE = gql`
     query GetProfile($email: String!) {
         profile(where: { email_id: { _eq: $email } }) {
@@ -96,7 +83,6 @@ const UserLoginForm = ({ loginProp, ...others }) => {
     // const dispatch = useDispatch();
     const [getLDAPProfile, { loading: loadingLDAP, error: errorLDAP, data:dataLDAP }] = useLazyQuery(GET_LDAP_PROFILE);
     const [insertProfile, { data: dataProfile, error: errorProfile }] = useMutation(INSERT);
-    const [getProfile, { loading, error, data }] = useLazyQuery(GET_PROFILE);
     
     const [state, dispatch] = useReducer(accountReducer, initialState);
     const [checked, setChecked] = React.useState(true);
@@ -168,7 +154,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                     await ldaplogin(values.email, values.password);    
 
                     if (scriptedRef.current) {
-                        getProfile({ variables: { email: localStorage.getItem('email') } });                        
+                        getLDAPProfile({ variables: { email: localStorage.getItem('email') } });                        
                         setStatus({ success: true });
                         setSubmitting(false);
                     }
