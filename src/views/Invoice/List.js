@@ -31,7 +31,7 @@ import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
     query Get($email: String!) {
-      invoice (where: {created_email: {_eq: $email}, order_by: {created_at: desc}){
+      invoice (where: {created_email: {_eq: $email}}, order_by: {created_at: desc}){
         id
         invoice_number
         vendor
