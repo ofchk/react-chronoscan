@@ -93,6 +93,7 @@ export const JWTProvider = ({ children }) => {
     useEffect(() => {
         
         if(dataLDAP && dataLDAP.profile.length === 0){
+            console.log(1)
             insertProfile({
                 variables: {
                     email_id: localStorage.getItem('email'),
@@ -102,6 +103,7 @@ export const JWTProvider = ({ children }) => {
             })
         }
         if(localStorage.getItem('ldap') === "true"){
+            console.log(2)
             try {
                 const response = getLDAPProfile({ variables: { email: localStorage.getItem('email') } });
                 const user = response.data.profile[0];
@@ -158,13 +160,8 @@ export const JWTProvider = ({ children }) => {
             };
         init();
     }
-        if(!localStorage.getItem('serviceToken') && localStorage.getItem('ldap') === "false")
-        {
-            dispatch({
-                type: LOGOUT
-            });
-        }
         if (localStorage.getItem('serviceToken') === null && localStorage.getItem("email") === null) {
+          console.log(4)
             dispatch({
                 type: LOGOUT
             });
