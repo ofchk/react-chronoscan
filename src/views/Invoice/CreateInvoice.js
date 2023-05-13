@@ -235,7 +235,7 @@ export default function Create() {
       <Formik
         initialValues={{
           created_by: 1,
-          created_email: localStorage.getItem('email') && "",
+          created_email: localStorage.getItem('email'),
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
@@ -403,7 +403,7 @@ export default function Create() {
               fullWidth
               required
             />
-            
+
             <Select
               name="options"
               size="small"

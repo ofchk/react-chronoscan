@@ -21,7 +21,9 @@ const Currency = Loadable(lazy(() => import('views/Master/currency')));
 const MainRoutes = {
     path: '/',
     element: (
+        <AuthGuard>
             <MainLayout />
+        </AuthGuard>
     ),
     children: [        
         {
