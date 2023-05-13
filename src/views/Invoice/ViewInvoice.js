@@ -43,9 +43,15 @@ const GET = gql`
       options{
         id
         title
+      }  
+      currency{
+        id
+        title
       }   
       invoice_by_pk(id: $id) {
         invoice_number
+        invoice_amount
+        gl_date
         invoice_option {
           title
         }
@@ -53,6 +59,9 @@ const GET = gql`
           title
         }
         invoice_entity {
+          title
+        }    
+        invoice_currency {
           title
         }
         invoice_user {
@@ -78,6 +87,9 @@ const GET = gql`
 const initValues = {
   id: "",
   invoice_number: "",
+  invoice_amount: "",
+  gl_date: "",
+  currency: "",
   entity: "",
   vendor: "",
   uploading_status: "",
@@ -110,6 +122,9 @@ export default function ViewInvoice() {
         setDefaultValues( {
             id: pid,
             invoice_number: data.invoice_by_pk.invoice_number ? data.invoice_by_pk.invoice_number : "",
+            invoice_amount: data.invoice_by_pk.invoice_amount ? data.invoice_by_pk.invoice_amount : "",
+            gl_date: data.invoice_by_pk.gl_date ? data.invoice_by_pk.gl_date : "",
+            currency: data.invoice_by_pk.invoice_currency ? data.invoice_by_pk.invoice_currency.title : "",
             vendor: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.name : "",
             entity: data.invoice_by_pk.invoice_entity ? data.invoice_by_pk.invoice_entity.title : "",
             status: data.invoice_by_pk.invoice_status ? data.invoice_by_pk.invoice_status.title : "",
@@ -149,11 +164,28 @@ export default function ViewInvoice() {
                 }
                 </Typography>
         </Stack>
+
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
-            <Typography variant="h5">Processing Status:</Typography>
-            <Typography variant="p" color={(defaultValues.status === "New") ? "primary"  : (defaultValues.status === "Processing" ? "warning"  : (defaultValues.status === "Completed" ? "success"  : "error")) }>
+            <Typography variant="h5">Currency:</Typography>
+            <Typography variant="p">
                 {
-                    defaultValues.status
+                    defaultValues.currency
+                }
+                </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Invoice Amount:</Typography>
+            <Typography variant="p">
+                {
+                    defaultValues.invoice_amount
+                }
+                </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">GL Date:</Typography>
+            <Typography variant="p">
+                {
+                    defaultValues.gl_date
                 }
                 </Typography>
         </Stack>
@@ -162,6 +194,15 @@ export default function ViewInvoice() {
             <Typography variant="p">
                 {
                     defaultValues.options
+                }
+                </Typography>
+        </Stack>
+        
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Processing Status:</Typography>
+            <Typography variant="p" color={(defaultValues.status === "New") ? "primary"  : (defaultValues.status === "Processing" ? "warning"  : (defaultValues.status === "Completed" ? "success"  : "error")) }>
+                {
+                    defaultValues.status
                 }
                 </Typography>
         </Stack>

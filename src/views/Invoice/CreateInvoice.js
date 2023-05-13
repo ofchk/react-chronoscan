@@ -52,12 +52,16 @@ const GET = gql`
       options{
         id
         title
-      }       
+      } 
+      currency{
+        id
+        title
+      }      
     }
 `;
 
 const INSERT = gql`
-    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!, $created_email: String!) {
+    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!, $currency: Int!, $invoice_amount: String!, $gl_date: String!, $created_email: String!) {
       insert_invoice_one(object: {
         created_by: $created_by, 
         created_email: $created_email, 
@@ -65,7 +69,11 @@ const INSERT = gql`
         vendor: $vendor, 
         entity: $entity, 
         status: $status, 
-        option: $options}) {
+        currency: $currency, 
+        option: $options,
+        invoice_amount: $invoice_amount,
+        gl_date: $gl_date
+      }) {
         id
         invoice_number
       }
@@ -227,10 +235,13 @@ export default function Create() {
       <Formik
         initialValues={{
           created_by: 1,
-          created_email: localStorage.getItem('email'),
+          created_email: localStorage.getItem('email') && "",
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
+          currency: undefined,
+          invoice_amount: undefined,
+          gl_date: undefined,
           status: 1,
           options: '',
         }}
@@ -334,6 +345,65 @@ export default function Create() {
                 />
               )}
             />
+
+            <Autocomplete
+              disablePortal
+              options={data && data.currency}
+              getOptionLabel={(option) => option.title}
+              onChange={(event, newValue) => {
+                values.currency = newValue.id;
+                // console.log(newValue);
+              }}
+              name="currency"
+              required
+              size="small"
+              renderInput={(params) => (
+                <TextField
+                  sx={{ mt: 2 }}
+                  {...params}
+                  error = {!!errors.currency}
+                  helperText = {errors.currency}
+                  fullWidth
+                  label="Select Currency"
+                />
+              )}
+            />            
+            <TextField
+              name="invoice_amount"
+              label="Enter Invoice Amount"
+              variant="outlined"
+              size="small"
+              //onChange={handleChange}
+              onChange={(event, newValue) => {
+                values.invoice_amount = event.target.value;
+                setInvnum(event.target.value);
+              }}
+              onBlur={handleBlur}
+              value={values.invoice_amount}
+              sx={{ mt: 2 }}
+              fullWidth
+              required
+            />
+            <InputLabel sx={{ mt: 2, fontSize: '14px' }}>
+              GL Date:{' '}
+            </InputLabel>
+            <TextField
+              name="gl_date"
+              variant="outlined"
+              size="small"
+              type="date"
+              //onChange={handleChange}
+              onChange={(event, newValue) => {
+                values.gl_date = event.target.value;
+                setInvnum(event.target.value);
+              }}
+              onBlur={handleBlur}
+              value={values.gl_date}
+              
+              fullWidth
+              required
+            />
+            
             <Select
               name="options"
               size="small"
@@ -357,27 +427,6 @@ export default function Create() {
                 ))}
             </Select>
             {errors.options && (<FormHelperText error>{errors.options}</FormHelperText>)}
-            <Select
-              name="status"
-              size="small"
-              onChange={handleChange}
-              value={1}
-              fullWidth
-              displayEmpty
-              disabled
-              sx={{ mt: 2, mb: 2 }}
-            >
-              <MenuItem onChange={handleChange} value="">
-                - Select Status -
-              </MenuItem>
-              {data &&
-                data.status &&
-                data.status.map((item, index) => (
-                  <MenuItem onChange={handleChange} value={item.id} key={item.id}>
-                    {item.title}
-                  </MenuItem>
-                ))}
-            </Select>
           
             <Box align="right">
               <Button

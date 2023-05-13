@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Box, Button } from '@mui/material';
 import EntityList from './entitylist';
 import VendorList from './vendorlist';
-import Options from './options';
+import CurrencyList from './currencylist';
 import Status from './status';
 import { Link } from 'react-router-dom';
 
@@ -56,9 +56,10 @@ export default function Master() {
   return (
     <MainCard title="Master Data">
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="Master  Tables">
+        <Tabs value={value} onChange={handleChange} aria-label="Master Tables">
           <Tab label="Vendor" {...a11yProps(0)} />
           <Tab label="Entity" {...a11yProps(1)} />
+          <Tab label="Currency" {...a11yProps(2)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -90,6 +91,21 @@ export default function Master() {
           </Button>
         </Box>  
         <EntityList />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <Box align="right">
+          <Button
+            component={Link}
+            to="/master/create/currency"
+            variant="contained"
+            align="right"
+            sx={{ mb: 2 }}
+            size="small"
+          >
+            Create Currency
+          </Button>
+        </Box>  
+        <CurrencyList />
       </TabPanel>
     </MainCard>
   );

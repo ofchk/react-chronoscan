@@ -13,6 +13,7 @@ const ViewInvoice = Loadable(lazy(() => import('views/Invoice/ViewInvoice')));
 const Master = Loadable(lazy(() => import('views/Master')));
 const Vendor = Loadable(lazy(() => import('views/Master/vendor')));
 const Entity = Loadable(lazy(() => import('views/Master/entity')));
+const Currency = Loadable(lazy(() => import('views/Master/currency')));
 
 
 // ==============================|| MAIN ROUTING ||============================== //
@@ -20,9 +21,7 @@ const Entity = Loadable(lazy(() => import('views/Master/entity')));
 const MainRoutes = {
     path: '/',
     element: (
-        <AuthGuard>
             <MainLayout />
-        </AuthGuard>
     ),
     children: [        
         {
@@ -52,6 +51,10 @@ const MainRoutes = {
         {
             path: '/master/create/entity',
             element: <Entity />
+        },
+        {
+            path: '/master/create/currency',
+            element: <Currency />
         }
     ]
 };
