@@ -71,6 +71,8 @@ const GET = gql`
         invoice_vendor {
           name
           address
+          number
+          site_code
         }
         invoice_uploading_status {
           title
@@ -132,6 +134,9 @@ export default function ViewInvoice() {
             uploading_status: data.invoice_by_pk.invoice_uploading_status ? data.invoice_by_pk.invoice_uploading_status.title : "",
             alfresco_url: data.invoice_by_pk.invoice_files[0] ? data.invoice_by_pk.invoice_files[0].alfresco_url : "",
             oracle_document_identifier: data.invoice_by_pk.invoice_files ? data.invoice_by_pk.invoice_files.oracle_document_identifier : "",
+            number: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.number : "",
+            site_code: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.site_code : "",
+
         })
     }
   }, [data]); 
@@ -153,6 +158,22 @@ export default function ViewInvoice() {
             <Typography variant="p">
                 {
                     defaultValues.vendor
+                }
+                </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Vendor Number:</Typography>
+            <Typography variant="p">
+                {
+                    defaultValues.number
+                }
+                </Typography>
+        </Stack>
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Vendor Site Code/ID:</Typography>
+            <Typography variant="p">
+                {
+                    defaultValues.site_code
                 }
                 </Typography>
         </Stack>
@@ -197,7 +218,7 @@ export default function ViewInvoice() {
                 }
                 </Typography>
         </Stack>
-        
+
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
             <Typography variant="h5">Processing Status:</Typography>
             <Typography variant="p" color={(defaultValues.status === "New") ? "primary"  : (defaultValues.status === "Processing" ? "warning"  : (defaultValues.status === "Completed" ? "success"  : "error")) }>

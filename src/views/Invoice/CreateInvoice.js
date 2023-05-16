@@ -41,6 +41,7 @@ const GET = gql`
         id
         name
         number
+        site_code 
       }
       entity{
         id
@@ -319,7 +320,7 @@ export default function Create() {
               onChange={(event, newValue) => {
                 values.vendor = newValue.id;
                 setVendorName(newValue.name);
-                // console.log(newValue);
+                setSiteCode(newValue.site_code);
               }}
               name="vendor"
               required
