@@ -35,6 +35,9 @@ import { useSelector } from 'react-redux';
 import { updateFileUploadList } from 'store/slices/menu';
 import { FormHelperText } from '@mui/material';
 
+import Moment from 'moment';
+
+
 const GET = gql`
     query Get {
       vendor{
@@ -411,7 +414,8 @@ export default function Create() {
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.gl_date = event.target.value;
-                setGlDate(event.target.value);
+                const tempDate = Moment(event.target.value).format('D-MMM-YY')
+                setGlDate(tempDate);
               }}
               onBlur={handleBlur}
               value={values.gl_date}
