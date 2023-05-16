@@ -44,10 +44,12 @@ const GET = gql`
 `;
 
 const INSERT = gql`
-    mutation Vendor($created_by: Int!, $name: String!, $address: String!, $vendor_process: Int!) {
+    mutation Vendor($created_by: Int!, $name: String!, $number: String!, $site_code: String!, $address: String!, $vendor_process: Int!) {
       insert_vendor_one(object: {
         created_by: $created_by, 
         name: $name, 
+        number: $number, 
+        site_code: $site_code, 
         address: $address,
         vendor_process: $vendor_process
       }) {
@@ -106,11 +108,14 @@ export default function Vendor() {
           </IconButton>Create Vendor</> }>
       <Box>
         <Formik
-          initialValues={{ name: '', address: '', vendor_process: '' }}
+          initialValues={{ name: '', address: '', vendor_process: '', number: '', site_code: ''  }}
           onSubmit={(values, { setSubmitting }) => {
             if(values){
               insert({
                 variables: {
+                  name: values.name,
+                  number: values.number,
+                  site_code: values.site_code,
                   name: values.name,
                   address: values.address,
                   vendor_process: values.vendor_process,
@@ -137,11 +142,10 @@ export default function Vendor() {
           }) => (
             <form onSubmit={handleSubmit}>
               <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
-                Name:
+                Vendor Name:
               </InputLabel>
               <TextField
                 name="name"
-                label="Enter Name"
                 variant="outlined"
                 size="small"
                 onChange={handleChange}
@@ -157,7 +161,6 @@ export default function Vendor() {
               </InputLabel>
               <TextField
                 name="address"
-                label="Enter Address"
                 variant="outlined"
                 size="small"
                 onChange={handleChange}
@@ -167,6 +170,36 @@ export default function Vendor() {
                 sx={{ mb: 2 }}
               />
               {errors.address && touched.address && errors.address}
+              <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
+                Vendor Number:
+              </InputLabel>
+              <TextField
+                name="number"
+                variant="outlined"
+                size="small"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.number}
+                fullWidth
+                required
+                sx={{ mb: 2 }}
+              />
+              {errors.number && touched.number && errors.number}
+              <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
+                Vendor Site Id / Code:
+              </InputLabel>
+              <TextField
+                name="site_code"
+                variant="outlined"
+                size="small"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.site_code}
+                fullWidth
+                required
+                sx={{ mb: 2 }}
+              />
+              {errors.site_code && touched.site_code && errors.site_code}
               <InputLabel sx={{ color: '#222', fontSize: '14px', marginBottom: '5px' }}>
                 Process Available
               </InputLabel>

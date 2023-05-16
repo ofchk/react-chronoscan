@@ -40,6 +40,7 @@ const GET = gql`
       vendor{
         id
         name
+        number
       }
       entity{
         id
@@ -123,11 +124,18 @@ export default function Create() {
 
   const { loading, data, refetch } = useQuery(GET) || [];
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
-  const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE);
+  const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE );
   const [file, setFile] = useState(null);
 
   const [invid, setInvid] = React.useState();
   const [invnum, setInvnum] = React.useState(1);
+
+  const [amount, setAmount] = React.useState();
+  const [vendorName, setVendorName] = React.useState();
+  const [entityName, setEntityName] = React.useState();
+  const [currencyHeader, setCurrencyHeader] = React.useState();
+  const [siteCode, setSiteCode] = React.useState();
+  const [glDate, setGlDate] = React.useState();
 
   const handleChange = (file) => {
     setFile(file);
@@ -204,29 +212,33 @@ export default function Create() {
     }
   }
 
-  const uploadHandler = (param, invoice, iid) => {
+  const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyHeader, siteCode, glDate) => {
     var formData = new FormData();
     formData.append('file', param);  
     formData.append('invoice', invoice);  
     formData.append('invoice_id', iid);  
+    formData.append('amount', amount );
+    formData.append('vendor_name', vendorName );
+    formData.append('entity_name', entityName );
+    formData.append('currency', currencyHeader );
+    formData.append('site_id', siteCode );
+    formData.append('gl_date', glDate );
     console.log(formData.entries(), param, invoice, iid);
     handleFileUpload(formData, iid, param.name)
     // navigate('/invoice/list')
   }
 
   useEffect(() => {
-    if (insertData) {
-      console.log(insertData)
-      console.log(insertData.insert_invoice_one)
-      console.log(insertData.insert_invoice_one.id)
+    if (insertData) {      
       setInvid(insertData.insert_invoice_one.id)
 
       if (file) {
         console.log(file)
-        uploadHandler(file, invnum, insertData.insert_invoice_one.id);
+        uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyHeader, siteCode, glDate);
       }
     }
   }, [insertData]);
+
 
   return (
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
@@ -306,6 +318,7 @@ export default function Create() {
               getOptionLabel={(option) => option.name}
               onChange={(event, newValue) => {
                 values.vendor = newValue.id;
+                setVendorName(newValue.name);
                 // console.log(newValue);
               }}
               name="vendor"
@@ -329,6 +342,7 @@ export default function Create() {
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
                 values.entity = newValue.id;
+                setEntityName(newValue.title);
                 // console.log(newValue);
               }}
               name="entity"
@@ -352,6 +366,7 @@ export default function Create() {
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
                 values.currency = newValue.id;
+                setCurrencyHeader(newValue.title);
                 // console.log(newValue);
               }}
               name="currency"
@@ -376,7 +391,7 @@ export default function Create() {
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.invoice_amount = event.target.value;
-                setInvnum(event.target.value);
+                setAmount(event.target.value);
               }}
               onBlur={handleBlur}
               value={values.invoice_amount}
@@ -395,7 +410,7 @@ export default function Create() {
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.gl_date = event.target.value;
-                setInvnum(event.target.value);
+                setGlDate(event.target.value);
               }}
               onBlur={handleBlur}
               value={values.gl_date}
