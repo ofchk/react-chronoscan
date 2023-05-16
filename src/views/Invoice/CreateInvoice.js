@@ -217,6 +217,10 @@ export default function Create() {
   }
 
   const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyHeader, siteCode, glDate) => {
+
+    console.log(glDate)
+    console.log(Moment(glDate).format('D-MMM-YY'))
+
     var formData = new FormData();
     formData.append('file', param);  
     formData.append('invoice', invoice);  
@@ -226,7 +230,7 @@ export default function Create() {
     formData.append('entity_name', entityName );
     formData.append('currency', currencyHeader );
     formData.append('site_id', siteCode );
-    formData.append('gl_date', glDate );
+    formData.append('gl_date', Moment(glDate).format('D-MMM-YY') );
     console.log(formData.entries(), param, invoice, iid);
     handleFileUpload(formData, iid, param.name)
     // navigate('/invoice/list')
