@@ -142,7 +142,7 @@ export default function ViewInvoice() {
             oracle_document_identifier: data.invoice_by_pk.oracle_document_identifier ? data.invoice_by_pk.oracle_document_identifier : "",
             number: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.number : "",
             site_code: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.site_code : "",
-            error_log: data.error_logs ? data.error_logs[0].message : ""
+            error_log: data.error_logs.length > 0 ? data.error_logs[0].message : ""
         })
     }
   }, [data]); 
@@ -151,7 +151,12 @@ export default function ViewInvoice() {
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
             <IconChevronLeft />
           </IconButton>View Invoice</> }>
-          <Typography  sx={{ backgroundColor: 'red', p:1 }} color="#FFFFFF" align="center" variant="h4">{defaultValues.error_log}</Typography>
+          {
+            defaultValues.error_log &&
+            <Typography  sx={{ backgroundColor: 'red', p:1 }} color="#FFFFFF" align="center" variant="h4">{defaultValues.error_log}</Typography>
+          }
+
+          
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
             <Typography variant="h5">Invoice Number:</Typography>
             <Typography variant="p">
