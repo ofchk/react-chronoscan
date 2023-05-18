@@ -52,6 +52,7 @@ const GET = gql`
         invoice_number
         invoice_amount
         gl_date
+        oracle_document_identifier        
         invoice_option {
           title
         }
@@ -80,7 +81,6 @@ const GET = gql`
         uploading_status
         invoice_files {
           alfresco_url
-          oracle_document_identifier
         }
       }    
     }
@@ -133,7 +133,7 @@ export default function ViewInvoice() {
             options: data.invoice_by_pk.invoice_option ? data.invoice_by_pk.invoice_option.title : "",
             uploading_status: data.invoice_by_pk.invoice_uploading_status ? data.invoice_by_pk.invoice_uploading_status.title : "",
             alfresco_url: data.invoice_by_pk.invoice_files[0] ? data.invoice_by_pk.invoice_files[0].alfresco_url : "",
-            oracle_document_identifier: data.invoice_by_pk.invoice_files ? data.invoice_by_pk.invoice_files.oracle_document_identifier : "",
+            oracle_document_identifier: data.invoice_by_pk.oracle_document_identifier ? data.invoice_by_pk.oracle_document_identifier : "",
             number: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.number : "",
             site_code: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.site_code : "",
 
