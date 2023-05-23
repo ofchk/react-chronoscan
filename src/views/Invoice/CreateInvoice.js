@@ -70,6 +70,7 @@ const GET_VENDOR = gql`
         id
         org_id
         name
+        number
         supplier_name
         site_code
       }      
@@ -153,7 +154,7 @@ export default function Create() {
   const [vendorName, setVendorName] = React.useState();
   const [entityName, setEntityName] = React.useState();
   const [currencyHeader, setCurrencyHeader] = React.useState();
-  const [siteCode, setSiteCode] = React.useState(1);
+  const [siteCode, setSiteCode] = React.useState();
   const [glDate, setGlDate] = React.useState();
 
   const handleChange = (file) => {
@@ -380,7 +381,11 @@ export default function Create() {
                       name="vendor"
                       required
                       size="small"
-                
+                      renderOption={(props, option) => (
+                        <Box component="li" {...props}>                  
+                          {option.name} ({option.number})
+                        </Box>
+                      )}
                       renderInput={(params) => (
                         <TextField
                           sx={{ mt: 2 }}
