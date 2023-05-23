@@ -72,6 +72,7 @@ const GET_VENDOR = gql`
         name
         number
         supplier_name
+        supplier_number
         site_code
       }      
     }
@@ -372,7 +373,7 @@ export default function Create() {
                     <Autocomplete
                       disablePortal
                       options={vendorData && vendorData.vendor}
-                      getOptionLabel={(option) => option.name}
+                      getOptionLabel={(option) => option.supplier_name}
                       onChange={(event, newValue) => {
                         values.vendor = newValue.id;
                         setVendorName(newValue.name);
@@ -383,7 +384,7 @@ export default function Create() {
                       size="small"
                       renderOption={(props, option) => (
                         <Box component="li" {...props}>                  
-                          {option.name} ({option.number})
+                          {option.supplier_name} ({option.supplier_number})
                         </Box>
                       )}
                       renderInput={(params) => (
