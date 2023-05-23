@@ -77,6 +77,8 @@ const GET = gql`
           address
           number
           site_code
+          supplier_name
+          supplier_number
         }
         invoice_uploading_status {
           title
@@ -97,6 +99,7 @@ const initValues = {
   currency: "",
   entity: "",
   vendor: "",
+  vendor_number: "",
   uploading_status: "",
   status: "",
   options : "",
@@ -133,7 +136,8 @@ export default function ViewInvoice() {
             invoice_amount: data.invoice_by_pk.invoice_amount ? data.invoice_by_pk.invoice_amount : "",
             gl_date: data.invoice_by_pk.gl_date ? data.invoice_by_pk.gl_date : "",
             currency: data.invoice_by_pk.invoice_currency ? data.invoice_by_pk.invoice_currency.title : "",
-            vendor: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.name : "",
+            vendor: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.supplier_name : "",
+            vendor_number: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.supplier_number : "",
             entity: data.invoice_by_pk.invoice_entity ? data.invoice_by_pk.invoice_entity.title : "",
             status: data.invoice_by_pk.invoice_status ? data.invoice_by_pk.invoice_status.title : "",
             options: data.invoice_by_pk.invoice_option ? data.invoice_by_pk.invoice_option.title : "",
@@ -177,7 +181,7 @@ export default function ViewInvoice() {
             <Typography variant="h5">Vendor Number:</Typography>
             <Typography variant="p">
                 {
-                    defaultValues.number
+                    defaultValues.vendor_number
                 }
                 </Typography>
         </Stack>
