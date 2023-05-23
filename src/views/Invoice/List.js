@@ -56,6 +56,9 @@ const GET = gql`
         invoice_uploading_status {
           title
         }
+        invoice_error_logs {
+          message
+        }
       }         
     }
 `;

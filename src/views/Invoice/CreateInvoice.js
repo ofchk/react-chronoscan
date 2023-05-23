@@ -15,7 +15,8 @@ import  { Box,
           MenuItem,
           InputLabel,
           Autocomplete,
-          IconButton
+          IconButton,
+          Stack
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
@@ -40,11 +41,9 @@ import Moment from 'moment';
 
 const GET = gql`
     query Get {
-      vendor{
+      vendor(distinct_on: org_id) {
         id
-        name
-        number
-        site_code 
+        org_id
       }
       entity{
         id
@@ -61,6 +60,18 @@ const GET = gql`
       currency{
         id
         title
+      }      
+    }
+`;
+
+const GET_VENDOR = gql`
+    query GetVendor($org_id: Int!) {
+      vendor(where: {org_id: {_eq: $org_id}}) {
+        id
+        org_id
+        name
+        supplier_name
+        site_code
       }      
     }
 `;
@@ -127,6 +138,10 @@ export default function Create() {
   const insertFileArray = useSelector((state) => state.menu.fileUploadList);
 
   const { loading, data, refetch } = useQuery(GET) || [];
+  
+  const [getLazyVendor, { loading : vendorLoading, data : vendorData, refetch : vendorRefetch }] = useLazyQuery(GET_VENDOR) || [];
+
+
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE );
   const [file, setFile] = useState(null);
@@ -138,7 +153,7 @@ export default function Create() {
   const [vendorName, setVendorName] = React.useState();
   const [entityName, setEntityName] = React.useState();
   const [currencyHeader, setCurrencyHeader] = React.useState();
-  const [siteCode, setSiteCode] = React.useState();
+  const [siteCode, setSiteCode] = React.useState(1);
   const [glDate, setGlDate] = React.useState();
 
   const handleChange = (file) => {
@@ -320,30 +335,78 @@ export default function Create() {
               fullWidth
               required
             />
-            <Autocomplete
-              disablePortal
-              options={data && data.vendor}
-              getOptionLabel={(option) => option.name}
-              onChange={(event, newValue) => {
-                values.vendor = newValue.id;
-                setVendorName(newValue.name);
-                setSiteCode(newValue.site_code);
-              }}
-              name="vendor"
-              required
-              size="small"
-        
-              renderInput={(params) => (
-                <TextField
-                  sx={{ mt: 2 }}
-                  {...params}
-                  error = {!!errors.vendor}
-                  helperText = {errors.vendor}
-                  fullWidth
-                  label="Select Vendor"
-                />
-              )}
-            />
+            <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+              <Grid container spacing={2} alignItems="left">
+                <Grid item xs={6} lg={6} >            
+                  <Autocomplete
+                    disablePortal
+                    options={data && data.vendor}
+                    getOptionLabel={(option) => option.org_id}
+                    onChange={(event, newValue) => {
+                      values.vendor = newValue.id;
+                      getLazyVendor({
+                        variables: {
+                          org_id: newValue.org_id
+                        }
+                      })
+                    }}
+                    name="org_id"
+                    required
+                    size="small"
+                    renderInput={(params) => (
+                      <TextField
+                        sx={{ mt: 2 }}
+                        {...params}
+                        error = {!!errors.org_id}
+                        helperText = {errors.org_id}
+                        fullWidth
+                        label="Select Vendor Organisation Id"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={6} lg={6} >
+                  {
+                    vendorData &&
+                    <Autocomplete
+                      disablePortal
+                      options={vendorData && vendorData.vendor}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(event, newValue) => {
+                        values.vendor = newValue.id;
+                        setVendorName(newValue.name);
+                        setSiteCode(newValue.site_code);                  
+                      }}
+                      name="vendor"
+                      required
+                      size="small"
+                
+                      renderInput={(params) => (
+                        <TextField
+                          sx={{ mt: 2 }}
+                          {...params}
+                          error = {!!errors.vendor}
+                          helperText = {errors.vendor}
+                          fullWidth
+                          label="Select Vendor"
+                        />
+                      )}
+                    />
+                  }
+                </Grid>
+              </Grid>
+            </Stack>
+            {
+              siteCode &&
+              <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+                <Typography variant="h5">Vendor Site Code:</Typography>
+                <Typography variant="p">
+                  {
+                      siteCode
+                  }
+                </Typography>
+              </Stack>
+            }
             <Autocomplete
               disablePortal
               options={data && data.entity}
