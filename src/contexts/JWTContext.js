@@ -172,7 +172,10 @@ export const JWTProvider = ({ children }) => {
                 type: LOGOUT
             });
         }
-    }, [localStorage.getItem('serviceToken'), dataLDAP, localStorage.getItem('ldap')]);
+        if(dataProfile){
+            window.location.reload();
+        }
+    }, [localStorage.getItem('serviceToken'), dataLDAP, localStorage.getItem('ldap'), dataProfile]);
 
     const login = async (username, password) => {
         const response = await axios.post('http://192.168.5.130:3010/api/auth/signin', { username, password });
