@@ -248,7 +248,8 @@ export default function Create() {
     formData.append('entity_name', entityName );
     formData.append('currency', currencyHeader );
     formData.append('site_id', siteCode );
-    formData.append('gl_date', Moment(glDate).format('D-MMM-YY') );
+    // formData.append('gl_date', Moment(glDate).format('D-MMM-YY') );
+    formData.append('gl_date', gl_date );
     console.log(formData.entries(), param, invoice, iid);
     handleFileUpload(formData, iid, param.name)
     // navigate('/invoice/list')
