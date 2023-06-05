@@ -48,6 +48,7 @@ const GET = gql`
       entity{
         id
         title
+        org_id
       }
       status{
         id
@@ -342,27 +343,28 @@ export default function Create() {
                 <Grid item xs={6} lg={6} >            
                   <Autocomplete
                     disablePortal
-                    options={data && data.vendor}
-                    getOptionLabel={(option) => option.org_id}
+                    options={data && data.entity}
+                    getOptionLabel={(option) => option.title}
                     onChange={(event, newValue) => {
-                      values.vendor = newValue.id;
+                      values.entity = newValue.id;
+                      setEntityName(newValue.title);
                       getLazyVendor({
-                        variables: {
-                          org_id: newValue.org_id
-                        }
-                      })
+                          variables: {
+                            org_id: newValue.org_id
+                          }
+                        })
                     }}
-                    name="org_id"
+                    name="entity"
                     required
                     size="small"
                     renderInput={(params) => (
                       <TextField
                         sx={{ mt: 2 }}
                         {...params}
-                        error = {!!errors.org_id}
-                        helperText = {errors.org_id}
+                        error = {!!errors.entity}
+                        helperText = {errors.entity}
                         fullWidth
-                        label="Select Vendor Organisation Id"
+                        label="Select Entity"
                       />
                     )}
                   />
@@ -413,29 +415,7 @@ export default function Create() {
                 </Typography>
               </Stack>
             }
-            <Autocomplete
-              disablePortal
-              options={data && data.entity}
-              getOptionLabel={(option) => option.title}
-              onChange={(event, newValue) => {
-                values.entity = newValue.id;
-                setEntityName(newValue.title);
-                // console.log(newValue);
-              }}
-              name="entity"
-              required
-              size="small"
-              renderInput={(params) => (
-                <TextField
-                  sx={{ mt: 2 }}
-                  {...params}
-                  error = {!!errors.entity}
-                  helperText = {errors.entity}
-                  fullWidth
-                  label="Select Entity"
-                />
-              )}
-            />
+            
 
             <Autocomplete
               disablePortal
