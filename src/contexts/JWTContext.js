@@ -208,8 +208,8 @@ export const JWTProvider = ({ children }) => {
         
         console.log(response.data)
 
-        localStorage.setItem('username', response.data.sAMAccountName);
-        localStorage.setItem('email', response.data.userPrincipalName);
+        localStorage.setItem('username', response.data.username);
+        localStorage.setItem('email', response.data.email);
         localStorage.setItem('fname', response.data.name);
         localStorage.setItem('ldap', true);
         localStorage.setItem('lname', '');
