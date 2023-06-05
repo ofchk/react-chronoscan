@@ -93,7 +93,8 @@ export const JWTProvider = ({ children }) => {
     useEffect(() => {
         
         if(dataLDAP && dataLDAP.profile.length === 0){
-            console.log(1)
+            console.log("dataLDAP NULL")
+            console.log(localStorage)
             insertProfile({
                 variables: {
                     email_id: localStorage.getItem('email'),
@@ -204,9 +205,11 @@ export const JWTProvider = ({ children }) => {
             last_name: '',
             username: response.data.email
         };        
+        
+        console.log(response.data)
 
-        localStorage.setItem('username', response.data.email);
-        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('username', response.data.sAMAccountName);
+        localStorage.setItem('email', response.data.userPrincipalName);
         localStorage.setItem('fname', response.data.name);
         localStorage.setItem('ldap', true);
         localStorage.setItem('lname', '');
