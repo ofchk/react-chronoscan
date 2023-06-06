@@ -204,8 +204,7 @@ export const JWTProvider = ({ children }) => {
     };  
 
     const ldaplogin = async (username, password) => {
-        localStorage.setItem('al_param1', username);
-        localStorage.setItem('al_param2', password);
+        
         const response = await axios.post('http://192.168.5.130:3010/user/login', {
                             email: username,
                             password: password
@@ -220,12 +219,16 @@ export const JWTProvider = ({ children }) => {
         console.log(response.data)
 
         localStorage.setItem('username', response.data.username);
+
         localStorage.setItem('email', response.data.email);
         localStorage.setItem('fname', response.data.name);
         localStorage.setItem('ldap', true);
         localStorage.setItem('lname', '');
         localStorage.setItem('roles', 'user');
         localStorage.setItem('role', 'user');
+
+        localStorage.setItem('al_param1', response.data.username);
+        localStorage.setItem('al_param2', password);
 
         dispatch({
             type: LOGIN,
