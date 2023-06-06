@@ -144,6 +144,7 @@ export const JWTProvider = ({ children }) => {
                         const user = response.data.profile[0];
                         window.localStorage.setItem('fname', user.first_name);
                         window.localStorage.setItem('lname', user.last_name);
+                        window.localStorage.setItem('email', user.email_id);
                         console.log(user)
                         dispatch({
                             type: LOGIN,
@@ -183,7 +184,7 @@ export const JWTProvider = ({ children }) => {
         setSession(token);
         localStorage.setItem('serviceToken', token);
         localStorage.setItem('username', user.username);
-        localStorage.setItem('email', user.email);
+        localStorage.setItem('email', user.email_id);
         localStorage.setItem('roles', user.roles);
         localStorage.setItem('id', user.id);
         localStorage.setItem('role', user.user_role);
@@ -192,7 +193,7 @@ export const JWTProvider = ({ children }) => {
         localStorage.setItem('al_param1', username);
         localStorage.setItem('al_param2', password);
 
-        
+
         dispatch({
             type: LOGIN,
             payload: {
