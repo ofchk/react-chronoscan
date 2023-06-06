@@ -188,6 +188,11 @@ export const JWTProvider = ({ children }) => {
         localStorage.setItem('id', user.id);
         localStorage.setItem('role', user.user_role);
         localStorage.setItem('uid', user.id);
+
+        localStorage.setItem('al_param1', username);
+        localStorage.setItem('al_param2', password);
+
+        
         dispatch({
             type: LOGIN,
             payload: {
