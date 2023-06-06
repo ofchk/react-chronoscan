@@ -379,7 +379,7 @@ export default function Create() {
                       getOptionLabel={(option) => option.supplier_name}
                       onChange={(event, newValue) => {
                         values.vendor = newValue.id;
-                        setVendorName(newValue.name);
+                        setVendorName(newValue.supplier_name);
                         setSiteCode(newValue.site_code);                  
                       }}
                       name="vendor"
