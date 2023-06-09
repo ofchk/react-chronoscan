@@ -103,8 +103,8 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             initialValues={{
                 // email: 'info@codedthemes.com',
                 // password: '123456',
-                email: 'dmstest1@moc.com',
-                password: 'tEsT98564TRW',
+                email: '',
+                password: '',
                 submit: null
             }}
             validationSchema={Yup.object().shape({
