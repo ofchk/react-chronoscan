@@ -116,14 +116,14 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                     await ldaplogin(values.email, values.password)
                     .then((response) => {
                             console.log(response)
+                            if(response && response.data.status === '401'){
+                                console.log(response.data)
+                                setErrors({ submit: response.data.message.lde_message });
+                            }
                         }
                     );    
                         
-                    // if(response && response.status === '401'){
-                    //     console.log(response.status)
-                    //     console.log(response)
-                    //     setErrors({ submit: response.message.lde_message });
-                    // }
+                    
 
                     if (scriptedRef.current) {
                         setStatus({ success: true });

@@ -238,7 +238,7 @@ export const JWTProvider = ({ children }) => {
             });
             getLDAPProfile({ variables: { email: response.data.email } });            
         }
-            return response
+            // return response
 
     };      
 
