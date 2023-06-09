@@ -113,7 +113,11 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 // navigate('/dashboard');
                 try {                    
-                    const response = await ldaplogin(values.email, values.password).then((response => console.log(response)));    
+                    await ldaplogin(values.email, values.password)
+                    .then((response) => {
+                            console.log(response)
+                        }
+                    );    
                         
                     if(response && response.status === '401'){
                         console.log(response.status)

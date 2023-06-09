@@ -237,8 +237,9 @@ export const JWTProvider = ({ children }) => {
                 }
             });
             getLDAPProfile({ variables: { email: response.data.email } });            
-            return response.data
         }
+            return response
+
     };      
 
     const logout = () => {
