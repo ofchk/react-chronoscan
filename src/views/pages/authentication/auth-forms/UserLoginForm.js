@@ -114,6 +114,7 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                 // navigate('/dashboard');
                 try {                    
                     const response = await ldaplogin(values.email, values.password);    
+                        console.log(response)
                     if(response && response.status === '401'){
                         console.log(response.status)
                         console.log(response)
