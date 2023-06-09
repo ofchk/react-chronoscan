@@ -117,8 +117,8 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                     .then((response) => {
                             console.log(response.data.status)
                             if(response.data.status === 401){
-                                console.log(response.data)
-                                setErrors({ submit: response.data.message.lde_message });
+                                console.log(response.data.message.lde_message)
+                                setErrors({ submit: response.data.message });
                             }
                         }
                     );    
