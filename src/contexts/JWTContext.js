@@ -215,8 +215,6 @@ export const JWTProvider = ({ children }) => {
             last_name: '',
             username: response.data.email
         };        
-        
-        console.log(response.data)        
 
         if(response && response.data.email){
             localStorage.setItem('username', response.data.username);
@@ -238,7 +236,8 @@ export const JWTProvider = ({ children }) => {
                     user
                 }
             });
-            getLDAPProfile({ variables: { email: response.data.email } });
+            getLDAPProfile({ variables: { email: response.data.email } });            
+            return response.data
         }
     };      
 
