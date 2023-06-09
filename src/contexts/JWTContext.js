@@ -216,29 +216,28 @@ export const JWTProvider = ({ children }) => {
             username: response.data.email
         };        
         
-        console.log(response.data)
-
-        localStorage.setItem('username', response.data.username);
-
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('fname', response.data.name);
-        localStorage.setItem('ldap', true);
-        localStorage.setItem('lname', '');
-        localStorage.setItem('roles', 'user');
-        localStorage.setItem('role', 'user');
-
-        localStorage.setItem('al_param1', response.data.username);
-        localStorage.setItem('al_param2', password);
-
-        dispatch({
-            type: LOGIN,
-            payload: {
-                isLoggedIn: true,
-                user
-            }
-        });
+        console.log(response.data)        
 
         if(response && response.data.email){
+            localStorage.setItem('username', response.data.username);
+
+            localStorage.setItem('email', response.data.email);
+            localStorage.setItem('fname', response.data.name);
+            localStorage.setItem('ldap', true);
+            localStorage.setItem('lname', '');
+            localStorage.setItem('roles', 'user');
+            localStorage.setItem('role', 'user');
+
+            localStorage.setItem('al_param1', response.data.username);
+            localStorage.setItem('al_param2', password);
+
+            dispatch({
+                type: LOGIN,
+                payload: {
+                    isLoggedIn: true,
+                    user
+                }
+            });
             getLDAPProfile({ variables: { email: response.data.email } });
         }
     };      
