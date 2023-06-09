@@ -115,8 +115,8 @@ const UserLoginForm = ({ loginProp, ...others }) => {
                 try {                    
                     await ldaplogin(values.email, values.password)
                     .then((response) => {
-                            console.log(response)
-                            if(response && response.data.status === '401'){
+                            console.log(response.data.status)
+                            if(response.data.status === 401){
                                 console.log(response.data)
                                 setErrors({ submit: response.data.message.lde_message });
                             }
