@@ -113,7 +113,12 @@ const UserLoginForm = ({ loginProp, ...others }) => {
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 // navigate('/dashboard');
                 try {                    
-                    await ldaplogin(values.email, values.password);    
+                    const response = await ldaplogin(values.email, values.password);    
+                    if(response && response.status === '401'){
+                        console.log(response.status)
+                        console.log(response)
+                        setErrors({ submit: response.message.lde_message });
+                    }
 
                     if (scriptedRef.current) {
                         setStatus({ success: true });
