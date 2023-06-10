@@ -491,7 +491,10 @@ export default function Create() {
             <Select
               name="options"
               size="small"
-              onChange={handleChange}
+              onChange={(event, newValue) => {
+                    values.options = event.target.value;
+                    setOptions(event.target.value);
+                  }}
               value={values.options}
               fullWidth
               displayEmpty
@@ -505,11 +508,7 @@ export default function Create() {
               {data &&
                 data.options &&
                 data.options.map((item, index) => (
-                  <MenuItem 
-                  onChange={(event, newValue) => {
-                    values.options = newValue.id;
-                    setOptions(newValue.id);
-                  }}
+                  <MenuItem                   
                   value={item.id} key={item.id}>
                     {item.title}
                   </MenuItem>
