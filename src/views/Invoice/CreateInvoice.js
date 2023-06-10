@@ -249,7 +249,7 @@ export default function Create() {
     formData.append('entity_name', entityName );
     formData.append('currency', currencyHeader );
     formData.append('site_id', siteCode );
-    formData.append('options', setOptions );
+    formData.append('options', options );
     
     formData.append('al_param1', localStorage.getItem('al_param1') );
     formData.append('al_param2', localStorage.getItem('al_param2') );
@@ -494,6 +494,7 @@ export default function Create() {
               onChange={(event, newValue) => {
                     values.options = event.target.value;
                     setOptions(event.target.value);
+                    console.log(event.target.value)
                   }}
               value={values.options}
               fullWidth
