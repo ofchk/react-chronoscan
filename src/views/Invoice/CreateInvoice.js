@@ -158,6 +158,7 @@ export default function Create() {
   const [currencyHeader, setCurrencyHeader] = React.useState();
   const [siteCode, setSiteCode] = React.useState();
   const [glDate, setGlDate] = React.useState();
+  const [options, setOptions] = React.useState();
 
   const handleChange = (file) => {
     setFile(file);
@@ -248,6 +249,7 @@ export default function Create() {
     formData.append('entity_name', entityName );
     formData.append('currency', currencyHeader );
     formData.append('site_id', siteCode );
+    formData.append('options', setOptions );
     
     formData.append('al_param1', localStorage.getItem('al_param1') );
     formData.append('al_param2', localStorage.getItem('al_param2') );
@@ -473,8 +475,7 @@ export default function Create() {
               name="gl_date"
               variant="outlined"
               size="small"
-              type="date"
-              //onChange={handleChange}
+              type="date"              
               onChange={(event, newValue) => {
                 values.gl_date = event.target.value;
                 const tempDate = Moment(event.target.value).format('D-MMM-YY')
@@ -504,7 +505,12 @@ export default function Create() {
               {data &&
                 data.options &&
                 data.options.map((item, index) => (
-                  <MenuItem onChange={handleChange} value={item.id} key={item.id}>
+                  <MenuItem 
+                  onChange={(event, newValue) => {
+                    values.options = newValue.id;
+                    setOptions(newValue.id);
+                  }}
+                  value={item.id} key={item.id}>
                     {item.title}
                   </MenuItem>
                 ))}
