@@ -193,6 +193,20 @@ export default function Create() {
     )
   }
 
+  const errorMessage = (message) => {
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: message,
+        variant: 'alert',
+        alert: {
+          color: 'error'
+        },
+        close: true
+      })
+    )
+  }
+
   const handleFileUpload = async (formData, iid, filename) => {
    console.log(formData.entries()["file"]);
     dispatch(updateFileUploadList({
@@ -270,7 +284,16 @@ export default function Create() {
         uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyHeader, siteCode, glDate);
       }
     }
-  }, [insertData]);
+    if(insertError){
+      // if(deleteError.graphQLErrors[0].message.includes("Uniqueness violation")){
+      if(insertError.graphQLErrors[0].message.includes("Uniqueness violation")){        
+        errorMessage("An Invoice with this invoice number already exist. ")
+      }
+      else{
+        errorMessage("Some error occured. Check your internet connection or Contact Administrator.") 
+      }
+    }
+  }, [insertData, insertError]);
 
 
   return (
