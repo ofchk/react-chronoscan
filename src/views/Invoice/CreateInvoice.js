@@ -314,7 +314,7 @@ export default function Create() {
           options: '',
         }}
         onSubmit={(values, { setSubmitting }) => {
-          if (values) {
+          if (values && file) {
             insertInvoice({
               variables: values,
             }).then((resp) => {
@@ -322,6 +322,9 @@ export default function Create() {
               setSubmitting(false);
             }).catch((error) => setSubmitting(false))
           } else {
+            if(file){
+              errorMessage("Please Upload File.")
+            }  
             setSubmitting(false);
           }
         }}
