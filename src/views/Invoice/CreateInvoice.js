@@ -322,7 +322,7 @@ export default function Create() {
               setSubmitting(false);
             }).catch((error) => setSubmitting(false))
           } else {
-            if(file){
+            if(!file){
               errorMessage("Please Upload File.")
             }  
             setSubmitting(false);
