@@ -75,6 +75,7 @@ const GET_VENDOR = gql`
         supplier_name
         supplier_number
         site_code
+        site_code_original
       }      
     }
 `;
@@ -159,6 +160,10 @@ export default function Create() {
   const [siteCode, setSiteCode] = React.useState();
   const [glDate, setGlDate] = React.useState();
   const [options, setOptions] = React.useState();
+  const [entityOrgId, setEntityOrgId] = React.useState();
+  const [vendorNumber, setVendorNumber] = React.useState();
+  const [vendorCode, setVendorCode] = React.useState();
+
 
   const handleChange = (file) => {
     setFile(file);
@@ -264,6 +269,9 @@ export default function Create() {
     formData.append('currency', currencyHeader );
     formData.append('site_id', siteCode );
     formData.append('options', options );
+    formData.append('vendor_number', vendorNumber );
+    formData.append('entity_org_id', entityOrgId );
+    formData.append('vendor_code', vendorCode );
     
     formData.append('al_param1', localStorage.getItem('al_param1') );
     formData.append('al_param2', localStorage.getItem('al_param2') );
@@ -328,22 +336,22 @@ export default function Create() {
             setSubmitting(false);
           }
         }}
-        validate={(values) => {
-          let errors = {};
-          if (!values.invoice_number) {
-            errors.invoice_number = 'Invoice number is required'
-          }
-          if (!values.vendor) {
-            errors.vendor = 'Select a valid vendor'
-          }
-          if (!values.entity) {
-            errors.entity = 'Select a valid entity'
-          }
-          if (!values.options) {
-            errors.options = 'Select a processing option'
-          }
-          return errors;
-       }}
+       //  validate={(values) => {
+       //    let errors = {};
+       //    if (!values.invoice_number) {
+       //      errors.invoice_number = 'Invoice number is required'
+       //    }
+       //    if (!values.vendor) {
+       //      errors.vendor = 'Select a valid vendor'
+       //    }
+       //    if (!values.entity) {
+       //      errors.entity = 'Select a valid entity'
+       //    }
+       //    if (!values.options) {
+       //      errors.options = 'Select a processing option'
+       //    }
+       //    return errors;
+       // }}
       >
         {({
           values,
@@ -376,11 +384,13 @@ export default function Create() {
                 <Grid item xs={6} lg={6} >            
                   <Autocomplete
                     disablePortal
+                    disableClearable="true"
                     options={data && data.entity}
                     getOptionLabel={(option) => option.title}
                     onChange={(event, newValue) => {
                       values.entity = newValue.id;
                       setEntityName(newValue.title);
+                      setEntityOrgId(newValue.org_id);
                       getLazyVendor({
                           variables: {
                             org_id: newValue.org_id
@@ -388,7 +398,6 @@ export default function Create() {
                         })
                     }}
                     name="entity"
-                    required
                     size="small"
                     renderOption={(props, option) => (
                         <Box component="li" {...props}>                  
@@ -399,9 +408,8 @@ export default function Create() {
                       <TextField
                         sx={{ mt: 2 }}
                         {...params}
-                        error = {!!errors.entity}
-                        helperText = {errors.entity}
                         fullWidth
+                        required
                         label="Select Entity"
                       />
                     )}
@@ -412,15 +420,17 @@ export default function Create() {
                     vendorData &&
                     <Autocomplete
                       disablePortal
+                      disableClearable="true"
                       options={vendorData && vendorData.vendor}
                       getOptionLabel={(option) => option.supplier_name}
                       onChange={(event, newValue) => {
                         values.vendor = newValue.id;
                         setVendorName(newValue.supplier_name);
-                        setSiteCode(newValue.site_code);                  
+                        setSiteCode(newValue.site_code);        
+                        setVendorNumber(newValue.supplier_number);
+                        setVendorCode(newValue.site_code_original);
                       }}
-                      name="vendor"
-                      required
+                      name="vendor"                      
                       size="small"
                       renderOption={(props, option) => (
                         <Box component="li" {...props}>                  
@@ -429,10 +439,9 @@ export default function Create() {
                       )}
                       renderInput={(params) => (
                         <TextField
+                          required
                           sx={{ mt: 2 }}
                           {...params}
-                          error = {!!errors.vendor}
-                          helperText = {errors.vendor}
                           fullWidth
                           label="Select Vendor"
                         />
@@ -445,10 +454,16 @@ export default function Create() {
             {
               siteCode &&
               <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
-                <Typography variant="h5">Vendor Site Code:</Typography>
+                <Typography variant="h5">Vendor Site Id:</Typography>
                 <Typography variant="p">
                   {
                       siteCode
+                  }
+                </Typography>
+                <Typography variant="h5">Vendor Number:</Typography>
+                <Typography variant="p">
+                  {
+                      vendorNumber
                   }
                 </Typography>
               </Stack>
@@ -457,6 +472,7 @@ export default function Create() {
 
             <Autocomplete
               disablePortal
+              disableClearable="true"
               options={data && data.currency}
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
@@ -465,14 +481,12 @@ export default function Create() {
                 // console.log(newValue);
               }}
               name="currency"
-              required
               size="small"
               renderInput={(params) => (
                 <TextField
                   sx={{ mt: 2 }}
                   {...params}
-                  error = {!!errors.currency}
-                  helperText = {errors.currency}
+                  required
                   fullWidth
                   label="Select Currency"
                 />
@@ -525,9 +539,8 @@ export default function Create() {
               value={values.options}
               fullWidth
               displayEmpty
+              required              
               sx={{ mt: 2 }}
-              error = {!!errors.options}
-              helperText = {errors.options}
             >
               <MenuItem onChange={handleChange} value="">
                 - Select Processing Option -
@@ -541,7 +554,6 @@ export default function Create() {
                   </MenuItem>
                 ))}
             </Select>
-            {errors.options && (<FormHelperText error>{errors.options}</FormHelperText>)}
           
             <Box align="right">
               <Button
