@@ -138,13 +138,13 @@ export default function Create() {
   const [item3, setItem3] = React.useState();
   const [progress, setProgress] = React.useState();
   const [speed, setSpeed] = React.useState();
+  const [currencyDefault, setCurrencyDefault] = React.useState(2);
 
   const insertFileArray = useSelector((state) => state.menu.fileUploadList);
 
   const { loading, data, refetch } = useQuery(GET) || [];
   
   const [getLazyVendor, { loading : vendorLoading, data : vendorData, refetch : vendorRefetch }] = useLazyQuery(GET_VENDOR) || [];
-
 
   const [insertInvoice, { data: insertData, error: insertError }] = useMutation(INSERT);
   const [insertFile, { data: insertDataFile, error: insertErrorFile }] = useMutation(INSERT_FILE );
@@ -280,7 +280,7 @@ export default function Create() {
     formData.append('gl_date', glDate );
     console.log(formData.entries(), param, invoice, iid);
     handleFileUpload(formData, iid, param.name)
-    navigate('/invoice/list')
+    //navigate('/invoice/list')
   }
 
   useEffect(() => {
@@ -319,7 +319,7 @@ export default function Create() {
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
-          currency: 1,
+          currency: 2,
           invoice_amount: undefined,
           gl_date: undefined,
           status: 1,
@@ -466,12 +466,11 @@ export default function Create() {
                   }
                 </Typography>
               </Stack>
-            }
-            
-
+            }          
             <Autocomplete
+              value={data && data.currency[0]}
               disablePortal
-              disableClearable="true"
+              disableClearable="true"    
               options={data && data.currency}
               getOptionLabel={(option) => option.title}
               onChange={(event, newValue) => {
@@ -484,13 +483,13 @@ export default function Create() {
               renderInput={(params) => (
                 <TextField
                   sx={{ mt: 2 }}
-                  {...params}
+                  {...params}                  
                   required
                   fullWidth
                   label="Select Currency"
                 />
               )}
-            />            
+            />
             <TextField
               name="invoice_amount"
               label="Enter Invoice Amount"
