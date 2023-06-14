@@ -74,7 +74,7 @@ export default function RecentInvoices() {
   console.log(user)
   const { loading, data, refetch } = useQuery(GET, {
     variables: {
-      email: user.email_id
+      email: user ? user.email_id : ''
     }
   });
 

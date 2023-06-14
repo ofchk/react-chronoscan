@@ -74,7 +74,7 @@ const Header = ({ handleDrawerToggle }) => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />            
             <Stack direction="row" justifyContent="center" sx={{ mt: 1, textTransform: 'capitalize' }}>
-                <Chip label={'Hello '+window.localStorage.getItem('username')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+                <Chip label={'Hello, '+window.localStorage.getItem('username')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
             </Stack>
             <ProfileSection /> 
 
