@@ -14,10 +14,10 @@ import  { Box,
           Select,
           MenuItem,
           InputLabel,
-          Autocomplete,
           IconButton,
           Stack
 } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 
@@ -303,6 +303,10 @@ export default function Create() {
     }
   }, [insertData, insertError]);
 
+  const filterVendorOptions = createFilterOptions({
+    stringify: (option) => option.supplier_name + option.supplier_number,
+  });
+
 
   return (
     <MainCard title={<><IconButton color="primary" onClick={() => navigate(-1)} sx={{ p:0, fontSize: "14px"}}>
@@ -419,6 +423,7 @@ export default function Create() {
                   {
                     vendorData &&
                     <Autocomplete
+                      filterOptions={filterVendorOptions}
                       disablePortal
                       disableClearable="true"
                       options={vendorData && vendorData.vendor}
