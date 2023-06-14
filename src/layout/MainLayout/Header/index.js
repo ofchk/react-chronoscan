@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Avatar, Box, useMediaQuery, IconButton } from '@mui/material';
+import { Avatar, Box, useMediaQuery, IconButton, Stack, Chip } from '@mui/material';
 
 // project imports
 import LAYOUT_CONST from 'constant';
@@ -73,7 +73,9 @@ const Header = ({ handleDrawerToggle }) => {
             {/* header search */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />            
-
+            <Stack direction="row" justifyContent="center" sx={{ mt: 1, textTransform: 'capitalize' }}>
+                <Chip label={'Hello '+window.localStorage.getItem('username')} disabled chipcolor="secondary" size="small" sx={{ cursor: 'pointer' }} />
+            </Stack>
             <ProfileSection /> 
 
             {/* mobile header */}

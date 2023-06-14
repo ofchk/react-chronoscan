@@ -94,7 +94,7 @@ const ProfileSection = () => {
     }, [open]);
 
     return (
-        <Box>
+        <Box>            
             <List
                 component="nav"
                 sx={{

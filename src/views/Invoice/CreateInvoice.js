@@ -280,7 +280,7 @@ export default function Create() {
     formData.append('gl_date', glDate );
     console.log(formData.entries(), param, invoice, iid);
     handleFileUpload(formData, iid, param.name)
-    // navigate('/invoice/list')
+    navigate('/invoice/list')
   }
 
   useEffect(() => {
@@ -315,7 +315,7 @@ export default function Create() {
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
-          currency: undefined,
+          currency: 1,
           invoice_amount: undefined,
           gl_date: undefined,
           status: 1,
@@ -453,13 +453,7 @@ export default function Create() {
             </Stack>
             {
               siteCode &&
-              <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
-                <Typography variant="h5">Vendor Site Id:</Typography>
-                <Typography variant="p">
-                  {
-                      siteCode
-                  }
-                </Typography>
+              <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>               
                 <Typography variant="h5">Vendor Number:</Typography>
                 <Typography variant="p">
                   {
