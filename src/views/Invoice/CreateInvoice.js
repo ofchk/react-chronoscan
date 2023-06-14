@@ -310,7 +310,7 @@ export default function Create() {
           </IconButton>Create Invoice</> }>
       <Formik
         initialValues={{
-          created_by: 1,
+          created_by: localStorage.getItem('user_id'),
           created_email: localStorage.getItem('email'),
           invoice_number: undefined,
           vendor: undefined,

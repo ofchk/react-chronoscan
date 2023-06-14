@@ -113,6 +113,7 @@ export const JWTProvider = ({ children }) => {
                     const user = response.data.profile[0];
                     window.localStorage.setItem('fname', user.first_name);
                     window.localStorage.setItem('lname', user.last_name);
+                    window.localStorage.setItem('user_id', user.id);
                     console.log('ldapuser',user)
                     console.log('ldap',localStorage.getItem('ldap'))
                     dispatch({
@@ -145,6 +146,7 @@ export const JWTProvider = ({ children }) => {
                         window.localStorage.setItem('fname', user.first_name);
                         window.localStorage.setItem('lname', user.last_name);
                         window.localStorage.setItem('email', user.email_id);
+                        window.localStorage.setItem('user_id', user.id);
                         console.log(user)
                         dispatch({
                             type: LOGIN,
