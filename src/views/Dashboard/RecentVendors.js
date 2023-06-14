@@ -29,7 +29,10 @@ const GET = gql`
           vendor {
             id
             name
-            address
+            supplier_name
+            supplier_number
+            site_code
+            site_code_original
           }          
         }
 `;
@@ -54,13 +57,19 @@ export default function RecentVendors() {
       rowSet.push({
         id: item.id,
         name: item.name,
-        address: item.address ? item.address : '-',
+        supplier_name: item.supplier_name ? item.supplier_name : '-',
+        supplier_number: item.supplier_number ? item.supplier_number : '-',
+        site_code: item.site_code ? item.site_code : '-',
+        site_code_original: item.site_code_original ? item.site_code_original : '-',
       });
     });
   }
   const columnSet = [
-    { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'address', headerName: 'Address', width: 500 },
+    { field: 'name', headerName: 'OU Name', width: 200 },
+    { field: 'supplier_name', headerName: 'Supplier Name', width: 300 },
+    { field: 'supplier_number', headerName: 'Supplier Number', width: 200 },
+    { field: 'site_code', headerName: 'Site Id', width: 150 },
+    { field: 'site_code_original', headerName: 'Site Code', width: 200 },
   ];
   return (
     <MainCard sx={{ boxShadow: theme.shadows[8] }}>
@@ -75,9 +84,7 @@ export default function RecentVendors() {
         autoHeight="true"
         hideFooterPagination="true"
       />
-      <Box align="right" mt={2}><Button color="primary" aria-label="View Invoice" component={Link} to={"/master"}>            
-        View More
-      </Button></Box>
+      
     </MainCard>
   );
 }
