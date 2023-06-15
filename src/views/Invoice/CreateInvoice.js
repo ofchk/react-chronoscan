@@ -138,7 +138,7 @@ export default function Create() {
   const [item3, setItem3] = React.useState();
   const [progress, setProgress] = React.useState();
   const [speed, setSpeed] = React.useState();
-  const [currencyDefault, setCurrencyDefault] = React.useState(2);
+  const [currencyDefault, setCurrencyDefault] = React.useState(1);
 
   const insertFileArray = useSelector((state) => state.menu.fileUploadList);
 
@@ -319,7 +319,7 @@ export default function Create() {
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
-          currency: 2,
+          currency: undefined,
           invoice_amount: undefined,
           gl_date: undefined,
           status: 1,
@@ -467,29 +467,35 @@ export default function Create() {
                 </Typography>
               </Stack>
             }          
-            <Autocomplete
-              value={data && data.currency[0]}
-              disablePortal
-              disableClearable="true"    
-              options={data && data.currency}
-              getOptionLabel={(option) => option.title}
-              onChange={(event, newValue) => {
-                values.currency = newValue.id;
-                setCurrencyHeader(newValue.title);
-                // console.log(newValue);
-              }}
+            <Select
               name="currency"
               size="small"
-              renderInput={(params) => (
-                <TextField
-                  sx={{ mt: 2 }}
-                  {...params}                  
-                  required
-                  fullWidth
-                  label="Select Currency"
-                />
-              )}
-            />
+              onChange={(event, newValue) => {
+                console.log(event.target.value)
+                    // values.setCurrencyHeader = event.target.value; 
+                    values.currency = event.target.value;
+                    setCurrencyDefault(event.target.value);
+                    setCurrencyHeader(event.target.value);
+                    console.log(event.target.value)
+                  }}
+              value={currencyDefault}
+              fullWidth
+              displayEmpty
+              required              
+              sx={{ mt: 2 }}
+            >
+              <MenuItem onChange={handleChange} value="">
+                - Select Currency -
+              </MenuItem>
+              {data &&
+                data.currency &&
+                data.currency.map((item, index) => (
+                  <MenuItem                   
+                  value={item.id} key={item.id}>
+                    {item.title}
+                  </MenuItem>
+                ))}
+            </Select>
             <TextField
               name="invoice_amount"
               label="Enter Invoice Amount"
