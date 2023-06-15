@@ -63,9 +63,6 @@ export default function Dashboard() {
         <Box>
             <RecentInvoices/>
         </Box>
-        <Box sx={{ mt: 5 }}>
-            <RecentVendors />
-        </Box>
     </MainCard>
     );
 }
