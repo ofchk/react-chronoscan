@@ -295,7 +295,7 @@ export default function Create() {
     if(insertError){
       // if(deleteError.graphQLErrors[0].message.includes("Uniqueness violation")){
       if(insertError.graphQLErrors[0].message.includes("Uniqueness violation")){        
-        errorMessage("An Invoice with this invoice number already exist. ")
+        errorMessage("An Invoice with this invoice number + Entity + Vendor combination already exist. ")
       }
       else{
         errorMessage("Some error occured. Check your internet connection or Contact Administrator.") 
