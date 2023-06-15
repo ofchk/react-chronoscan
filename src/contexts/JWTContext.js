@@ -98,7 +98,7 @@ export const JWTProvider = ({ children }) => {
             insertProfile({
                 variables: {
                     email_id: localStorage.getItem('email'),
-                    username: localStorage.getItem('email'),
+                    username: localStorage.getItem('username'),
                     first_name: localStorage.getItem('fname')
                 }
             })
@@ -215,7 +215,7 @@ export const JWTProvider = ({ children }) => {
             email: response.data.email,
             first_name: response.data.name,
             last_name: '',
-            username: response.data.email
+            username: response.data.username
         };        
 
         if(response && response.data.email){
@@ -228,7 +228,7 @@ export const JWTProvider = ({ children }) => {
             localStorage.setItem('roles', 'user');
             localStorage.setItem('role', 'user');
 
-            localStorage.setItem('al_param1', response.data.username);
+            localStorage.setItem('al_param1', response.data.username.toLowerCase());
             localStorage.setItem('al_param2', password);
 
             dispatch({
