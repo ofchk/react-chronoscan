@@ -319,7 +319,7 @@ export default function Create() {
           invoice_number: undefined,
           vendor: undefined,
           entity: undefined,
-          currency: undefined,
+          currency: currencyDefault,
           invoice_amount: undefined,
           gl_date: undefined,
           status: 1,
