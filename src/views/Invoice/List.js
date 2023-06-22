@@ -34,6 +34,7 @@ const GET = gql`
       invoice (where: {created_email: {_eq: $email}}, order_by: {created_at: desc}){
         id
         invoice_number
+        invoice_amount
         vendor
         entity
         option
@@ -41,7 +42,7 @@ const GET = gql`
         uploading_status
         created_at
         invoice_vendor{
-          name
+          supplier_name
         }
         invoice_entity{
           title
@@ -100,6 +101,7 @@ export default function List() {
           <GridToolbarFilterButton
              
           /> */}
+          <GridToolbarFilterButton />        
           <GridToolbarExport />
         </GridToolbarContainer>
       </>
@@ -113,7 +115,8 @@ export default function List() {
       rowSet.push({
         id: item.id,
         invoice_number: item.invoice_number,
-        vendor: item.invoice_vendor ? item.invoice_vendor.name : '-',
+        invoice_amount: item.invoice_amount,
+        vendor: item.invoice_vendor ? item.invoice_vendor.supplier_name : '-',
         // entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
         uploading_status: item.invoice_uploading_status ? item.invoice_uploading_status.title : '-',
@@ -138,6 +141,7 @@ export default function List() {
     },
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
     { field: 'vendor', headerName: 'Vendor', width: 200 },
+    { field: 'invoice_amount', headerName: 'Amount', width: 200 },
     // { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'status', headerName: 'Processing Status', width: 200,
       renderCell: (params) => {

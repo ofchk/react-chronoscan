@@ -39,7 +39,7 @@ const GET = gql`
         uploading_status
         created_at
         invoice_vendor{
-          name
+          supplier_name
         }
         invoice_entity{
           title
@@ -62,6 +62,7 @@ function CustomToolbar() {
   return (
     <>
       <GridToolbarContainer>
+        <GridToolbarFilterButton />      
       </GridToolbarContainer>
     </>
   );
@@ -84,7 +85,8 @@ export default function RecentInvoices() {
       rowSet.push({
         id: item.id,
         invoice_number: item.invoice_number,
-        vendor: item.invoice_vendor ? item.invoice_vendor.name : '-',
+        invoice_amount: item.invoice_amount,
+        vendor: item.invoice_vendor ? item.invoice_vendor.supplier_name : '-',
         entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
         uploading_status: item.invoice_uploading_status ? item.invoice_uploading_status.title : '-',
@@ -97,6 +99,7 @@ export default function RecentInvoices() {
   const columnSet = [
     
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
+    { field: 'invoice_amount', headerName: 'Amount', width: 200 },
     { field: 'vendor', headerName: 'Vendor', width: 200 },
     { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'status', headerName: 'Processing Status', width: 200,
