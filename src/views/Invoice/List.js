@@ -117,7 +117,7 @@ export default function List() {
         invoice_number: item.invoice_number,
         invoice_amount: item.invoice_amount,
         vendor: item.invoice_vendor ? item.invoice_vendor.supplier_name : '-',
-        // entity: item.invoice_entity ? item.invoice_entity.title : '-',
+        entity: item.invoice_entity ? item.invoice_entity.title : '-',
         status: item.invoice_status ? item.invoice_status.title : '-',
         uploading_status: item.invoice_uploading_status ? item.invoice_uploading_status.title : '-',
         created_at: item.created_at
@@ -140,9 +140,9 @@ export default function List() {
       } 
     },
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
+    { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'vendor', headerName: 'Vendor', width: 200 },
     { field: 'invoice_amount', headerName: 'Amount', width: 200 },
-    // { field: 'entity', headerName: 'Entity', width: 200 },
     { field: 'status', headerName: 'Processing Status', width: 200,
       renderCell: (params) => {
         return (

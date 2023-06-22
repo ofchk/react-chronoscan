@@ -32,6 +32,7 @@ const GET = gql`
       invoice (where: {created_email: {_eq: $email}}, order_by: {created_at: desc}, limit: 10){
         id
         invoice_number
+        invoice_amount
         vendor
         entity
         option
@@ -99,9 +100,9 @@ export default function RecentInvoices() {
   const columnSet = [
     
     { field: 'invoice_number', headerName: 'Invoice Number', width: 200 },
-    { field: 'invoice_amount', headerName: 'Amount', width: 200 },
-    { field: 'vendor', headerName: 'Vendor', width: 200 },
     { field: 'entity', headerName: 'Entity', width: 200 },
+    { field: 'vendor', headerName: 'Vendor', width: 200 },
+    { field: 'invoice_amount', headerName: 'Amount', width: 200 },
     { field: 'status', headerName: 'Processing Status', width: 200,
       renderCell: (params) => {
         return (
