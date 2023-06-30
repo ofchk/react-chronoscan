@@ -254,7 +254,7 @@ export default function Create() {
     }
   }
 
-  const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyHeader, siteCode, glDate) => {
+  const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyDefault, siteCode, glDate) => {
 
     console.log(glDate)
     console.log(Moment(glDate).format('D-MMM-YY'))
@@ -266,7 +266,7 @@ export default function Create() {
     formData.append('amount', amount );
     formData.append('vendor_name', vendorName );
     formData.append('entity_name', entityName );
-    formData.append('currency', currencyHeader );
+    formData.append('currency', currencyDefault );
     formData.append('site_id', siteCode );
     formData.append('options', options );
     formData.append('vendor_number', vendorNumber );
@@ -289,7 +289,7 @@ export default function Create() {
 
       if (file) {
         console.log(file)
-        uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyHeader, siteCode, glDate);
+        uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyDefault, siteCode, glDate);
       }
     }
     if(insertError){
