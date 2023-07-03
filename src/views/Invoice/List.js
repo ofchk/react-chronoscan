@@ -209,12 +209,25 @@ export default function List() {
             checked={showUploadedOnly}
             onChange={(event, checked) => {
               if (checked) {
-                handleQuickFilter(false, true)
+                getInvoice({
+                  variables: {
+                    where: {
+                      created_email: {_eq: email}, 
+                      invoice_uploading_status: {title: {_eq: "Completed"}}
+                    }
+                  }
+                })
               } else {
-                handleQuickFilter(false, false)
+                getInvoice({
+                  variables: {
+                    where: {created_email: {_eq: email}}
+                  }
+                })
               }
               setShowUploadedOnly(checked)
-              setShowProcessedOnly(!checked)
+              if(showProcessedOnly){
+                setShowProcessedOnly(false)
+              }              
             }} 
         />}></FormControlLabel>
         <FormControlLabel
@@ -223,12 +236,25 @@ export default function List() {
             checked={showProcessedOnly}
             onChange={(event, checked) => {
               if (checked) {
-                handleQuickFilter(true, false)
+                getInvoice({
+                  variables: {
+                    where: {
+                      created_email: {_eq: email}, 
+                      invoice_status: {title: {_eq: "Completed"}}
+                    }
+                  }
+                })
               } else {
-                handleQuickFilter(false, false)
-              }
-              setShowUploadedOnly(!checked)
+                getInvoice({
+                  variables: {
+                    where: {created_email: {_eq: email}}
+                  }
+                })
+              }              
               setShowProcessedOnly(checked)
+              if(showUploadedOnly){
+                setShowUploadedOnly(false)
+              }              
             }} 
         />}></FormControlLabel>
           <Button
