@@ -30,8 +30,8 @@ import {
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
-    query Get($email: String!) {
-      invoice (where: {created_email: {_eq: $email}}, order_by: {created_at: desc}){
+    query Get($where: invoice_bool_exp) {
+      invoice (where: $where, order_by: {created_at: desc}){
         id
         invoice_number
         invoice_amount
@@ -72,15 +72,15 @@ export default function List() {
 
   console.log(user)
 
-  const { loading, data, refetch } = useQuery(GET, {
+  const email = user ? user.email_id : ''
+  const [getInvoice, { loading, data, refetch }] = useQuery(GET, {
     variables: {
-      email: user ? user.email_id : ''
+      where: {created_email: {_eq: email}}
     }
   });
 
   const [filter, setFilter] = useState({
-        items: [
-        ]
+        items: []
   });
 
   const [showProcessedOnly, setShowProcessedOnly] = useState(false);
@@ -102,7 +102,6 @@ export default function List() {
              
           /> */}
           <GridToolbarFilterButton />        
-          <GridToolbarExport />
         </GridToolbarContainer>
       </>
     );
@@ -213,11 +212,21 @@ export default function List() {
             checked={showUploadedOnly}
             onChange={(event, checked) => {
               if (checked) {
-                handleQuickFilter(false, true)
+                getInvoice({
+                  variables: {
+                    where: {
+                      created_email: {_eq: email}, 
+                      invoice_uploading_status: {title: {_eq: "Completed"}}
+                    }
+                  }
+                })
               } else {
-                handleQuickFilter(false, false)
+                getInvoice({
+                  variables: {
+                    where: {created_email: {_eq: email}}
+                  }
+                })
               }
-              setShowUploadedOnly(checked)
             }} 
         />}></FormControlLabel>
         <FormControlLabel
@@ -226,11 +235,21 @@ export default function List() {
             checked={showProcessedOnly}
             onChange={(event, checked) => {
               if (checked) {
-                handleQuickFilter(true, false)
+                getInvoice({
+                  variables: {
+                    where: {
+                      created_email: {_eq: email}, 
+                      invoice_status: {title: {_eq: "Completed"}}
+                    }
+                  }
+                })
               } else {
-                handleQuickFilter(false, false)
+                getInvoice({
+                  variables: {
+                    where: {created_email: {_eq: email}}
+                  }
+                })
               }
-              setShowProcessedOnly(checked)
             }} 
         />}></FormControlLabel>
           <Button
@@ -249,7 +268,7 @@ export default function List() {
 
         <DataGrid
           rows={rowSet}
-          filterModel={filter}
+          paginationMode='server'
           columns={columnSet}
           m={2}
           pageSize={15}
