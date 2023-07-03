@@ -18,13 +18,13 @@ import Paper from '@mui/material/Paper';
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
 
 const GET = gql`
-    query Get {
-      invoice_today_aggregate {
+    query Get($id: Int!) {       
+        user_invoice_today_aggregate(args: {ab: $id}) {
             aggregate {
               count
             }
-        } 
-      invoice_week_aggregate {
+          }
+      user_invoice_week_aggregate(where: {created_by: {_eq: $id}}) {
             aggregate {
               count
             }
@@ -36,7 +36,11 @@ const GET = gql`
 
 export default function Dashboard() {
     const theme = useTheme();
-    const { loading, data, refetch } = useQuery(GET);
+    const { loading, data, refetch } = useQuery(GET, {
+        variables: {
+            id : localStorage.getItem('user_id')
+        }
+    });
   
     return (
       <MainCard  title="Dashboard" sx={{ backgroundColor: "#fff"}}>         
@@ -45,15 +49,15 @@ export default function Dashboard() {
                 <Grid item xs={12} lg={6}>
                     <UserCountCard
                         primary="Total Invoice Processed Today"
-                        secondary={data && data.invoice_today_aggregate.aggregate.count}
+                        secondary={data && data.user_invoice_today_aggregate.aggregate.count}
                         iconPrimary={DescriptionTwoToneIcon}
                         color={theme.palette.secondary.main}
                     />
                 </Grid>
                 <Grid item xs={12} lg={6} sm={6}>
                     <UserCountCard
-                        primary="Total Invoice Processed This Week"
-                        secondary={data && data.invoice_week_aggregate.aggregate.count}
+                        primary="Total Invoice Processed in the last 7 days"
+                        secondary={data && data.user_invoice_week_aggregate.aggregate.count}
                         iconPrimary={CalendarMonthIcon}
                         color={theme.palette.primary.dark}
                     />
