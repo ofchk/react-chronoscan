@@ -91,9 +91,6 @@ useEffect(() => {
     })
 }, [email])    
 
-
-
-
   const handleClearFilters = () => {
     setFilter({
       items: []
@@ -232,6 +229,7 @@ useEffect(() => {
                   }
                 })
               }
+              setShowUploadedOnly(checked)
             }} 
         />}></FormControlLabel>
         <FormControlLabel
@@ -255,6 +253,7 @@ useEffect(() => {
                   }
                 })
               }
+              setShowProcessedOnly(checked)
             }} 
         />}></FormControlLabel>
           <Button
