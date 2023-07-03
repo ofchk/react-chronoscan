@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import Moment from 'moment';
@@ -73,18 +73,26 @@ export default function List() {
   console.log(user)
 
   const email = user ? user.email_id : ''
-  const [getInvoice, { loading, data, refetch }] = useQuery(GET, {
-    variables: {
-      where: {created_email: {_eq: email}}
-    }
-  });
+  const [getInvoice, { loading, data, refetch }] = useLazyQuery(GET);
 
   const [filter, setFilter] = useState({
-        items: []
+    items: []
   });
 
   const [showProcessedOnly, setShowProcessedOnly] = useState(false);
   const [showUploadedOnly, setShowUploadedOnly] = useState(false);
+
+
+useEffect(() => {
+    getInvoice({
+      variables: {
+        where: {created_email: {_eq: email}}
+      }
+    })
+}, [email])    
+
+
+
 
   const handleClearFilters = () => {
     setFilter({
@@ -96,17 +104,16 @@ export default function List() {
     return (
       <>
         <GridToolbarContainer>
-{/*    
+        {/*    
           <GridToolbarColumnsButton />
           <GridToolbarFilterButton
-             
-          /> */}
-          <GridToolbarFilterButton />        
+          /> 
+        */}
+        <GridToolbarFilterButton />        
         </GridToolbarContainer>
       </>
     );
   }
-  
 
   const rowSet = [];
   if (data) {
@@ -200,8 +207,6 @@ export default function List() {
         })
       }
     }
-
-
  
   return (
       <MainCard title="List Invoices">
