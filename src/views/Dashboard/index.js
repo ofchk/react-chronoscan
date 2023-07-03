@@ -24,7 +24,7 @@ const GET = gql`
               count
             }
           }
-      user_invoice_week_aggregate(where: {created_by: {_eq: $id}}) {
+        user_invoice_week_aggregate(args: {ab: $id}) {
             aggregate {
               count
             }
