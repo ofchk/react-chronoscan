@@ -258,7 +258,7 @@ useEffect(() => {
               }
               setShowProcessedOnly(checked)
               if(showUploadedOnly){
-                setShowProcessedOnly(false)
+                setShowUploadedOnly(false)
               }     
             }} 
         />}></FormControlLabel>
