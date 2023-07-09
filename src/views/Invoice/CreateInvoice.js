@@ -160,7 +160,7 @@ export default function Create() {
   const [amount, setAmount] = React.useState();
   const [vendorName, setVendorName] = React.useState();
   const [entityName, setEntityName] = React.useState();
-  const [currencyHeader, setCurrencyHeader] = React.useState();
+  const [currencyHeader, setCurrencyHeader] = React.useState('OMR');
   const [siteCode, setSiteCode] = React.useState();
   const [glDate, setGlDate] = React.useState();
   const [options, setOptions] = React.useState();
