@@ -529,7 +529,7 @@ export default function Create() {
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.invoice_amount = event.target.value;
-                const taxVal = parseFloat(event.target.value) * (5%100)
+                const taxVal = parseFloat(event.target.value) * (5/100)
                 values.tax = taxVal.toString();
                 setAmount(event.target.value);
                 setTax(taxVal);
