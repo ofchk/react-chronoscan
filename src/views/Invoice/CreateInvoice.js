@@ -81,7 +81,7 @@ const GET_VENDOR = gql`
 `;
 
 const INSERT = gql`
-    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!, $currency: Int!, $invoice_amount: String!, $gl_date: String!, $created_email: String!) {
+    mutation Invoice($created_by: Int!, $invoice_number: String!, $vendor: Int!, $entity: Int!, $status: Int!, $options: Int!, $currency: Int!, $invoice_amount: String!, $gl_date: String!, $created_email: String!, $description: String, $tax: String!) {
       insert_invoice_one(object: {
         created_by: $created_by, 
         created_email: $created_email, 
@@ -92,7 +92,9 @@ const INSERT = gql`
         currency: $currency, 
         option: $options,
         invoice_amount: $invoice_amount,
-        gl_date: $gl_date
+        gl_date: $gl_date, 
+        description: $description,
+        tax: $tax
       }) {
         id
         invoice_number
@@ -152,6 +154,8 @@ export default function Create() {
 
   const [invid, setInvid] = React.useState();
   const [invnum, setInvnum] = React.useState(1);
+  const [desc, setDesc] = React.useState();
+  const [tax, setTax] = React.useState();
 
   const [amount, setAmount] = React.useState();
   const [vendorName, setVendorName] = React.useState();
@@ -254,7 +258,7 @@ export default function Create() {
     }
   }
 
-  const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyHeader, siteCode, glDate) => {
+  const uploadHandler = (param, invoice, iid, amount, vendorName, entityName, currencyHeader, siteCode, glDate, desc, tax) => {
 
     console.log(glDate)
     console.log(Moment(glDate).format('D-MMM-YY'))
@@ -272,6 +276,9 @@ export default function Create() {
     formData.append('vendor_number', vendorNumber );
     formData.append('entity_org_id', entityOrgId );
     formData.append('vendor_code', vendorCode );
+    formData.append('description', desc );
+    formData.append('tax', tax );
+
     
     formData.append('al_param1', localStorage.getItem('al_param1') );
     formData.append('al_param2', localStorage.getItem('al_param2') );
@@ -289,7 +296,7 @@ export default function Create() {
 
       if (file) {
         console.log(file)
-        uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyHeader, siteCode, glDate);
+        uploadHandler(file, invnum, insertData.insert_invoice_one.id, amount, vendorName, entityName, currencyHeader, siteCode, glDate, desc, tax);
       }
     }
     if(insertError){
@@ -317,6 +324,7 @@ export default function Create() {
           created_by: localStorage.getItem('user_id'),
           created_email: localStorage.getItem('email'),
           invoice_number: undefined,
+          description: undefined,
           vendor: undefined,
           entity: undefined,
           currency: currencyDefault,
@@ -324,6 +332,7 @@ export default function Create() {
           gl_date: undefined,
           status: 1,
           options: '',
+          tax: ''
         }}
         onSubmit={(values, { setSubmitting }) => {
           if (values && file) {
@@ -380,6 +389,21 @@ export default function Create() {
               }}
               onBlur={handleBlur}
               value={values.invoice_number}
+              fullWidth
+              required
+            />
+            <TextField
+              name="description"
+              label="Enter Description"
+              variant="outlined"
+              size="small"
+              //onChange={handleChange}
+              onChange={(event, newValue) => {
+                values.description = event.target.value;
+                setDesc(event.target.value);
+              }}
+              onBlur={handleBlur}
+              value={values.description}
               fullWidth
               required
             />
@@ -504,7 +528,10 @@ export default function Create() {
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.invoice_amount = event.target.value;
+                const taxVal = parseFloat(event.target.value) * (5%100)
+                values.tax = taxVal.toString();
                 setAmount(event.target.value);
+                setTax(taxVal);
               }}
               onBlur={handleBlur}
               value={values.invoice_amount}

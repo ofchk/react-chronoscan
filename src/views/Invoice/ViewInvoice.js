@@ -55,7 +55,8 @@ const GET = gql`
         invoice_number
         invoice_amount
         gl_date
-        oracle_document_identifier        
+        oracle_document_identifier  
+        description      
         invoice_option {
           title
         }
@@ -94,6 +95,7 @@ const GET = gql`
 const initValues = {
   id: "",
   invoice_number: "",
+  description: "",
   invoice_amount: "",
   gl_date: "",
   currency: "",
@@ -133,6 +135,7 @@ export default function ViewInvoice() {
         setDefaultValues( {
             id: pid,
             invoice_number: data.invoice_by_pk.invoice_number ? data.invoice_by_pk.invoice_number : "",
+            description: data.invoice_by_pk.description ? data.invoice_by_pk.description : "",            
             invoice_amount: data.invoice_by_pk.invoice_amount ? data.invoice_by_pk.invoice_amount : "",
             gl_date: data.invoice_by_pk.gl_date ? data.invoice_by_pk.gl_date : "",
             currency: data.invoice_by_pk.invoice_currency ? data.invoice_by_pk.invoice_currency.title : "",
@@ -169,6 +172,14 @@ export default function ViewInvoice() {
                 }
                 </Typography>
         </Stack>
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Description:</Typography>
+            <Typography variant="p">
+                {
+                    defaultValues.description
+                }
+                </Typography>
+        </Stack>description
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
             <Typography variant="h5">Vendor:</Typography>
             <Typography variant="p">
