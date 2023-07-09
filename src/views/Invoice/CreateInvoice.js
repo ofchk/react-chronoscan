@@ -397,6 +397,7 @@ export default function Create() {
               label="Enter Description"
               variant="outlined"
               size="small"
+              sx={{ mt: 2 }}
               //onChange={handleChange}
               onChange={(event, newValue) => {
                 values.description = event.target.value;
