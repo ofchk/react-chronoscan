@@ -56,7 +56,8 @@ const GET = gql`
         invoice_amount
         gl_date
         oracle_document_identifier  
-        description      
+        description    
+        tax  
         invoice_option {
           title
         }
@@ -107,7 +108,8 @@ const initValues = {
   options : "",
   alfresco_url: "",
   oracle_document_identifier: "" ,
-  error_log: "" 
+  error_log: "" ,
+  tax: "" 
 }
 
 
@@ -137,6 +139,7 @@ export default function ViewInvoice() {
             invoice_number: data.invoice_by_pk.invoice_number ? data.invoice_by_pk.invoice_number : "",
             description: data.invoice_by_pk.description ? data.invoice_by_pk.description : "",            
             invoice_amount: data.invoice_by_pk.invoice_amount ? data.invoice_by_pk.invoice_amount : "",
+            tax: data.invoice_by_pk.tax ? data.invoice_by_pk.tax : "",
             gl_date: data.invoice_by_pk.gl_date ? data.invoice_by_pk.gl_date : "",
             currency: data.invoice_by_pk.invoice_currency ? data.invoice_by_pk.invoice_currency.title : "",
             vendor: data.invoice_by_pk.invoice_vendor ? data.invoice_by_pk.invoice_vendor.supplier_name : "",
@@ -226,6 +229,15 @@ export default function ViewInvoice() {
             <Typography variant="p">
                 {
                     defaultValues.invoice_amount
+                }
+                </Typography>
+        </Stack>
+
+        <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Typography variant="h5">Tax Applicable:</Typography>
+            <Typography variant="p" sx={{ textTransform: "capitalize"}}>
+                {
+                    defaultValues.tax
                 }
                 </Typography>
         </Stack>
