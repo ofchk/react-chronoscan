@@ -557,7 +557,7 @@ export default function Create() {
                     <RadioGroup row
                       aria-labelledby="demo-radio-buttons-group-label"
                       defaultValue="yes"
-                      name="radio-buttons-group"
+                      name="tax"
                       onChange={(event, newValue) => {
                         setTax(event.target.value);
                         console.log(event.target.value)
