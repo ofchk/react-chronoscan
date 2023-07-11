@@ -560,6 +560,7 @@ export default function Create() {
                       name="tax"
                       onChange={(event, newValue) => {
                         setTax(event.target.value);
+                        values.tax = event.target.value;
                         console.log(event.target.value)
                       }}
                     >
