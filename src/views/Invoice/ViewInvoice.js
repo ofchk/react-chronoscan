@@ -179,7 +179,7 @@ export default function ViewInvoice() {
                     defaultValues.description
                 }
                 </Typography>
-        </Stack>description
+        </Stack>
         <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
             <Typography variant="h5">Vendor:</Typography>
             <Typography variant="p">

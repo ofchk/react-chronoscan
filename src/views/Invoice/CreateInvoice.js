@@ -15,7 +15,12 @@ import  { Box,
           MenuItem,
           InputLabel,
           IconButton,
-          Stack
+          Stack,
+          Radio,
+          FormLabel,
+          RadioGroup,
+          FormControl,
+          FormControlLabel
 } from '@mui/material';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -155,7 +160,7 @@ export default function Create() {
   const [invid, setInvid] = React.useState();
   const [invnum, setInvnum] = React.useState(1);
   const [desc, setDesc] = React.useState();
-  const [tax, setTax] = React.useState();
+  const [tax, setTax] = React.useState('yes');
 
   const [amount, setAmount] = React.useState();
   const [vendorName, setVendorName] = React.useState();
@@ -408,7 +413,7 @@ export default function Create() {
               fullWidth
               required
             />
-            <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+            <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={1}>
               <Grid container spacing={2} alignItems="left">
                 <Grid item xs={6} lg={6} >            
                   <Autocomplete
@@ -521,25 +526,50 @@ export default function Create() {
                   </MenuItem>
                 ))}
             </Select>
-            <TextField
-              name="invoice_amount"
-              label="Enter Invoice Amount"
-              variant="outlined"
-              size="small"
-              //onChange={handleChange}
-              onChange={(event, newValue) => {
-                values.invoice_amount = event.target.value;
-                const taxVal = parseFloat(event.target.value) * (5/100)
-                values.tax = taxVal.toString();
-                setAmount(event.target.value);
-                setTax(taxVal);
-              }}
-              onBlur={handleBlur}
-              value={values.invoice_amount}
-              sx={{ mt: 2 }}
-              fullWidth
-              required
-            />
+            <Stack direction="row" alignItems="flex-start" spacing={1} mb={1} mt={2}>
+              <Grid container spacing={2} alignItems="left">
+                <Grid item xs={12} lg={12} >   
+                  <TextField
+                    name="invoice_amount"
+                    label="Enter Invoice Amount"
+                    variant="outlined"
+                    size="small"
+                    //onChange={handleChange}
+                    onChange={(event, newValue) => {
+                      values.invoice_amount = event.target.value;
+                      // const taxVal = parseFloat(event.target.value) * (5/100)
+                      // values.tax = taxVal.toString();
+                      setAmount(event.target.value);
+                      // setTax(taxVal);
+                    }}
+                    onBlur={handleBlur}
+                    value={values.invoice_amount}
+                    sx={{ mt: 2 }}
+                    fullWidth
+                    required
+                  />
+                </Grid>  
+              </Grid>  
+              <Grid container spacing={2} alignItems="left">
+                <Grid item xs={6} lg={6} >   
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">Tax Applicable</FormLabel>
+                    <RadioGroup row
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      defaultValue="yes"
+                      name="radio-buttons-group"
+                      onChange={(event, newValue) => {
+                        setTax(event.target.value);
+                        console.log(event.target.value)
+                      }}
+                    >
+                      <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                      <FormControlLabel value="no" control={<Radio />} label="No" />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>  
+              </Grid>    
+            </Stack>
             <InputLabel sx={{ mt: 2, fontSize: '14px' }}>
               GL Date:{' '}
             </InputLabel>
