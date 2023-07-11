@@ -337,7 +337,7 @@ export default function Create() {
           gl_date: undefined,
           status: 1,
           options: '',
-          tax: ''
+          tax: 'yes'
         }}
         onSubmit={(values, { setSubmitting }) => {
           if (values && file) {
