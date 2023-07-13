@@ -581,7 +581,7 @@ export default function Create() {
               type="date"              
               onChange={(event, newValue) => {
                 values.gl_date = event.target.value;
-                const tempDate = Moment(event.target.value).format('D-MMM-YY')
+                const tempDate = Moment(event.target.value).format('D-MMM-YYYY')
                 setGlDate(tempDate);
               }}
               onBlur={handleBlur}
