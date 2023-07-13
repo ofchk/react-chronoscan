@@ -246,7 +246,7 @@ export default function ViewInvoice() {
             <Typography variant="h5">GL Date:</Typography>
             <Typography variant="p">
                 {
-                    Moment(defaultValues.gl_date).format('D-MMM-YYYY')
+                    Moment(defaultValues.gl_date).format('DD-MMM-YYYY')
                 }
                 </Typography>
         </Stack>
