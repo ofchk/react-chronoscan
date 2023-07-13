@@ -25,6 +25,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MainCard from 'ui-component/cards/MainCard';
 import { useTheme } from '@mui/material/styles';
 import { gql, useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import Moment from 'moment';
 
 const GET = gql`
     query Get($id: Int!) {
@@ -245,7 +246,7 @@ export default function ViewInvoice() {
             <Typography variant="h5">GL Date:</Typography>
             <Typography variant="p">
                 {
-                    defaultValues.gl_date
+                    Moment(defaultValues.gl_date).format('D-MMM-YY')
                 }
                 </Typography>
         </Stack>
